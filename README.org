@@ -1,0 +1,7 @@
+#+TITLE: Atomate
+#+KEYWORDS: javascript, js, html, note-taking, jquery
+#+DESCRIPTION: A lightweight input app that parties responsibly
+#+AUTHOR: Max van Kleek
+#+EMAIL: electronic@gmail.com
+#+AUTHOR: Brennan Moore
+#+EMAIL: brennanmoore@gmail.com
