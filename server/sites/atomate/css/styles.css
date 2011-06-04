@@ -124,7 +124,7 @@ html, body {
     font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size:75%;
     background-color:white;
-    width: 750px;
+    width: 840px;
     text-align: left;
     margin-left: auto;
     margin-right: auto;
@@ -229,7 +229,7 @@ ul {
 
 .content {
     padding:0px;
-    width:750px;
+    width:840px;
 }
 
 .imgheader {
@@ -335,7 +335,7 @@ ul {
 }
 
 .video {
-    width:400px;
+    width:478px;
     background:lightyellow;
     height:250px;
 }
