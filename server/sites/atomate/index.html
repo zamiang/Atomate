@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="google-site-verification" content="mip2rw9r2ei7TFIBvcoPNHmmsu2B-mtLFg-9XKdcT8A" />
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <title>atomate | personal information engine</title>
+    <style>
+      @import url("css/reset-fonts-grids.css");
+      @import url("css/jquery.fancybox.css");
+      @import url("css/atomate.css");
+    </style>
+    <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="js/jquery.fancybox.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+      $("#Group1 a").fancybox({'frameWidth':600, 'frameHeight':391});
+      $("#Group2 a").fancybox({'frameWidth':600, 'frameHeight':391});
+      $("#Group3 a").fancybox({'frameWidth':600, 'frameHeight':391});
+      });
+    </script>
+  </head>
+  <body>
+    <div id="rightstuff">
+      <a href="#info">
+	tour
+      </a>
+      <a href="#download">
+	download	
+      </a>
+    </div>
+    
+    <img src="img/atomate_logo.png" class="logo"/>    
+    <div class="shadowedcontent">
+      <h3 class="header">
+	<b>Atomate</b> lets you easily create smart reminders and
+	actions that can automatically do stuff based on where you
+	are, what you are doing, and the messages and information you
+	receive from anywhere on the Web
+      </h3>
+      
+      <div class="midhighlight">
+	<!--
+	   more content gets produced every day than we could possibly consume<br />
+	   and we have more responsibilities- professional, personal, social than we could possibly perform	     
+	   atomate is here to help!!
+	  -->
+
+	<div class="rightbox" style="margin-left:17px">
+	  <!--	    <img src="img/calendar_32.png" class="homeimg" style="margin-top:20px;padding-top:0;vertical-align:top;"/> -->
+	  <h6>be up to date</h6>
+	  <h7>
+	    Atomate regularly checks your favorite social sites,
+	    blogs and web 2.0 services for new content.
+	  </h7>
+	</div>
+	
+	<div class="rightbox">
+	  <!--	    <img src="img/phone_on_32.png" class="homeimg"/>-->
+	  <h6>
+	    auto-share
+	  </h6>	    
+	  <h7>
+	    Use Atomate to automatically share interesting items
+	    with your friends.
+	  </h7>
+	</div>  
+	
+	<div class="rightbox">
+	  <!--	  <img src="img/printer_32.png" class="homeimg" style="margin-top:20px;padding-top:0;vertical-align:top;"/>-->
+	  <h6>just-right info</h6>
+	  <h7>
+	    Atomate can text you 'important' emails when you're
+	    traveling or your grocery list when you get to
+	    the store.
+	  </h7>  	    
+	</div>
+
+	<div class="rightbox">
+	  <!--	  <img src="img/computer_accept_32.png" class="homeimg"/>-->
+	  <h6>its free!</h6>
+	  <h7>
+	    Atomate runs
+	    in <a href="http://www.mozilla.com/en-US/firefox/firefox.html">Firefox</a>
+	    and is free and open source
+	    software <a href="http://code.google.com/p/list-it/">(source)</a>
+	  </h7>
+	</div>
+      </div>
+      
+      <p id="Group1" class="downloadlink" style="height:94px;  margin:0 0 0 50px;">	
+	<a href="#video">
+	  <img src="img/atomate_demo.png"></img>
+	</a>
+      </p>
+
+
+      <div style="float:right; width:210px; vertical-align:top;">      
+	<div class="floatrightbox" style="margin-top:44px" id="Group2">
+ 	  <h6 style="margin-bottom:2px;">
+	    reminders
+	  </h6>
+	  <a href="#video_reminder" >
+	    <img src="img/reminders.png" />
+	  </a>
+	  <h7>
+	    <p>
+	      In the first example, we show how to combine multiple data
+	      sources in an Atomate rule. We use information from both
+	      Dopplr and the Firefox to automatically notify your
+	      colleagues when you are out of town.
+	    </p>
+	  </h7>
+	</div>
+
+	<div class="floatrightbox" id="Group3">
+ 	  <h6 style="margin-bottom:2px;">
+	    custom RSS
+	  </h6>
+	  <a href="#video_customrss" >
+	    <img src="img/customrss.png" />
+	  </a>
+	  <h7>
+	    <p>
+	      In the second example, we show how to add a custom RSS feed,
+	      rename a field in the RSS feed (from 'title' to 'name') and
+	      then use data from the RSS feed in an Atomate rule,	 
+	    </p>
+	  </h7>
+	</div>
+
+
+	<div class="floatrightbox" style="margin-top:703px">
+	  <h6>extras</h6>	  
+	  <h7>
+	    <p>
+	      Atomate can
+	      use <a href="http://growl.info/about.php">Growl</a> to
+	      send you notifications.
+	    </p>
+	    <p>
+	      if you would like for Atomate to use Growl, please
+	      install <a href="http://growl.info/about.php">Growl</a><br />
+	      <a href="http://growl.info/">OSX</a> ||
+	      <a href="http://www.growlforwindows.com/gfw/">Windows</a>
+	      <br />
+	      and <a href="http://blog.abi.sh/yip-latest.xpi">install</a>
+	      <a href="http://www.yipyip.com/">yip</a>
+	    </p>
+	  </h7>
+	</div>
+      </div>
+      
+
+      <div id="leftside">
+	<div id="info">
+	  <h1>intro</h1>
+	  <div class="content">
+	    <h3>
+	      <b>Atomate</b> can be used to remind you of a calendar event,
+	      especially if that event is dependent on something normally
+	      hard to check. For instance, you may have a meeting with a
+	      colleague, but you only want to be reminded if the colleague
+	      is actually in their office (and if you aren't already
+	      there). Atomate lets you set a rule to say: "when I have an
+	      upcoming meeting in my calendar with [colleague], alert me if
+	      that colleague enters the office, and I am not near his
+	      office". The locations of events, places or friends can be
+	      used in other ways too. For instance, you may often forget to
+	      take your shopping list to the grocery store. Atomate lets you
+	      create your shopping list at home, and a rule that says "when
+	      I am near the grocery store, text me my shopping list".
+	    </h3>
+	  </div>
+	  <br />
+	  <h1>how does it work?</h1>
+	  <div class="content">
+	    <img src="img/atomate_diagram_lr.png" style="height:auto; width:auto; display:block;" />
+	    <h3>
+	      <b>Atomate</b>, treats feeds from social networking and
+	      life-tracking sites as sensor streams, integrating
+	      information from such feeds into a simple
+	      unified <a href="http://www.w3.org/RDF/">RDF</a> world model
+	      representing people, places and things and their
+	      time-varying states and activities. Combined with other
+	      information sources on the web, including the your online
+	      calendar, web-based e-mail client, news feeds and messaging
+	      services, Atomate can be made to automatically carry out a
+	      variety of simple tasks, ranging from context-aware
+	      filtering and messaging, to sharing and social coordination
+	      actions. Atomate's open architecture and world model easily
+	      accommodate new information sources and actions via the
+	      addition of feeds and web services. To make the system easy
+	      to use, Atomate provides a constrained-input natural
+	      language interface (CNLI) for behavior specification, and a
+	      direct-manipulation interface for inspecting and updating
+	      its world model.
+	    </h3>
+	    <h3>
+	      The illustration is based
+	      on <a href="http://portal.acm.org/citation.cfm?id=176792">Agents
+		that reduce work and information overload</a>
+	      by <a href="http://web.media.mit.edu/~pattie/">Pattie
+		Maes</a>
+	    </h3>
+	    <br />
+	  </div>
+	  <h1>data</h1>
+	  <div class="content">
+	    <h3>
+	      <b>NOTE:</b> All data is archived on your personal computer. It is NOT sent to any external websites.
+	    </h3>
+	    <h3>
+	      Currently, Atomate imports your data from 
+	      <a href="http://www.google.com/calendar">Google Calendar</a>,
+	      <a href="http://www.facebook.com">Facebook</a>, 
+	      <a href="http://listit/">Listit</a>, 
+	      <a href="http://www.skydeck.com">Skydeck</a>, 
+	      <a href="http://www.twitter.com">Twitter</a>, 
+	      <a href="http://www.foursquare.com">Foursquare</a>, 
+	      <a href="http://www.last.fm">Last.fm</a>,
+	      <a href="http://www.dopplr.com/">Dopplr</a>,
+	      <a href="http://www.flickr.com/">Flickr</a>,
+	      <a href="http://www.wesabe.com">Wesabe</a> and is able
+	      to track your location, the local weather and your web
+	      browsing history from the Firefox browser.  Also, Atomate
+	      can import data from any RSS feed. Please email
+	      the <a href="http://groups.google.com/group/poyozo">Google
+		Group</a> if you would like to recommend a service or could assist in integrating your service of
+	      choice.
+	    </h3>	
+	    <h3>
+	      Additionally, with the Atomate-Nexus, your Atomate is able to import
+	      information from other Atomates. You can share selected
+	      entities (like people) and their properties (like their
+	      location) with selected friends. 
+	    </h3>
+	  </div>
+	</div>
+	<br />
+	<div id="download">
+	  <h1>download</h1>
+	  <div class="content">
+	    <h3>	    
+	      This Firefox extension is a combination of three
+	      different systems: use <a target="_blank" href="http://listit.csail.mit.edu/"><b>List.it</b></a>
+	      to take notes, <a target="_blank" href="http://atomate.me/"><b>Atomate</b></a>
+              to create smart reminders and actions,
+	      and <a target="_blank" href="http://mypoyozo.com/"><b>Poyozo</b></a> to
+	      explore your personal activity logs.
+	    </h3>
+	    <h3>
+	      To stay in touch about updates please join the Google Group <a target="_blank" href="http://groups.google.com/group/atomate">here!</a>
+	    </h3>
+	    <br />
+	    <h3>	    
+	      <a class="downloadlink" href="" style="margin-left:221px">  <!-- http://atomate.me/releases/atomate.xpi -->
+		<strike>install for Firefox 3.6</strike>
+	      </a>
+	      <br />
+	      <span style="margin-left:269px">coming soon!</span>
+	    </h3>
+	    <br />
+	    <br />
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+    <div id="footer" style="width:500px">
+      <a href="http://people.csail.mit.edu/emax" style="text-decoration:none;">Max Van Kleek</a>, 
+      <a href="http://www.zamiang.com/" style="text-decoration:none;">Brennan Moore</a>
+      and <a href="http://www.ecs.soton.ac.uk/people/pa2" style="text-decoration:none;">Paul Andr&#233</a>
+      
+      <div style="margin-top:4px;">
+	under the supervision of
+	<a href="http://people.csail.mit.edu/karger/" style="text-decoration:none;">David Karger</a> and
+	<a href="http://users.ecs.soton.ac.uk/mc/" style="text-decoration:none; ">mc schraefel</a>
+      </div>
+      <div style="margin-top:4px;">
+	Atomate logo by <a href="http://www.bengigencer.com/">Bengi Gencer</a>
+      </div>
+    </div>
+
+    <div id="video" style="display:none; width:600px; height:391px;">
+      <object width="600" height="391">
+	<param name="allowfullscreen" value="true" />
+	<param name="allowscriptaccess"
+	       value="always" />
+	<param name="movie"
+	       value="http://vimeo.com/moogaloop.swf?clip_id=7193664&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=ff0080&amp;fullscreen=1"
+	       />
+	<embed src="http://vimeo.com/moogaloop.swf?clip_id=7193664&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=ff0080&amp;fullscreen=1"
+	       type="application/x-shockwave-flash"
+	       allowfullscreen="true" allowscriptaccess="always"
+	       width="600" height="391"></embed></object>
+    </div>	   
+    
+    <div id="video_reminder" style="display:none; width:600px; height:391px;">
+      <object width="600" height="391">
+	<param name="allowfullscreen" value="true" />
+	<param name="allowscriptaccess" value="always" />
+	<param name="movie"
+	       value="http://vimeo.com/moogaloop.swf?clip_id=11454629&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=ff0080&amp;fullscreen=1"
+	       />
+	<embed src="http://vimeo.com/moogaloop.swf?clip_id=11454629&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=ff0080&amp;fullscreen=1"
+	       type="application/x-shockwave-flash"
+	       allowfullscreen="true" allowscriptaccess="always"
+	       width="600" height="391"></embed></object>
+    </div>
+    
+    <div id="video_customrss" style="display:none; width:600px; height:391px;">
+      <object width="600" height="391">
+	<param name="allowfullscreen" value="true" />
+	<param name="allowscriptaccess" value="always" />
+	<param name="movie"
+	       value="http://vimeo.com/moogaloop.swf?clip_id=11443979&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=ff0080&amp;fullscreen=1" />
+	<embed src="http://vimeo.com/moogaloop.swf?clip_id=11443979&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=0&amp;show_portrait=0&amp;color=ff0080&amp;fullscreen=1" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="600" height="391">
+	</embed>
+      </object>
+    </div>
+
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+      try {
+      var pageTracker = _gat._getTracker("UA-11329288-1");
+      pageTracker._trackPageview();
+      } catch(err) {}</script>
+
+  </body>
+</html>

@@ -1,11 +1,14 @@
-# ATOMATE | Your digital personal assistant
+# ATOMATE Your digital personal assistant
 
-It is lightweight input app that infers what type of data you are
-entering and tags it as such. All your data just there hanging out
-there in your little list, accessible, filterable and searchable in
-your phone and browser.  
+Atomate helps you stay organized by giving you one place to find and
+update all the things you need for you day. Our priority is to make it
+easy for you to add stuff and find suff. We do this by infering what
+type of data you enter as you enter it, by alowing you to enter many
+different types of things and by importing your information from the
+apps you use every day. All your information is in one list--
+accessible, filterable and searchable from your phone and your web
+browser.
 
-**THIS IS IN PROGRESS ALPHA SOFTWARE AND SHOULD BE TREATED ACCORDINGLY.**
 
 ## Problem
 
@@ -17,26 +20,60 @@ This is (partly) because our life management tools suck. These tools
 are poorly integrated, complicated little things based on old
 metaphors that don't make sense in the digital world. SRS SILLYNESS IS
 SLLY SRSLY
- 
-You should not have to conform to your computer-- it should conform to you! 
 
-## Summary 
+You should not have to conform to your computer-- it should conform to you!
 
-Atomate serve 90% of your information needs for the day - no more
-calendar, todos list or bookmarks. Listomate contains all reference
-materials, todos, reminders and events in the same list- with one
-'awesome bar' to search through and add items. The core utility is
-just having 1 place to view, edit or add to that information. 
 
-## Goal 
+## Summary
 
-Build something that helps people go about their day
+Atomate aims to serve 90% of your information needs for the day - no
+more calendar, todos list or bookmarks. Listomate contains all
+reference materials, todos, reminders and events in the same list-
+with one 'awesome bar' to search through and add items. The core
+utility is just having 1 place to view, edit or add to that
+information.
+
+
+## Goal
+
+Build something that helps people go about their day.
+
+
+## More info
+
+This application is free and open source. It has been supported by
+many years (?decades?) of acedemic research. Progress is actively
+documented in the ACM SIGCHI and WWW communities.
+
+### Selected Publications:
+- [Effort,Memory,Attention and Time: Paths to More Effective Personal Information Management](http://www.scribd.com/doc/56126885/Effort-Memory-Attention-and-Time-Paths-to-More-Effective-Personal-Information-Management)
+- [Atomate it! end-user context-sensitive automation using heterogeneous information sources on the web. Proceedings of the 19th international conference on World wide web](http://people.csail.mit.edu/emax/papers/atomate-www2010-camera.pdf)
+- [Assisted Self Reflection: Combining Lifetracking, Sensemaking & Personal Information Management](http://zamiang.webfactional.com/assisted_chi-workshop.pdf)
+- [Examining Personal Information-Keeping in a Lightweight Note-Taking Tool](http://people.csail.mit.edu/emax/papers/listit-chi2009.pdf)
+- [A Longitudinal Study of People Managing their Information Scraps in a Micro-note Tool](http://people.csail.mit.edu/~emax/papers/chi-listit-camera-2011.pdf)
+
+
+# Data Sources
+- list.it!
+- web browser history
+- web browser bookmarks
+- google mail
+- google calendar
+- google contacts
+- facebook contacts
+- facebook events
+- facebook messages
+- twitter posts
+- twitter messages
+- twitter contacts
+
 
 ## Examples
 
 - an example!
 - more examples
-- You enter: "remind me to take out the trash on Sunday" -- listomate will remind you to do that at a reasonable time on Sunday-- can dismiss w/ a 'remind me later' button
+- You enter: "remind me to take out the trash on Sunday" Atoamte will remind you to do that at a reasonable time on Sunday-- can dismiss w/ a 'remind me later' button
+
 
 ## Things to keep in mind (from @chrysaora)
 
@@ -64,9 +101,11 @@ take out the trash on Sunday evening, but what if I'm in the middle of
 watching a movie? Or eating dinner? I'm not sure how to work around
 this best, but maybe a snooze button feature?
 
+
 ## Demo
 
 Working on it!
+
 
 ## TODO:
 
@@ -74,8 +113,39 @@ Working on it!
 - update atomate.me
 - update mypoyozo.com
 - create mailing list
+- donation button
 - design a compelling demo
+- data syncing from home computer to android
+- basic android (web) app
 
 
 ## LATER:
 - history view (poyozo)
+- more data sources
+
+## Get updates
+- [Join our mailing list here](http://atomate.me)
+- [Follow us on Twitter here](http://twitter.com/mypoyozo)
+
+
+## MIT License
+Copyright (c) 2011 brennanmoore@gmail.com electronic@gmail.com
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
