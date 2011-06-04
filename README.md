@@ -1,4 +1,4 @@
-# ATOMATE Your digital personal assistant
+# ATOMATE - Your digital personal assistant
 
 Atomate helps you stay organized by giving you one place to find and
 update all the things you need for you day. Our priority is to make it
@@ -27,11 +27,15 @@ You should not have to conform to your computer-- it should conform to you!
 ## Summary
 
 Atomate aims to serve 90% of your information needs for the day - no
-more calendar, todos list or bookmarks. Listomate contains all
+more calendar, todos list or bookmarks. Atomate contains all
 reference materials, todos, reminders and events in the same list-
 with one 'awesome bar' to search through and add items. The core
 utility is just having 1 place to view, edit or add to that
 information.
+
+## Demo
+
+Working on it!
 
 
 ## Goal
@@ -53,7 +57,7 @@ documented in the ACM SIGCHI and WWW communities.
 - [A Longitudinal Study of People Managing their Information Scraps in a Micro-note Tool](http://people.csail.mit.edu/~emax/papers/chi-listit-camera-2011.pdf)
 
 
-# Data Sources
+## Data Sources
 - list.it!
 - web browser history
 - web browser bookmarks
@@ -68,11 +72,13 @@ documented in the ACM SIGCHI and WWW communities.
 - twitter contacts
 
 
-## Examples
+## Usage Scenerios
 
 - an example!
 - more examples
-- You enter: "remind me to take out the trash on Sunday" Atoamte will remind you to do that at a reasonable time on Sunday-- can dismiss w/ a 'remind me later' button
+- You enter: "remind me to take out the trash on Sunday" Atoamte will
+  remind you to do that at a reasonable time on Sunday-- can dismiss
+  w/ a 'remind me later' button
 
 
 ## Things to keep in mind (from @chrysaora)
@@ -100,11 +106,6 @@ For example, it's well and good that your system could remind me to
 take out the trash on Sunday evening, but what if I'm in the middle of
 watching a movie? Or eating dinner? I'm not sure how to work around
 this best, but maybe a snooze button feature?
-
-
-## Demo
-
-Working on it!
 
 
 ## TODO:
