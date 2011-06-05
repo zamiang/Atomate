@@ -28,24 +28,36 @@
             <fb:like href="http://atomate.me" send="true" layout="button_count" width="125" show_faces="true" font="lucida grande"></fb:like>
         </div>
 
+        <header>
+            <h1>Atomate</h1>
+            <img class="logo" src="../img/atomate_bot.png" />
+            <h2>Your digital personal assistant</h2>
+        </header>
         <div id="container">
-            <header></header>
+            <ul id="tabs">
+                <li class="selected">Now</li>
+                <li>Note</li>
+                <li>Todo</li>
+                <li>Events</li>
+                <li>Contacts</li>
+                <li>Reminders</li>
+                <li class="img_tab"><img src="../img/settings_16.png" /></li>
+            </ul>
 
             <div id="main" role="main">
-
-            </div>
-
-            <div id="footer">
-                <p>
-                    <a href="/about.html">About</a> &#8226;
-                    <a href="/team.html">Team</a> &#8226;
-                    <a href="/demo.html">Demo</a> &#8226;
-                    <a href="https://github.com/Zamiang/Atomate">Source</a> &#8226;
-                    <a href="/help">Help</a>
-                </p>
-                <div id="fb-root"></div>
+                <input type="text"></input>
+                <ul id="notes"></ul>
             </div>
         </div>
+
+        <footer>
+            <a href="/about.html">About</a> &#8226;
+            <a href="/team.html">Team</a> &#8226;
+            <a href="/demo.html">Demo</a> &#8226;
+            <a href="https://github.com/Zamiang/Atomate">Source</a> &#8226;
+            <a href="/help">Help</a>
+            <div id="fb-root"></div>
+        </footer>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
         <script src="http://connect.facebook.net/en_US/all.js#appId=213602652007737&amp;xfbml=1"></script>

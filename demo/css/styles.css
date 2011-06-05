@@ -124,7 +124,7 @@ html, body {
     font-family:'Lucida Grande', Tahoma, Verdana, Arial, sans-serif;
     font-size:75%;
     background-color:white;
-    width: 840px;
+    width: 500px;
     text-align: left;
     margin-left: auto;
     margin-right: auto;
@@ -151,22 +151,26 @@ a:hover {
 p { margin-top:4px; }
 
 h1 {
-    display:inline-block;
-    font-weight:bold;
-    margin:0;
-    padding:0 8px;
-    text-decoration:none;
-}
-
-h2 {
-    background: #F3F3F3;
     color: #333;
-    display: block;
-    font-size: 19pt;
+    display: inline;
+    font-size: 14px;
     font-weight: bold;
     line-height: 19px;
     margin: 0px;
-    padding: 19px;
+    padding: 0px;
+    text-decoration: none;
+    width: auto;
+    line-height: 138%;
+}
+
+h2 {
+    color: #b0b0b0;
+    display: inline;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 19px;
+    margin: 0px;
+    padding: 0px;
     text-decoration: none;
     width: auto;
     line-height: 138%;
@@ -194,44 +198,137 @@ h4 {
     margin-bottom:8px;
 }
 
-#footer a {
-    color:#333333;
+footer a, footer a:visited {
+    color:#555;
     margin-top:5px;
     text-decoration:none;
     cursor:pointer;
 }
 
-#footer a:hover {
+footer a:hover {
     text-decoration:underline;
 }
 
-
-ul {
-    margin:0px;
-    margin-top:2px;
-    margin-bottom:29px;
-    width:70%;
+#container {
+    margin-bottom:15px;
+    -moz-box-shadow: -1px 6px 16px #DDD;
+    -webkit-box-shadow: -1px 6px 16px #DDD;
+    box-shadow: -1px 6px 16px #DDD;
+    border: 1px solid #DDD;
 }
 
-ul li {
-    color: #333;
-    display: list-item;
-    list-style: disc outside none;
-    margin-left: 0px;
-    padding: 2px;
-    margin-left: 18px;
-    vertical-align: top;
-    font-size:12px;
+header {
+    padding:6px;
+    position:relative;
+    margin-top:12px;
+}
+
+.logo {
+    height: 76px;
+    margin-bottom: -23px;
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
+footer {
+    width: 370px;
+    border-top: 1px solid #DDD;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding: 7px;
+    color: #DDD;
+}
+
+
+ul#tabs {
+    text-align: left;
+    margin-top:10px;
+    border-bottom: 1px solid #8FAAD9;
+    list-style-type: none;
+    padding: 0px 0px 0px 4px;
+    margin:0px;
+    width:494px;
+    margin-top:15px;
+}
+
+#tabs li {
+    display: inline-block;
+    margin: 0px;
+    list-style: none;
+    width: auto;
+    padding: 12px;
+    background: -webkit-linear-gradient(rgba(234, 238, 243, 0.2), #EAEEF3), -webkit-linear-gradient(left, #EAEEF3, #EAEEF3 97%, #D3D7DB);
+    padding: 4px 10px 4px 10px;
+    margin-right: -0.8px;
+    font-weight:normal;
+    border: 1px solid #DDE5F3;
+    border-bottom: 0px solid #8FAAD9;
+    color:#666;
+}
+
+#tabs li.img_tab {
+    padding: 3px 6px 1px 6px;
+    vertical-align:bottom;
+    float:right;
+    margin-right:4px;
+}
+
+#tabs li.selected {
+    background: -webkit-linear-gradient(left, #BBCEE9, #BBCEE9 97%, #AABEDC);
+    border: 1px solid #8FAAD9;
+    border-bottom: 0px solid #8FAAD9;
+    color: black;
+    text-shadow: #BBCEE9 0 1px 1px;
+    font-weight:bold;
+}
+
+#tabs li:hover {
+    background:#f3f3f3;
+    font-weight:bold;
+    cursor:pointer;
+    color:#333;
+}
+
+#main {
+    background: -webkit-linear-gradient(left, #BBCEE9, #BBCEE9 97%, #AABEDC);
+    padding:2px;
+}
+
+#notes {
+    margin:0px;
+    width:491px;
+    height:200px;
+    border:1px solid #ddd;
+    border-top:0px solid #ddd;
+    background:#fff;
 }
 
 input[type="text"] {
-    height: 31px;
     padding-left: 8px;
-    border: 1px solid #C2C2C2;
-    box-shadow: 0 1px 1px #E1E3E7;
-    -webkit-box-shadow: 0 1px 1px #E1E3E7;
-    -moz-box-shadow: 0 1px 1px #E1E3E7;
     font-size: 14px;
+    margin:0px;
+
+    -webkit-appearance: textfield;
+    -webkit-rtl-ordering: logical;
+    -webkit-user-select: text;
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: white;
+    background-origin: padding-box;
+    border-bottom-style: inset;
+    border-bottom-width: 2px;
+    border-left-style: inset;
+    border-left-width: 2px;
+    border-right-style: inset;
+    border-right-width: 2px;
+    border-top-style: inset;
+    border-top-width: 2px;
+    padding: 11px;
+    color: initial;
+    text-align: -webkit-auto;
+    resize: none;
+    width:468px;
 }
 
 input[type="submit"] {
