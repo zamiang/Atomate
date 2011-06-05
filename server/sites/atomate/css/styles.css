@@ -121,7 +121,7 @@ a:hover { color: #036; }
 
 html, body {
     color:#222222;
-    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family:'Lucida Grande', Tahoma, Verdana, Arial, sans-serif;
     font-size:75%;
     background-color:white;
     width: 840px;
@@ -131,12 +131,11 @@ html, body {
 }
 
 
-a {
+a, a:visited {
     text-decoration: none;
     font-weight: normal;
     border: none;
     margin: 0;
-    display:inline-block;
     color: #0044CC;
 }
 
@@ -217,48 +216,12 @@ ul {
     top:10px;
     right:10px;
 }
-.rightbox {
-    border-top:0 solid grey;
-    display:inline-block;
-    height:98px;
-    margin:5px 9px;
-    padding:3px 5px;
-    vertical-align:top;
-    width:205px;
-}
 
 .content {
     padding:0px;
     width:840px;
 }
 
-.imgheader {
-    border-bottom:0 dotted grey;
-    color:#4B4B4B;
-    font-size:2em;
-    font-weight:bold;
-    line-height:30px;
-    margin:0;
-    padding-bottom:3px;
-    text-decoration:none;
-    width:auto;
-    margin-bottom:-7px;
-}
-
-.modelIndent {
-    font-size: 12px;
-    padding-left: 50px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    line-height: 18px;
-    color: #333333;
-}
-
-.paint img{
-    margin-bottom:2px;
-    margin-top:10px;
-    width:186px;
-}
 
 #footer {
     width: 400px;
@@ -280,50 +243,9 @@ ul {
     text-decoration:none;
     cursor:pointer;
 }
+
 #footer a:hover {
     text-decoration:underline;
-}
-
-.header {
-    background: #F3F3F3;
-    font-size:22px;
-    line-height:34px;
-    margin-bottom:11px;
-    margin-top:-6px;
-    padding:11px 17px 12px;
-}
-
-.titleimg {
-    width:950px;
-    height:200px;
-    margin-top:-6px;
-}
-
-.tagline {
-    display:inline-block;
-    font-size:20px;
-    font-weight:lighter;
-    margin-left:6px;
-    margin-top:1px;
-    vertical-align:top;
-    width:315px;
-}
-.quote {
-    background:none repeat scroll 0 0 lightyellow;
-    color:#333333;
-    font-size:16px;
-    line-height:25px;
-    margin:14px 0 0;
-    padding:6px 19px 2px;
-}
-
-.quote  p {
-    margin-bottom:12px;
-}
-
-.midhighlight {
-    height:119px;
-    margin-top:-9px;
 }
 
 .shadowedcontent {
@@ -360,6 +282,7 @@ ul {
     margin:0px;
     margin-top:2px;
     margin-bottom:29px;
+    width:70%;
 }
 
 input[type="text"] {
@@ -436,6 +359,7 @@ ul li {
     -moz-box-shadow:0 1px 3px rgba(0, 0, 0, 0.5);
     -webkit-box-shadow:0 1px 3px rgba(0, 0, 0, 0.5);
 }
+
 .downloadlink:hover { background-color:#666; }
 
 .downloadlink img:hover { opacity:0.4; }
