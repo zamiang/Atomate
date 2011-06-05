@@ -29,14 +29,11 @@
         </div>
 
         <div id="container">
-            <header>
+            <header></header>
 
-            </header>
             <div id="main" role="main">
 
             </div>
-
-
 
             <div id="footer">
                 <p>
@@ -53,23 +50,37 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
         <script src="http://connect.facebook.net/en_US/all.js#appId=213602652007737&amp;xfbml=1"></script>
 
-
-        <script src="forms.js"></script>
-        <script src="forms.js"></script>
+        <script src="js/test_data.js"></script>
+        <script src="../lib/tracking.js"></script>
 
         <script type="text/javascript">
-            var mp_protocol = (('https:' == document.location.protocol) ? 'https://' : 'http://');
-            document.write(unescape('%3Cscript src="' + mp_protocol + 'api.mixpanel.com/site_media/js/api/mixpanel.js" type="text/javascript"%3E%3C/script%3E'));
-        </script>
-        <script type="text/javascript">
-            try {  var mpmetrics = new MixpanelLib('d3950de9980b43abe44956d1511c6af5'); }
-            catch(err) { null_fn = function () {}; var mpmetrics = {  track: null_fn,  track_funnel: null_fn,  register: null_fn,  register_once: null_fn, register_funnel: null_fn }; }
+    // MIX PANEL
+    var mpq = ["init", "d3950de9980b43abe44956d1511c6af5"];
+    mixPanelInit = function() {
+        try {
+            // TODO: email MixPanel about this - to run callbacks they require a global called 'mpmetrics'
+            mpmetrics = new MixpanelLib("d3950de9980b43abe44956d1511c6af5");
+            return mpmetrics
+        } catch(err) {
+            var null_fn = function () {};
+            mpmetrics = {
+                track: null_fn,
+                track_funnel: null_fn,
+                register: null_fn,
+                register_once: null_fn,
+                register_funnel: null_fn,
+                identify: null_fn
+            };
+            return mpmetrics
+        }
+    };
 
-            jQuery(document).ready(function(){
-                 Atomate.initialize({
-                    mixPanel:mptricks
-                    });
-            });
+    jQuery(document).ready(function(){
+                               Atomate.initialize({
+                                                      trackingmodule: mpq,
+                                                      mixPanelInit: mixPanelInitk
+                                                  });
+                           });
         </script>
         <script>
             var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]]; // Change UA-XXXXX-X to be your site's ID
