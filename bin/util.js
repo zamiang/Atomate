@@ -592,12 +592,17 @@ Atomate.util = {
 	        aConsoleService.logStringMessage(x);
 	    };
     },
+
+    /* this function has erros and i had to modify it to get the file to evaluate -b */
     keyCompare:function(src,dest,fn) {
 	    // checks to see whether all keys are fn() or == dest's keys (not vice veras)
-	    if (fn === undefined) { fn = function(x,y) x == y; }
+	    if (fn === undefined) { fn = function(x,y){ return x == y;}; }
 	    var srckeys = this.objKeys(src);
-	    return srckeys.map(function(k) fn(src[k],dest[k])).filter(function(x) x).length == srckeys.length;
+	    return srckeys.map(function(k) {  
+                               return fn(src[k],dest[k]).filter(function(x){ return x; }).length == srckeys.length; 
+                           });
     },
+
     uniq_slow: function(x,compare_fn) {
 	    // O(n lg n) version
 	    var uniq = [];

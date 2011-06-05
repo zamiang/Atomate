@@ -1,5 +1,5 @@
 /**
- * this is the events tracking module 
+ * The module for tracking user actions
  * currently it uses Mixpanel's ASYNC api for tracking
  * 
  * @requires mixpanel
@@ -14,7 +14,8 @@
  * @param doNotTrackPageload
  */
 
-Tracking = {
+Atomate.tracking = {
+    parent: Atomate,
     initialize: function(params) {
         var this_ = this;
         var trackingmodule = params.trackingmodule;
@@ -67,10 +68,6 @@ Tracking = {
                               });
             
             trackingmodule.push(["track", "Page Load", {
-                                     location: location
-                                 }]);
-            
-            trackingmodule.push(["track", "Page Load: " + this.getPageType(), {
                                      location: location
                                  }]);
         }
