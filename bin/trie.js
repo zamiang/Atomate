@@ -2,76 +2,69 @@
  * A Simple JavaScript Trie Generator
  * 
  * 
+ * MUCH could be added to this:
+ * - stop words 
+ * - character formatting -- normalizing unicode stuff
+ * - somehow placing more importance on hash tags
+ * - parsing out the various permutations of dates and times
+ *  -- someone writes tomorrow at 5 and tomorrow is wednesday it would be fun to show it in a search for wed
+ * 
  * https://github.com/jeresig/trie-js
  * http://ejohn.org/blog/javascript-trie-performance-analysis/
- * 
  */
 
 Atomate.trie = {
+    parent: Atomate,
     buildTrie: function(words) { 
         var trie = {};
-        // Go through all the words in the dictionary
+
+        // Build a simple Trie structure
         for ( var i = 0, l = words.length; i < l; i++ ) {
-            // Get all the letters that we need
-            var word = words[i], letters = word.split(""), cur = trie;
-            // Loop through the letters
-            for ( var j = 0; j < letters.length; j++ ) {
-                var letter = letters[j], pos = cur[ letter ];
-                
-                // If nothing exists for this letter, create a leaf
-                if ( pos == null ) {
-                    // If it's the end of the word, set a 0,
-                    // otherwise make an object so we can continue
-                    cur = cur[ letter ] = j === letters.length - 1 ? 0 : {};
-                    
-                    // If a final leaf already exists we need to turn it
-                    // into an object to continue traversing
-                } else if ( pos === 0 ) {
-                    cur = cur[ letter ] = { $: 0 };
-                    
-                    // Otherwise there is nothing to be set, so continue on
-                } else {
-                    cur = cur[ letter ];
-                }
-            }
+	        var word = words[i], letters = word.split(""), cur = trie;
+
+	        for ( var j = 0; j < letters.length; j++ ) {
+		        var letter = letters[j], pos = cur[ letter ];
+
+		        if ( pos == null ) {
+			        cur = cur[ letter ] = j === letters.length - 1 ? 0 : {};
+
+		        } else if ( pos === 0 ) {
+			        cur = cur[ letter ] = { $: 0 };
+
+		        } else {
+			        cur = cur[ letter ];
+		        }
+	        }
         }
         return trie;
     },
-    optimizeTrie: function( cur ) {
-        var num = 0;
-        // Go through all the leaves in this branch
-        for ( var node in cur ) {
-            // If the leaf has children
-            if ( typeof cur[ node ] === "object" ) {
-                // Continue the optimization even deeper
-                var ret = this.optimizeTrie( cur[ node ] );
 
-                // The child leaf only had one child
-                // and was "compressed" as a result
-                if ( ret ) {
-                    // Thus remove the current leaf
-                    delete cur[ node ];
-                    
-                    // Remember the new name
-                    node = node + ret.name;
-                    
-                    // And replace it with the revised one
-                    cur[ node ] = ret.value;
-                }
-            }
+    optimizeTrie: function(cur) {
+	    var num = 0, last;
 
-            // Keep track of how many leaf nodes there are
-            num++;
-        }
+	    for ( var node in cur ) {
+		    if ( typeof cur[ node ] === "object" ) {
+			    var ret = this.optimizeTrie( cur[ node ] );
 
-        // If only one leaf is present, compress it
-        if ( num === 1 ) {
-            return { name: node, value: cur[ node ] };
-        }
+			    if ( ret ) {
+				    delete cur[ node ];
+				    cur[ node + ret.name ] = ret.value;
+				    node = node + ret.name;
+			    }
+		    }
+
+		    last = node;
+		    num++;
+	    }
+
+	    if ( num === 1 ) {
+		    return { name: last, value: cur[ last ] };
+	    }
         return cur;
     },
 
-    findTrieWord: function findTrieWord( word, cur ) {
+    // cant get this to work -- not sure what dict is supposed to be
+    findTrieWord: function(word, cur, dict) {
 	    cur = cur || dict;
 
 	    for ( var node in cur ) {
@@ -84,7 +77,7 @@ Atomate.trie = {
 				    return val === 0 || val.$ === 0;
 
 			    } else {
-				    return findTrieWord( word.slice( node.length ), val );
+				    return this.findTrieWord( word.slice( node.length ), val, dict );
 			    }
 		    }
 	    }
