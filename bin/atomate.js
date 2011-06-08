@@ -9,7 +9,22 @@ Atomate = {
         this.tracking.initialize(params);
         this.notesList = jQuery("#notes");
         this.addRedactedNotes(params.redactedNotes.slice(0, 100));
+
+        this.buildTrieForNotes(params.redactedNotes.slice(0, 100));
     },
+    buildTrieForNotes: function(notes){
+        notes.map(function(note) {
+                      if (note && note.contents.length > 0) {
+                          var words = note.contents.replace(/\n/g, "").split(" ");
+                          var trie = Atomate.trie.buildTrie(words);
+
+                          // doesnt seem to work :/
+                          note.trie = Atomate.trie.optimizeTrie(trie);
+                      }
+                      return note;    
+                  });  
+    },
+
     addRedactedNotes: function(notes) {
         var this_ = this;
         jQuery.fn.append.apply(this.notesList, notes.map(function(n){ return this_.getItemHtml(n); }));
