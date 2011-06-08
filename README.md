@@ -118,7 +118,7 @@ this best, but maybe a snooze button feature?
 - design a compelling demo
 - data syncing from home computer to android
 - basic android (web) app
-
+- location based reminders like what Atomate had (and now iOS5 has)
 
 ## LATER:
 - history view (poyozo)
