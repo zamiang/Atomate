@@ -27,7 +27,7 @@ You should not have to conform to your computer-- it should conform to you!
 ## Summary
 
 Atomate aims to serve 90% of your information needs for the day - no
-more calendar, todos list or bookmarks. Atomate contains all
+more fragmenting your information across your calendar, todo lists and bookmarks. Atomate contains all
 reference materials, todos, reminders and events in the same list-
 with one 'awesome bar' to search through and add items. The core
 utility is just having 1 place to view, edit or add to that
@@ -118,11 +118,12 @@ this best, but maybe a snooze button feature?
 - design a compelling demo
 - data syncing from home computer to android
 - basic android (web) app
-
+- location based reminders like what Atomate had (and now iOS5 has)
 
 ## LATER:
 - history view (poyozo)
 - more data sources
+- "PLEASE MAKE AN "AUTO-SCHEDULE MY WEEK FOR ME" - Moot
 
 ## Get updates
 - [Join our mailing list here](http://atomate.me)
