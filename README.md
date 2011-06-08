@@ -123,6 +123,7 @@ this best, but maybe a snooze button feature?
 ## LATER:
 - history view (poyozo)
 - more data sources
+- "PLEASE MAKE AN "AUTO-SCHEDULE MY WEEK FOR ME" - Moot
 
 ## Get updates
 - [Join our mailing list here](http://atomate.me)
