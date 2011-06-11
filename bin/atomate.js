@@ -20,7 +20,7 @@ Atomate = {
         searchDiv.keyup(function(evt){ 
                             var keycode = evt.which;
                             var val = searchDiv.val();
-
+                            
                             if (keycode == 39 || keycode == 37 || keycode == 190){ return; }
 
                             //  up
@@ -38,13 +38,26 @@ Atomate = {
                             if (val.length > 1) {
                                 // oops this doesnt work w/ spaces
                                 this_.notesList.html('');
-                                this_.addNotes(this_.searchNotes(val, notes, notes));
+
+                                this_.addNotes(this_.searchNotesSimple(val, notes, notes));
                             } else {
                                 this_.notesList.html('');
                                 this_.addNotes(notes);
                             }
                         });  
     },
+
+
+    searchNotesSimple: function(word, notes) {
+        var this_ = this;
+        return notes.filter(function(note){  
+                                if (note.contents.indexOf(word) > -1){
+                                    return true;
+                                }
+                                return false;
+                            });
+    },
+
 
     searchNotes: function(word, notes) {
         var this_ = this;

@@ -47,26 +47,8 @@
             <div id="main" role="main">
                 <input id="main_input" type="text"></input>
                 <ul id="notes"></ul>
-                <div class="stats">
-                    <div class="num_notes">
-                        <span class="num">0</span> notes
-                    </div>
-
-                    <div class="actions">
-                        <a id="tag_notes">
-                            Tag selected notes
-                        </a> &#8226;
-                        <a id="tag_notes">
-                            Delete selected notes
-                        </a>
-                    </div>
-                </div>
             </div>
         </div>
-
-        <ul id="instructions">
-            <li>Double-click to edit.</li>
-        </ul>
 
         <footer>
             <a href="/about.html">About</a> &#8226;
@@ -77,13 +59,8 @@
             <div id="fb-root"></div>
         </footer>
 
-        <!--
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
         <script src="http://connect.facebook.net/en_US/all.js#appId=213602652007737&amp;xfbml=1"></script>
-        -->
-
-        <script src="../lib/jquery.min.js"></script>
-        <script src="../lib/underscore.js"></script>
-        <script src="../lib/backbone.js"></script>
 
         <script src="js/test_data.js"></script>
         <script src="js/redacted_notes.js"></script>
@@ -123,40 +100,6 @@
                                                   });
                            });
         </script>
-
-
-    <!-- Templates -->
-
-    <script type="text/template" id="item-template">
-      <div class="todo <%= done ? 'done' : '' %>">
-        <div class="display">
-          <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
-          <div class="todo-content"></div>
-          <span class="todo-destroy"></span>
-        </div>
-        <div class="edit">
-          <input class="todo-input" type="text" value="" />
-        </div>
-      </div>
-    </script>
-
-    <script type="text/template" id="stats-template">
-      <% if (total) { %>
-        <span class="todo-count">
-          <span class="number"><%= remaining %></span>
-          <span class="word"><%= remaining == 1 ? 'item' : 'items' %></span> left.
-        </span>
-      <% } %>
-      <% if (done) { %>
-        <span class="todo-clear">
-          <a href="#">
-            Clear <span class="number-done"><%= done %></span>
-            completed <span class="word-done"><%= done == 1 ? 'item' : 'items' %></span>
-          </a>
-        </span>
-      <% } %>
-    </script>
-
         <script>
             var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]]; // Change UA-XXXXX-X to be your site's ID
             (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;

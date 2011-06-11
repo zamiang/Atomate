@@ -150,6 +150,8 @@ a:hover {
 
 p { margin-top:4px; }
 
+b { font-weight:bold; }
+
 h1 {
     color: #333;
     display: inline;
@@ -250,7 +252,54 @@ ul#tabs {
     margin:0px;
     width:494px;
     margin-top:15px;
+    position:relative;
 }
+
+ul#tabs .settings {
+    padding: 3px 6px 1px 6px;
+    vertical-align:bottom;
+    float:right;
+    margin-right:4px;
+}
+
+ul#tabs .settings .settings_img {
+    height: 16px;
+    width: 16px;
+    padding: 0px;
+    position: absolute;
+    top: 4px;
+    right: 6px;
+}
+
+ul#tabs .settings .settings_list {
+    display:none;
+
+    background: #F3F3F3;
+    border: 1px solid #8FAAD9;
+    font-size: 12px;
+    line-height: 142%;
+    padding: 0 14px 8px;
+    position: absolute;
+    right: -1px;
+    top: 23px;
+    width: 100px;
+    z-index: 10;
+    margin:0px;
+}
+
+ul#tabs .settings .settings_list li {
+    border:0px none;
+    background:#f3f3f3;
+    width:100%;
+    padding-left:0px;
+    padding-right:0px;
+    margin:0px;
+}
+
+ul#tabs .settings:hover .settings_list {
+    display:block;
+}
+
 
 #tabs li {
     display: inline-block;
@@ -265,13 +314,6 @@ ul#tabs {
     border: 1px solid #DDE5F3;
     border-bottom: 0px solid #8FAAD9;
     color:#666;
-}
-
-#tabs li.img_tab {
-    padding: 3px 6px 1px 6px;
-    vertical-align:bottom;
-    float:right;
-    margin-right:4px;
 }
 
 #tabs li.selected {
@@ -298,7 +340,7 @@ ul#tabs {
 #notes {
     margin:0px;
     width:491px;
-    height:376px;
+    height:540px;
     border:1px solid #ddd;
     border-top:0px solid #ddd;
     background:#fff;
@@ -394,3 +436,75 @@ input[type="submit"] {
     right:10px;
 }
 
+/*
+  settings
+  */
+
+#contents {
+    margin:2px;
+    background:#fff;
+    padding:20px;
+}
+
+#contents h1 {
+    font-size:22px;
+    display:block;
+}
+
+#contents .services {
+    margin:0px;
+    padding:0px;
+    margin-top:10px;
+    margin-bottom:20px;
+
+}
+
+#contents .services li {
+    display:inline-block;
+    height:80px;
+    width:80px;
+    border:1px solid #bbb;
+    padding:12px;
+    margin-left:0px;
+    margin-right:12px;
+    cursor:pointer;
+    text-align:center;
+    vertical-align:top;
+}
+
+#contents .services li:hover {
+    background:#f3f3f3;
+}
+
+#contents .form {
+    padding:0px;
+    margin:0px;
+    list-style:none;
+}
+
+#contents .form li {
+    padding:0px;
+    margin:0px;
+    list-style:none;
+    margin-bottom:12px;
+    margin-top:12px;
+
+}
+
+#contents .form label {
+    font-size:12px;
+}
+
+#contents .form input[type="text"] {
+    display:block;
+    width:180px;
+    padding:2px;
+    font-size:12px;
+}
+
+#contents li.form_spacer {
+    border-top:1px solid #ddd;
+
+    padding-bottom:2px;
+    margin-bottom:2px;
+}
