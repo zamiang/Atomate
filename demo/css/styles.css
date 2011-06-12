@@ -349,7 +349,7 @@ ul#tabs .settings:hover .settings_list {
     width: 8px;
     margin-top: -5px;
     vertical-align: middle;
-    margin-left: -6px;
+    margin-left: 0px;
     margin-right: 4px;
 }
 
@@ -374,7 +374,7 @@ ul#tabs .settings:hover .settings_list {
     display:inline-block;
 }
 
-#tabs li.tab_add:hover .remove {
+#tabs li.tab_plus:hover .remove {
     display:none;
 
 }

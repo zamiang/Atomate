@@ -43,7 +43,40 @@ Atomate = {
 
         this.buildTabs();
         this.setupSearch(jQuery('#main_input'), this.notes);
+        this.setupMouseEvents();
     },
+
+    setupMouseEvents: function(){
+        this.tabsList.find('li').live('click', 
+                                      function(item) {
+                                          var jObj = jQuery(this);
+                                          var type = jObj.attr('class'); //.('tab_', '');      
+                                          type = type.replace('tab_', '');
+                                          
+                                          Atomate.changeTab(type);
+                                          return false;
+                                      });                        
+    },
+    
+    changeTab: function(type){
+        if (type == "plus") {
+            this.showAddPopup();
+        } else if (type == 'settings') {
+            jQuery('#stats, #notes, #main_input').hide();
+            jQuery('#settings').show();
+        } else {
+            jQuery('#stats, #notes, #main_input').show();
+            jQuery('#settings').hide();
+
+            this.initNotesDisplay(type);            
+            this.tabsList.find('li').removeClass('selected');
+            this.tabsList.find('.tab_' + type).addClass('selected');        
+        }
+    },
+
+    showAddPopup: function(){
+       console.log('yooooo');
+    }, 
     
     buildTabs: function(tabs) {
         var this_ = this;
@@ -56,32 +89,33 @@ Atomate = {
                       name:'+',
                       type:'add'
                   });
-
+        
         jQuery.fn.append.apply(this.tabsList, tabs.map(function(tab){
-                                                             return this_.getTabHtml(tab);
-                                                         }));        
+                                                           return this_.getTabHtml(tab);
+                                                       }));        
         //todo make draggable
         if (locationHash) {
-            this.initNotesDisplay(locationHash);            
-            this.tabsList.find('li').removeClass('selected');
-            this.tabsList.find('.tab_' + locationHash).addClass('selected');
+            this.changeTab(locationHash);
         }        
     },
 
     initNotesDisplay: function(t) {
-        if (t == 'settings') {
-            jQuery('#stats, #notes, #main_input').hide();
-            jQuery('#settings').show();
-
-        }
     },
     
     getLocationHash: function(){
         return window.location.hash.replace('#', '');        
     },
+    
+    getTabClass: function(tab){
+        if (tab.name == "+") {
+            return 'plus'; 
+        }
+        return tab.name.toLowerCase();
+    },
 
     getTabHtml: function(tab) { 
-            return "<li class=\"tab_" + tab.name.toLowerCase()
+        var this_ = this;
+        return "<li class=\"tab_" + this_.getTabClass(tab)
             + (tab.default ? ' selected' : "")
             + "\">" 
             + "<a href=\"#" + tab.name.toLowerCase() + "\">" + tab.name + "</a>"
@@ -165,8 +199,4 @@ Atomate = {
         
 
     }
-
-
-
-
 };
