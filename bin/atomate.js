@@ -29,12 +29,12 @@ Atomate = {
                       name:'Contacts',
                       type:'native'
                   }, {
-                      name:'Foobar',
+                      name:'javascript',
                       type:'search',
-                      search:'foobar'
+                      search:'#javascript'
                   }],
     initialize: function(params) {
-        this.notes = this.buildTrieForNotes(params.redactedNotes.slice(0, 100));
+        this.notes = this.buildTrieForNotes(params.redactedNotes.slice(0, 1000));
 
         this.tracking.initialize(params);
         this.tabs = params.tabs || this.defaultTabs;
@@ -268,10 +268,40 @@ Atomate = {
         //this.notesList.html(notes.map(function(n){ return this_.getItemHtml(n); }).join(''));
     },
 
+    linkifyNote: function(text) {
+            /*
+        var tweet = text.replace(/[A-Za-z]+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&amp;\?\/.=]+/g, function(url) { 
+                                     var wrap = document.createElement('div');
+                                     var anch = document.createElement('a');
+                                     anch.href = url;
+                                     anch.target = "_blank";
+                                     anch.innerHTML = url;
+                                     wrap.appendChild(anch);
+                                     return wrap.innerHTML;
+                                 });
+             */
+        text = text.replace(
+                /((https?\:\/\/)|(www\.))(\S+)(\w{2,4})(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/gi,
+            function(url){
+                var full_url = url;
+                if (!full_url.match('^https?:\/\/')) {
+                    full_url = 'http://' + full_url;
+                }
+                return '<a href="' + full_url + '" target="_blank">' + url + '</a>';
+            });
+
+        text = text.replace(/(^|\s)@(\w+)/g, '$1<a href="http://www.twitter.com/$2" target="_blank">@$2</a>');
+        return text.replace(/(^|\s)#(\w+)/g, '$1<a href="http://search.twitter.com/search?q=%23$2" target="_blank">#$2</a>');
+    },
+
     getItemHtml: function(item) {
         return "<li class=\"" +  item.category.toLowerCase() + "\">"
-            + item.contents + "</li>";
-        
-
+            + "<div class=\"text\">"  + this.linkifyNote(item.contents) + "</div>"
+            + "<div class=\"context\">"
+            + "<span class=\"context_item\"><img src=\"../img/location.png\" />New York, NY</span>"
+            + "<span class=\"context_item\"><img src=\"../img/calendar.png\" />Tomorrow 5:30pm</span>"
+            + "</div>"
+            + "</li>";
+       
     }
 };

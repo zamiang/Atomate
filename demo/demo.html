@@ -34,6 +34,14 @@
             <h2>Your digital personal assistant</h2>
         </header>
         <div id="container">
+            <!--
+                <ul id="instructions">
+                    <img class="remove" src="../img/remove.png">
+                    <li>Double-click to edit.</li>
+                    <li>Search or enter to add notes</li>
+                </ul>
+                -->
+
             <ul id="tabs">
                 <div class="selected settings">
                     <div class="settings_img"><img src="../img/settings_16.png" /></div>
@@ -72,17 +80,14 @@
                         <li data-id="gcal">
                             <img src="../img/gcal.png" />
                             <b>Google Calendar</b>
-                            <!--<a href="https://www.google.com/calendar">view site</a>-->
                         </li>
                         <li data-id="gcontacts">
                             <img src="../img/gcontacts.png" />
                             <b>Google Contacts</b>
-                            <!--<a href="http://www.google.com/contacts">view site</a>-->
                         </li>
                         <li data-id="listit">
                             <img src="../img/listit.png" />
                             <b>List-it</b>
-                            <!--<a href="https://welist.it/">view site</a>-->
                         </li>
                     </ul>
                     <h2>Add Services</h2>
@@ -134,17 +139,11 @@
             </div>
         </div>
 
-        <ul id="instructions">
-            <li>Double-click to edit.</li>
-        </ul>
-
         <ul id="add_tab" class="popup form">
             <img class="remove" src="../img/remove.png">
             <h1>Add a tab</h1>
             <div class="form_container">
-                <label>
-                    Use an Atomate tab:
-                </label>
+                <label>Use an Atomate tab:</label>
 
                 <select>
                     <option val="none">none</option>
@@ -155,10 +154,7 @@
                 </select>
             </div>
             <div class="form_container">
-                <label>
-                    Save a search:
-                </label>
-
+                <label>Save a search:</label>
                 <input id="id_tab_search" type="text" />
             </div>
 
@@ -166,7 +162,6 @@
                 <input id="id_tab_add_submit" type="submit" value="Add a Tab" />
             </div>
         </ul>
-
 
         <footer>
             <a href="/about.html">About</a> &#8226;
@@ -180,7 +175,6 @@
         <!--
         <script src="http://connect.facebook.net/en_US/all.js#appId=213602652007737&amp;xfbml=1"></script>
         -->
-
         <script src="../lib/jquery.min.js"></script>
         <script src="../lib/underscore.js"></script>
         <script src="../lib/backbone.js"></script>
@@ -223,40 +217,6 @@
                                                   });
                            });
         </script>
-
-
-    <!-- Templates -->
-
-    <script type="text/template" id="item-template">
-      <div class="todo <%= done ? 'done' : '' %>">
-        <div class="display">
-          <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
-          <div class="todo-content"></div>
-          <span class="todo-destroy"></span>
-        </div>
-        <div class="edit">
-          <input class="todo-input" type="text" value="" />
-        </div>
-      </div>
-    </script>
-
-    <script type="text/template" id="stats-template">
-      <% if (total) { %>
-        <span class="todo-count">
-          <span class="number"><%= remaining %></span>
-          <span class="word"><%= remaining == 1 ? 'item' : 'items' %></span> left.
-        </span>
-      <% } %>
-      <% if (done) { %>
-        <span class="todo-clear">
-          <a href="#">
-            Clear <span class="number-done"><%= done %></span>
-            completed <span class="word-done"><%= done == 1 ? 'item' : 'items' %></span>
-          </a>
-        </span>
-      <% } %>
-    </script>
-
         <script>
             var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]]; // Change UA-XXXXX-X to be your site's ID
             (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
