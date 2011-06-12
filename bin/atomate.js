@@ -46,7 +46,7 @@ Atomate = {
         this.buildTabs(this.tabs);
         this.setupSearch(this.searchDiv, this.notes);
         this.setupMouseEvents();
-        this.updateNotesDisplay(this.tabs[0].name.toLowerCase());
+        this.updateNotesDisplay(this.tabs[0].name.toLowerCase(), this.tabs[0].type);
     },
 
     setupMouseEvents: function(){
@@ -54,10 +54,10 @@ Atomate = {
         this.tabsList.find('li').live('click', 
                                       function(item) {
                                           var jObj = jQuery(this);
-                                          var type = jObj.attr('class');
-                                          type = type.replace('tab_', '').replace('selected', '').trim();
+                                          var name = jObj.attr('data-name').toLowerCase();
+                                          var type = jObj.attr('data-type').toLowerCase();
                                           
-                                          Atomate.changeTab(type);
+                                          Atomate.changeTab(name, type);
                                           return false;
                                       });                        
 
@@ -85,7 +85,7 @@ Atomate = {
                                       function(evt) {
                                           var search = jQuery(this).attr('data-id');
                                           this_.searchString = search;
-                                          this_.updateNotesDisplay(undefined, true);
+                                          this_.updateNotesDisplay(undefined, undefined, true);
                                       });
 
         this.notesList.find('li .remove_custom_search').live('click', 
@@ -110,7 +110,7 @@ Atomate = {
 
     },
     
-    changeTab: function(type){
+    changeTab: function(name, type){
         if (type == "plus") {
             this.showAddPopup();
         } else if (type == 'settings') {
@@ -121,9 +121,9 @@ Atomate = {
             jQuery('#stats, #notes, #main_input').show();
             jQuery('#settings').hide();
 
-            this.updateNotesDisplay(type);            
+            this.updateNotesDisplay(name, type);            
             this.tabsList.find('li').removeClass('selected');
-            this.tabsList.find('.tab_' + type).addClass('selected');        
+            this.tabsList.find('.tab_' + name).addClass('selected');        
         }
     },
 
@@ -145,21 +145,27 @@ Atomate = {
                                                        }));        
         //todo make draggable
         if (locationHash) {
-            this.changeTab(locationHash);
+            this.changeTab(undefined, locationHash);
         }        
     },
 
-    updateNotesDisplay: function(type, hashAtSearch) {
+    updateNotesDisplay: function(name, type, hashAtSearch) {
+        if (type == this.type){ return; }
+
         type = type || this.type;
+        name = name || this.name;
+
         this.type = type;
+        this.name = name;
+
         var notes = this.notes;
 
-        if (this.searchString) {
-            notes = this.getNotesForType(type);                
+        if (this.searchString) {            
+            notes = this.getNotesForType(name, type);                
             notes = this.searchNotesSimple(this.searchString, notes, notes);
             
         } else {
-            notes = this.getNotesForType(type); 
+            notes = this.getNotesForType(name. type); 
         }
 
         this.notesList.html('');
@@ -188,12 +194,25 @@ Atomate = {
     },
     
     updateNotesCount: function(notes){
+        if (!notes) {
+            return this.notesCount.text(0);
+        }
         var num = notes.length;
         this.notesCount.text(num);
     },
 
-    getNotesForType: function(type) {
-        return this.notes;
+    getNotesForType: function(name, type) {
+        type = type || this.type;
+        name = name || this.name;
+
+        if (type == 'native'){
+            // todo
+            return this.notes;            
+        } else if (type == "search") {
+
+            var search = this.tabs.filter(function(tab){ return tab.name == name; })[0].search;
+            return this.searchNotesSimple(search, this.notes, this.notes);
+        }
     },
 
     getLocationHash: function(){
@@ -209,7 +228,7 @@ Atomate = {
 
     getTabHtml: function(tab) { 
         var this_ = this;
-        return "<li class=\"tab_" + this_.getTabClass(tab)
+        return "<li data-type=\"" + tab.type + "\" data-name=\"" + tab.name + "\" class=\"tab_" + this_.getTabClass(tab)
             + (tab.default ? ' selected' : "")
             + "\">" 
             + "<a href=\"#" + tab.name.toLowerCase() + "\">" + tab.name + "</a>"
@@ -285,6 +304,7 @@ Atomate = {
         jQuery("#" + id).show();    
         jQuery('#container, header').css('opacity', 0.2);
     },
+
     hidePopup: function() {
         jQuery('.popup').hide();    
         
@@ -294,6 +314,9 @@ Atomate = {
 
     addNotes: function(notes) {
         var this_ = this;
+        if (!notes) {
+            return;
+        }
         jQuery.fn.append.apply(this.notesList, notes.map(function(n){ return this_.getItemHtml(n); }));
         //this.notesList.html(notes.map(function(n){ return this_.getItemHtml(n); }).join(''));
     },
@@ -309,8 +332,8 @@ Atomate = {
                 return '<a href="' + full_url + '" target="_blank">' + url + '</a>';
             });
 
-        text = text.replace(/(^|\s)@(\w+)/g, '$1<a class=\"at_link\" data-id=\"$2\">@$2</a>');
-        return text.replace(/(^|\s)#(\w+)/g, '$1<a class=\"hash_link\" data-id=\"$2\">#$2</a>');
+        text = text.replace(/(^|\s)@(\w+)/g, '$1<a class=\"at_link\" data-id=\"@$2\">@$2</a>');
+        return text.replace(/(^|\s)#(\w+)/g, '$1<a class=\"hash_link\" data-id=\"#$2\">#$2</a>');
     },
 
     getItemHtml: function(item) {
