@@ -130,6 +130,36 @@
             <li>Double-click to edit.</li>
         </ul>
 
+        <ul id="add_tab" class="popup form">
+            <img class="remove" src="../img/remove.png">
+            <h1>Add a tab</h1>
+            <div class="form_container">
+                <label>
+                    Use an Atomate tab:
+                </label>
+
+                <select>
+                    <option val="none">none</option>
+                    <option val="now">Now</option>
+                    <option val="notes">Notes</option>
+                    <option val="todo">Todo</option>
+                    <option val="events">Events</option>
+                </select>
+            </div>
+            <div class="form_container">
+                <label>
+                    Save a search:
+                </label>
+
+                <input id="id_tab_search" type="text" />
+            </div>
+
+            <div class="form_spacer">
+                <input id="id_tab_add_submit" type="submit" value="Add a Tab" />
+            </div>
+        </ul>
+
+
         <footer>
             <a href="/about.html">About</a> &#8226;
             <a href="/team.html">Team</a> &#8226;

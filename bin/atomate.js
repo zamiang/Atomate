@@ -4,8 +4,8 @@
  * needs to be loaded 1st and initialized on document ready
  * 
  * tabs are either a special native type
- * 'native' == something more than a simple search query
- * eventually it would be great to expose some way of adding these
+ * 'native' == something more than a simple search query that we define (eventually it would be great to expose some way of adding these)
+ * 'search' == a string that is searched for
  * 
  * something can be 'native' + have a search query
  * 
@@ -39,43 +39,51 @@ Atomate = {
         this.tracking.initialize(params);
         this.notesList = jQuery("#notes");
         this.tabsList = jQuery('#tabs');
-        this.addNotes(this.notes);
+        this.searchDiv = jQuery('#main_input');
 
         this.buildTabs();
-        this.setupSearch(jQuery('#main_input'), this.notes);
+        this.setupSearch(this.searchDiv, this.notes);
         this.setupMouseEvents();
     },
 
     setupMouseEvents: function(){
+        var this_ = this;
         this.tabsList.find('li').live('click', 
                                       function(item) {
                                           var jObj = jQuery(this);
-                                          var type = jObj.attr('class'); //.('tab_', '');      
+                                          var type = jObj.attr('class');
                                           type = type.replace('tab_', '');
                                           
                                           Atomate.changeTab(type);
                                           return false;
                                       });                        
+
+        jQuery('.popup .remove').live('click', 
+                              function(item) {
+                                  this_.hidePopup();
+                              });                        
+
     },
     
     changeTab: function(type){
         if (type == "plus") {
             this.showAddPopup();
         } else if (type == 'settings') {
+            this.tabsList.find('li').removeClass('selected');
             jQuery('#stats, #notes, #main_input').hide();
             jQuery('#settings').show();
         } else {
             jQuery('#stats, #notes, #main_input').show();
             jQuery('#settings').hide();
 
-            this.initNotesDisplay(type);            
+            this.updateNotesDisplay(type);            
             this.tabsList.find('li').removeClass('selected');
             this.tabsList.find('.tab_' + type).addClass('selected');        
         }
     },
 
-    showAddPopup: function(){
-       console.log('yooooo');
+    showAddPopup: function() {
+        this.showPopup('add_tab');
     }, 
     
     buildTabs: function(tabs) {
@@ -99,9 +107,28 @@ Atomate = {
         }        
     },
 
-    initNotesDisplay: function(t) {
+    updateNotesDisplay: function(type) {
+        var notes = this.notes;
+        var searchString = this.searchDiv.val();
+
+        if (searchString && firstTabSelected) {
+            notes = this.searchNotesSimple(searchString, notes, notes);
+                                 
+        } else if (searchString) {
+            notes = this.getNotesForType(type);                
+            notes = this.searchNotesSimple(searchString, notes, notes);
+            
+        } else {
+            notes = this.getNotesForType(type); 
+        }
+
+        this.addNotes(notes);
     },
     
+    getNotesForType: function(type) {
+        return this.notes;
+    },
+
     getLocationHash: function(){
         return window.location.hash.replace('#', '');        
     },
@@ -186,6 +213,17 @@ Atomate = {
                              return note;    
                          });  
     },
+
+    showPopup: function(id) {
+        jQuery("#" + id).show();    
+        jQuery('#container, header').css('opacity', 0.2);
+    },
+    hidePopup: function() {
+        jQuery('.popup').hide();    
+        
+        jQuery('#container, header').css('opacity', 1);
+    },
+
 
     addNotes: function(notes) {
         var this_ = this;

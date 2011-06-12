@@ -296,6 +296,12 @@ ul#tabs .settings .settings_list li {
     padding-left:0px;
     padding-right:0px;
     margin:0px;
+
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 ul#tabs .settings .settings_list li a {
@@ -538,7 +544,7 @@ input[type="submit"] {
     list-style:none;
 }
 
-#settings .form li {
+#settings .form li, .form .form_container {
     padding:0px;
     margin:0px;
     list-style:none;
@@ -547,20 +553,44 @@ input[type="submit"] {
 
 }
 
-#settings .form label {
+.form label, .form label {
     font-size:12px;
 }
 
-#settings .form input[type="text"] {
+.form input[type="text"] {
     display:block;
     width:180px;
     padding:2px;
     font-size:12px;
 }
 
-#settings li.form_spacer {
+.form .form_spacer {
     border-top:1px solid #ddd;
 
     padding-bottom:2px;
     margin-bottom:2px;
+}
+
+/*
+  popup
+  */
+.popup {
+    position:absolute;
+    top:120px;
+    background:#f3f3f3;
+    padding:20px;
+    border: 5px solid #BBCEE9;
+    left:36%;
+    display:none;
+}
+
+.popup .remove {
+    position:absolute;
+    right:20px;
+    top:20px;
+    cursor:pointer;
+}
+
+.popup .remove:hover {
+    opacity:0.6;
 }
