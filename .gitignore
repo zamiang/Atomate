@@ -1,0 +1,35 @@
+IGNORE
+
+#Ignore patches and any original files created by patch command
+*.diff
+*.patch
+*.orig
+
+#Ignore hidden files from Dolphin window manager
+.directory
+
+#Ignore all emacs crap
+*#
+.#*
+
+# ignore editor backup files
+*~
+*.swp
+*.swo
+*.swn
+*.swm
+
+# mac os x finder crap
+**/.DS_STORE
+.DS_STORE
+**/.DS_Store
+.DS_Store
+
+# exuberant (!) ctags
+tags
+
+# araxis diff files
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
