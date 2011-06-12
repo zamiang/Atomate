@@ -705,11 +705,11 @@ Atomate.util = {
 	    //             400) ; // time between successive elements
 	    var r = [];
 	    var remain = lst.concat();
-	    timer_manager = timer_manager === undefined ? window : timer_manager;
+	    //timer_manager = timer_manager === undefined ? window : timer_manager;
 	    var alarm = undefined;
 	    var killalarm = function() {
 	        if (alarm) {
-		        timer_manager.clearInterval(alarm);
+		        clearInterval(alarm);
 		        alarm = undefined;
 	        }
 	    };
@@ -722,7 +722,7 @@ Atomate.util = {
 		        log(e);
 	        }
 	    };
-	    alarm = timer_manager.setInterval(run, interval !== undefined ? interval : 100);
+	    alarm = setInterval(run, interval !== undefined ? interval : 100);
 	    return {
 	        running: function() { return alarm == undefined; },
 	        stop:killalarm,
