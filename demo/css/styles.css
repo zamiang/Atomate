@@ -665,10 +665,16 @@ input[type="submit"] {
     opacity:0.6;
 }
 
+#progress {
+    margin: 20px;
+    margin-left: 40px;
+}
+
 #progress li {
     padding: 6px;
     border-bottom: 1px solid #DDD;
     padding-left: 0px;
+    font-size: 11px;
 }
 
 #progress li .remove {
@@ -679,6 +685,7 @@ input[type="submit"] {
     vertical-align: middle;
     float:right;
     background:#f3f3f3;
+    cursor:pointer;
 }
 
 #progress li .remove:hover {

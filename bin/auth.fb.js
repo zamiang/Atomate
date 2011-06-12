@@ -18,8 +18,7 @@ window.fbAsyncInit = function() {
 	            status: true, 
 	            cookie: true, 
 	            xfbml: true, 
-	            scope:"user_events,user_photos,user_status,friends_status,user_birthday,friends_birthday,user_relationships,friends_relationships,read_stream"});
-    
+	            scope:"user_events,read_mailbox,read_friendlists,user_events"});
     FB.login(function(response) {
 		         if (response.session) {
 		             if (response.perms) {
@@ -32,10 +31,12 @@ window.fbAsyncInit = function() {
 					                    var toSave = response.data.length;
 					                    var saved = 0;
 					                    
+									    parent.logProgress('saving ' + toSave + 'people\'s Facebook profile');
+
 					                    parent.interval_map_lite(response.data, function(entry) { 
 							                             FB.api('/' + entry.id, function(response) {
 								                                    if (response !== undefined){
-									                                    parent.logProgress('saving ' + response.name + '\'s Facebook profile');
+									                                    //parent.logProgress('saving ' + response.name + '\'s Facebook profile');
 									                                    Atomate.auth.Facebook.saveFriend(response); 
 								                                    }
 								                                    saved++;
@@ -58,14 +59,15 @@ window.fbAsyncInit = function() {
 					                    parent.interval_map_lite(response.data, function(entry) { Atomate.auth.Facebook.saveMessage(entry); });
 				                    }
 				                });
-			             
+
+                         /*			             
 			             FB.api('/me/feed', function(response) {
 				                    if (response.data !== undefined){
 					                    parent.logProgress('saving ' + response.data.length + ' facebook feed items');					                    
 					                    parent.interval_map_lite(response.data, function(entry) { Atomate.auth.Facebook.saveFeedEntry(entry); });
 				                    }
 				                });
-			             
+			             */
                          /*
 			             FB.api('/me/albums', function(response) {
                                     // not working 
@@ -89,7 +91,8 @@ window.fbAsyncInit = function() {
 		         } else {
 		             console.log("not logged in ");		
 		         }
-	         }, {perms:'user_events,read_mailbox,read_stream,offline_access,read_friendlists,user_events,user_status,friends_status, user_birthday,friends_birthday,user_photos'});
+                 //user_photos,user_birthday,friends_birthday,user_relationships,friends_relationships, user_status,friends_status,read_stream,
+	         }, {perms:'user_events,read_mailbox,read_friendlists,user_events'});
 };
 
 Atomate.auth.Facebook =  {
@@ -129,7 +132,6 @@ Atomate.auth.Facebook =  {
 		                     'status type': entry.type,
 			                 'created time': this.parent.makeSpecificDateTime(start)					  
 		                 });
-
     },
 
 
