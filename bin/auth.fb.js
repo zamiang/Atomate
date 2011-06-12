@@ -23,7 +23,7 @@ window.fbAsyncInit = function() {
 		         if (response.session) {
 		             if (response.perms) {
 
-			             parent.logProgress('logged in and about to start saving from Facebook');
+			             parent.logProgress('logged in and about to start saving Facebook data');
 			             console.log("logged in perms", response.perms);
 
 			             FB.api('/me/friends', function(response) {

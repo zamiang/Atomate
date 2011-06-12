@@ -677,6 +677,10 @@ input[type="submit"] {
     font-size: 11px;
 }
 
+#progress li:last-child {
+    border-bottom: 0px solid #DDD;
+}
+
 #progress li .remove {
     padding: 2px;
     border: 1px solid transparent;

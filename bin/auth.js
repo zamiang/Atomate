@@ -57,8 +57,6 @@ Atomate.auth = {
     },
 
     saveItem: function(item) {
-        console.log('saving');
-        console.log(item);        
         this.data.push(item);
     }  
 };
