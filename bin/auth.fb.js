@@ -23,7 +23,8 @@ window.fbAsyncInit = function() {
     FB.login(function(response) {
 		         if (response.session) {
 		             if (response.perms) {
-			             div.append('<li>logged in and about to start saving from Facebook</li>');
+
+			             parent.logProgress('<li>logged in and about to start saving from Facebook</li>');
 			             console.log("logged in perms", response.perms);
 
 			             FB.api('/me/friends', function(response) {
@@ -34,7 +35,7 @@ window.fbAsyncInit = function() {
 					                    interval_map(response.data, function(entry) { 
 							                             FB.api('/' + entry.id, function(response) {
 								                                    if (response !== undefined){
-									                                    div.append('<li>saving ' + response.name + '\'s facebook profile</li>');
+									                                    parent.logProgress('<li>saving ' + response.name + '\'s facebook profile</li>');
 									                                    saveFriend(response); 
 								                                    }
 								                                    saved++;
@@ -45,7 +46,7 @@ window.fbAsyncInit = function() {
 			             FB.api('/me/events', function(response) {
 				                    if (response.data !== undefined){
 					                    try {
-					                        div.append('<li>saving ' + response.data.length + ' facebook events</li>');
+					                        parent.logProgress('<li>saving ' + response.data.length + ' facebook events</li>');
 
 					                        interval_map(response.data, function(entry) { saveEvent(entry); });
 					                    } catch(x) { console.log(x); }
@@ -54,7 +55,7 @@ window.fbAsyncInit = function() {
 			             
 			             FB.api('/me/inbox', function(response) {
 				                    if (response.data !== undefined){
-					                    div.append('<li>saving ' + response.data.length + ' facebook messages</li>');
+					                    parent.logProgress('<li>saving ' + response.data.length + ' facebook messages</li>');
 					                    
 					                    interval_map(response.data, function(entry) { saveMessage(entry); });
 				                    }
@@ -62,7 +63,7 @@ window.fbAsyncInit = function() {
 			             
 			             FB.api('/me/feed', function(response) {
 				                    if (response.data !== undefined){
-					                    div.append('<li>saving ' + response.data.length + ' facebook feed items</li>');
+					                    parent.logProgress('<li>saving ' + response.data.length + ' facebook feed items</li>');
 					                    
 					                    interval_map(response.data, function(entry) { saveFeedEntry(entry); });
 				                    }
@@ -74,7 +75,7 @@ window.fbAsyncInit = function() {
 				                                          FB.api('/' + entry.id, function(response) {
 				                                                     if (response !== undefined){
 			                                                             console.log(response);
-				                                                         div.append('<li>saving ' + response.data.length + ' facebook photos from album ' + entry.id + '</li>');
+				                                                         parent.logProgress('<li>saving ' + response.data.length + ' facebook photos from album ' + entry.id + '</li>');
 				                                                         //interval_map(response.data, function(entry) { savePhoto(entry); });
 				                                                     }
 				                                                 });
@@ -82,7 +83,7 @@ window.fbAsyncInit = function() {
 				                });
 		             } else {
 			             // user is logged in, but did not grant any permissions
-			             div.append('<li>you did not grant permission for the Feeder</li>');
+			             parent.logProgress('<li>you did not grant permission for the Feeder</li>');
 		             }
 		         } else {
 		             console.log("not logged in ");		
