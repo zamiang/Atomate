@@ -309,6 +309,12 @@ ul#tabs .settings .settings_list li a {
     margin-top:2px;
     margin-bottom:2px;
     padding:0px;
+
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 ul#tabs .settings:hover .settings_img {
@@ -431,12 +437,15 @@ ul#tabs .settings:hover .settings_list {
     word-wrap: break-word;
 }
 
+#notes li.selected {
+    background:lightyellow;
+}
+
 #notes li:hover {
     cursor:pointer;
     background: -webkit-linear-gradient(rgba(234, 238, 243, 0.2), #EAEEF3);
 
 }
-
 
 input[type="text"] {
     padding-left: 8px;
@@ -569,6 +578,34 @@ input[type="submit"] {
 
     padding-bottom:2px;
     margin-bottom:2px;
+}
+
+/*
+  stats at the bottom of the list
+  */
+
+#stats  {
+    padding:6px;
+    color:#888;
+}
+
+#stats .num_notes {
+    display:inline-block;
+}
+
+#stats .num_notes .num {
+    font-weight:bold;
+    color:#333;
+}
+
+#stats .actions {
+    display:inline-block;
+    float:right;
+}
+
+#stats .actions a {
+    text-decoration:underline;
+    color:#333;
 }
 
 /*

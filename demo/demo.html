@@ -55,17 +55,13 @@
                 <input id="main_input" type="text"></input>
                 <ul id="notes"></ul>
                 <div id="stats">
-                    <div class="num_notes">
-                        <span class="num">0</span> notes
+                    <div class="actions">
+                        <a id="tag_notes">Tag <span class="num">0</span> selected</a> &#8226;
+                        <a id="delete_notes">Delete <span class="num">0</span> selected</a>
                     </div>
 
-                    <div class="actions">
-                        <a id="tag_notes">
-                            Tag selected notes
-                        </a> &#8226;
-                        <a id="tag_notes">
-                            Delete selected notes
-                        </a>
+                    <div class="num_notes">
+                        <span class="num">0</span> notes
                     </div>
                 </div>
 
@@ -109,6 +105,18 @@
                         <li class="form_container">
                             <label><b>Password</b></label>
                             <input id="id_old_password" type="text" />
+                        </li>
+                        <li class="form_container">
+                            <label><b>Font Size</b></label><br />
+                            <select>
+                                <option val="8">8</option>
+                                <option val="10">10</option>
+                                <option val="12" selected>12</option>
+                                <option val="14">14</option>
+                                <option val="16">16</option>
+                                <option val="18">18</option>
+                                <option val="events">Events</option>
+                            </select>
                         </li>
                         <li class="form_container">
                             <input id="id_notifications" type="checkbox" checked />

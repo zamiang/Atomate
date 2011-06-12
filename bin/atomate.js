@@ -37,13 +37,16 @@ Atomate = {
         this.notes = this.buildTrieForNotes(params.redactedNotes.slice(0, 100));
 
         this.tracking.initialize(params);
+        this.tabs = params.tabs || this.defaultTabs;
         this.notesList = jQuery("#notes");
         this.tabsList = jQuery('#tabs');
         this.searchDiv = jQuery('#main_input');
+        this.notesCount = jQuery('#stats .num_notes .num');
 
-        this.buildTabs();
+        this.buildTabs(this.tabs);
         this.setupSearch(this.searchDiv, this.notes);
         this.setupMouseEvents();
+        this.updateNotesDisplay(this.tabs[0].name.toLowerCase());
     },
 
     setupMouseEvents: function(){
@@ -52,11 +55,39 @@ Atomate = {
                                       function(item) {
                                           var jObj = jQuery(this);
                                           var type = jObj.attr('class');
-                                          type = type.replace('tab_', '');
+                                          type = type.replace('tab_', '').replace('selected', '').trim();
                                           
                                           Atomate.changeTab(type);
                                           return false;
                                       });                        
+
+        this.tabsList.find('li .remove').live('click', 
+                                      function(evt) {
+                                          evt.stopPropagation();
+                                          var jObj = jQuery(this).parent();
+                                          var type = jObj.attr('class');
+                                          type = type.replace('tab_', '');
+
+                                          jObj.hide();
+                                          // todo - SAVE that the user removed this
+                                      });                        
+
+        this.notesList.find('li').live('click', 
+                                      function(evt) {
+                                          var jObj = jQuery(this);
+                                          jObj.toggleClass('selected');
+                                          
+                                          this_.updateSelectedCount(this_.notesList.find('.selected').length);
+                                      });
+
+        this.notesList.find('li').live('dblclick', 
+                                      function(evt) {
+                                          var jObj = jQuery(this);
+                                          this_.makeNoteEditable(jObj);
+                                      });                        
+
+
+
 
         jQuery('.popup .remove').live('click', 
                               function(item) {
@@ -89,9 +120,6 @@ Atomate = {
     buildTabs: function(tabs) {
         var this_ = this;
         var locationHash = this.getLocationHash();
-        if (!tabs) {
-            tabs = this.defaultTabs;
-        }         
 
         tabs.push({
                       name:'+',
@@ -123,8 +151,18 @@ Atomate = {
         }
 
         this.addNotes(notes);
+        this.updateNotesCount(notes);
+    },
+
+    updateSelectedCount: function(num){
+      jQuery('#stats .actions .num').text(num);  
     },
     
+    updateNotesCount: function(notes){
+        var num = notes.length;
+        this.notesCount.text(num);
+    },
+
     getNotesForType: function(type) {
         return this.notes;
     },
@@ -147,8 +185,7 @@ Atomate = {
             + "\">" 
             + "<a href=\"#" + tab.name.toLowerCase() + "\">" + tab.name + "</a>"
             + "<img class=\"remove\" src=\"../img/remove.png\" />"
-            + "</li>";
-        
+            + "</li>";        
     },
     
     setupSearch: function(searchDiv, notes) {
