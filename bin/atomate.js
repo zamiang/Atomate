@@ -50,6 +50,7 @@ Atomate = {
         this.setupSearch(this.searchDiv, this.notes);
         this.setupMouseEvents();
         this.updateNotesDisplay(startingTab.name.toLowerCase(), startingTab.type);
+        this.auth.initialize();
     },
 
     setupMouseEvents: function(){

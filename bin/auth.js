@@ -18,7 +18,7 @@ Atomate.auth = {
         // todo
         return {
             id: 'self',
-            name: me
+            name: 'me'
         };
     },
 
@@ -39,10 +39,17 @@ Atomate.auth = {
 	makeSpecificDate: function(d){ return JV3.CMS.entity_store.get_or_create({id:"specificdate-"+d.toString(),type:"schemas.SpecificDate",val:d.valueOf()}); },
     
     logProgress: function(text){
+        if (!this.progressDiv) {
+            this.progressDiv = jQuery('#progress');
+        }
         this.progressDiv.append("<li><span>" + text + "</span><img src=\"../img/remove.png\" class=\"remove\" />");        
     },
 
     logError: function(text) {
+        if (!this.progressDiv) {
+            this.progressDiv = jQuery('#progress');
+        }
+
         console.log(text);
         this.progressDiv.append("<li><span>ERROR: " + text + "</span><img src=\"../img/remove.png\" class=\"remove\" />");        
     },
