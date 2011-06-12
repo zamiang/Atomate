@@ -35,7 +35,7 @@ window.fbAsyncInit = function() {
 					                    parent.interval_map_lite(response.data, function(entry) { 
 							                             FB.api('/' + entry.id, function(response) {
 								                                    if (response !== undefined){
-									                                    parent.logProgress('<li>saving ' + response.name + '\'s facebook profile</li>');
+									                                    parent.logProgress('saving ' + response.name + '\'s Facebook profile');
 									                                    Atomate.auth.Facebook.saveFriend(response); 
 								                                    }
 								                                    saved++;

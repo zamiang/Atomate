@@ -531,7 +531,7 @@ Atomate.util = {
     },
     objmap:function(fnkey,fnval,obj) {
 	    var ret = {};
-	    var identity = function(x) { return x; }
+	    var identity = function(x) { return x; };
 	    if (fnkey === undefined) { fnkey = identity; }
 	    if (fnval === undefined) { fnval = identity; }
 	    this.keys(obj).map(function(jkey) {
@@ -719,7 +719,7 @@ Atomate.util = {
 	        try {
 		        r.push(fn(car));
 	        } catch(e) {
-		        log(e);
+		        console.log(e);
 	        }
 	    };
 	    alarm = setInterval(run, interval !== undefined ? interval : 100);
