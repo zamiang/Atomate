@@ -35,8 +35,8 @@ Atomate.auth = {
 		// est_max_time = est_max_num_items / interval; // 600;        
 		return this.parent.util.interval_map(list, fn, cont !== undefined ? cont : function(){ }, function(x) { this_.parent.log(x); }, 600, this.parent);
 	},	
-	makeSpecificDateTime: function(d){ return JV3.CMS.entity_store.get_or_create({id:"specificdatetime-"+d.toString(),type:"schemas.SpecificDateTime",val:d.valueOf()}); },
-	makeSpecificDate: function(d){ return JV3.CMS.entity_store.get_or_create({id:"specificdate-"+d.toString(),type:"schemas.SpecificDate",val:d.valueOf()}); },
+	makeSpecificDateTime: function(d){ return {id:"specificdatetime-"+d.toString(),type:"schemas.SpecificDateTime",val:d.valueOf()}; },
+	makeSpecificDate: function(d){ return {id:"specificdate-"+d.toString(),type:"schemas.SpecificDate",val:d.valueOf()}; },
     
     logProgress: function(text){
         if (!this.progressDiv) {
