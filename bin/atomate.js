@@ -43,10 +43,13 @@ Atomate = {
         this.searchDiv = jQuery('#main_input');
         this.notesCount = jQuery('#stats .num_notes .num');
 
-        this.buildTabs(this.tabs);
+        var startingTabName = this.getLocationHash();
+        var startingTab = startingTabName ? this.getTabForTabName(startingTabName) : this.tabs[0]; 
+
+        this.buildTabs(this.tabs, startingTab);
         this.setupSearch(this.searchDiv, this.notes);
         this.setupMouseEvents();
-        this.updateNotesDisplay(this.tabs[0].name.toLowerCase(), this.tabs[0].type);
+        this.updateNotesDisplay(startingTab.name.toLowerCase(), startingTab.type);
     },
 
     setupMouseEvents: function(){
@@ -111,7 +114,7 @@ Atomate = {
     },
     
     changeTab: function(name, type){
-        if (type == "plus") {
+        if (type == "add") {
             this.showAddPopup();
         } else if (type == 'settings') {
             this.tabsList.find('li').removeClass('selected');
@@ -131,9 +134,8 @@ Atomate = {
         this.showPopup('add_tab');
     }, 
     
-    buildTabs: function(tabs) {
+    buildTabs: function(tabs, startingTab) {
         var this_ = this;
-        var locationHash = this.getLocationHash();
 
         tabs.push({
                       name:'+',
@@ -141,12 +143,10 @@ Atomate = {
                   });
         
         jQuery.fn.append.apply(this.tabsList, tabs.map(function(tab){
-                                                           return this_.getTabHtml(tab);
+                                                           return this_.getTabHtml(tab, startingTab);
                                                        }));        
         //todo make draggable
-        if (locationHash) {
-            this.changeTab(undefined, locationHash);
-        }        
+        this.changeTab(startingTab.name, startingTab.type);
     },
 
     updateNotesDisplay: function(name, type, hashAtSearch) {
@@ -165,7 +165,7 @@ Atomate = {
             notes = this.searchNotesSimple(this.searchString, notes, notes);
             
         } else {
-            notes = this.getNotesForType(name. type); 
+            notes = this.getNotesForType(name, type); 
         }
 
         this.notesList.html('');
@@ -210,26 +210,30 @@ Atomate = {
             return this.notes;            
         } else if (type == "search") {
 
-            var search = this.tabs.filter(function(tab){ return tab.name == name; })[0].search;
+            var search = this.getTabForTabName(name).search;
             return this.searchNotesSimple(search, this.notes, this.notes);
         }
+    },
+
+    getTabForTabName:function(name){
+        return this.tabs.filter(function(tab){ return tab.name.toLowerCase() == name.toLowerCase(); })[0];
     },
 
     getLocationHash: function(){
         return window.location.hash.replace('#', '');        
     },
     
-    getTabClass: function(tab){
+    getTabName: function(tab) {
         if (tab.name == "+") {
             return 'plus'; 
         }
         return tab.name.toLowerCase();
     },
 
-    getTabHtml: function(tab) { 
-        var this_ = this;
-        return "<li data-type=\"" + tab.type + "\" data-name=\"" + tab.name + "\" class=\"tab_" + this_.getTabClass(tab)
-            + (tab.default ? ' selected' : "")
+    getTabHtml: function(tab, startingTab) { 
+        return "<li data-type=\"" + tab.type + "\""
+            + " data-name=\"" + this.getTabName(tab) + "\" class=\"tab_" + this.getTabName(tab)
+            + (startingTab.name.toLowerCase() == tab.name.toLowerCase() ? ' selected' : "")
             + "\">" 
             + "<a href=\"#" + tab.name.toLowerCase() + "\">" + tab.name + "</a>"
             + "<img class=\"remove\" src=\"../img/remove.png\" />"

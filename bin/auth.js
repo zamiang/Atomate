@@ -8,12 +8,18 @@ Atomate.auth = {
     parent:Atomate,
     initialize: function(params) {
         this.progressDiv = jQuery('#progress');
-        this.me = parent.getMe();
-
-        this.displayServices();
-        this.updateFromServices();
+        this.me = this.getMe();
         
-
+        this.displayServices();
+        //this.updateFromServices();
+    },
+    
+    getMe: function() {
+        // todo
+        return {
+            id: 'self',
+            name: me
+        };
     },
 
     displayServices: function() {
@@ -21,7 +27,6 @@ Atomate.auth = {
 
     },
   
-
 
     interval_map_lite: function(list, fn, cont) {
         var this_ = this;
