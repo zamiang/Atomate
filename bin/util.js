@@ -705,7 +705,7 @@ Atomate.util = {
 	    //             400) ; // time between successive elements
 	    var r = [];
 	    var remain = lst.concat();
-	    timer_manager = timer_manager === undefined ? self.window : timer_manager;
+	    timer_manager = timer_manager === undefined ? window : timer_manager;
 	    var alarm = undefined;
 	    var killalarm = function() {
 	        if (alarm) {

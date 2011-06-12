@@ -46,7 +46,7 @@ window.fbAsyncInit = function() {
 			             FB.api('/me/events', function(response) {
 				                    if (response.data !== undefined){
 					                    try {
-					                        parent.logProgress('<li>saving ' + response.data.length + ' facebook events</li>');
+					                        parent.logProgress('saving ' + response.data.length + ' facebook events');
 					                        parent.interval_map_lite(response.data, function(entry) { Atomate.auth.Facebook.saveEvent(entry); });
 					                    } catch(x) { console.log(x); }
 				                    }
@@ -54,31 +54,34 @@ window.fbAsyncInit = function() {
 			             
 			             FB.api('/me/inbox', function(response) {
 				                    if (response.data !== undefined){
-					                    parent.logProgress('<li>saving ' + response.data.length + ' facebook messages</li>');					                    
+					                    parent.logProgress('saving ' + response.data.length + ' facebook messages');					                    
 					                    parent.interval_map_lite(response.data, function(entry) { Atomate.auth.Facebook.saveMessage(entry); });
 				                    }
 				                });
 			             
 			             FB.api('/me/feed', function(response) {
 				                    if (response.data !== undefined){
-					                    parent.logProgress('<li>saving ' + response.data.length + ' facebook feed items</li>');					                    
+					                    parent.logProgress('saving ' + response.data.length + ' facebook feed items');					                    
 					                    parent.interval_map_lite(response.data, function(entry) { Atomate.auth.Facebook.saveFeedEntry(entry); });
 				                    }
 				                });
 			             
+                         /*
 			             FB.api('/me/albums', function(response) {
+                                    // not working 
 				                    console.log("your albums", response); 
 				                    response.data.map(function(album){ 
 				                                          FB.api('/' + album.id, function(photo_response) {
 				                                                     if (response !== undefined) {
 			                                                             console.log('photo_response');
 			                                                             console.log(photo_response);
-				                                                         parent.logProgress('saving ' + photo_response.data.length + ' facebook photos from album ' + album.id);
+				                                                         parent.logProgress('saving ' + photo_response + ' facebook photos from album ' + album.id);
 				                                                         parent.interval_map_lite(photo_response.data, function(entry) { Atomate.auth.Facebook.savePhoto(entry, album); });
 				                                                     }
 				                                                 });
 				                                      });
 				                });
+                          */
 		             } else {
 			             // user is logged in, but did not grant any permissions
 			             parent.logProgress('<li>you did not grant permission for the Feeder</li>');
