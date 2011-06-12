@@ -69,6 +69,7 @@ Atomate = {
                                           type = type.replace('tab_', '');
 
                                           jObj.hide();
+                                          return false;
                                           // todo - SAVE that the user removed this
                                       });                        
 
@@ -80,13 +81,26 @@ Atomate = {
                                           this_.updateSelectedCount(this_.notesList.find('.selected').length);
                                       });
 
+        this.notesList.find('li .hash_link, li .at_link').live('click', 
+                                      function(evt) {
+                                          var search = jQuery(this).attr('data-id');
+                                          this_.searchString = search;
+                                          this_.updateNotesDisplay(undefined, true);
+                                      });
+
+        this.notesList.find('li .remove_custom_search').live('click', 
+                                                             function(evt){
+                                                                 evt.stopPropagation();                                                       
+                                                                 jQuery(this).parent().parent().remove();
+                                                                 this_.removeCustomSearch();            
+                                                                 return false;
+                                                             });
+
         this.notesList.find('li').live('dblclick', 
                                       function(evt) {
                                           var jObj = jQuery(this);
                                           this_.makeNoteEditable(jObj);
                                       });                        
-
-
 
 
         jQuery('.popup .remove').live('click', 
@@ -135,23 +149,38 @@ Atomate = {
         }        
     },
 
-    updateNotesDisplay: function(type) {
+    updateNotesDisplay: function(type, hashAtSearch) {
+        type = type || this.type;
+        this.type = type;
         var notes = this.notes;
-        var searchString = this.searchDiv.val();
 
-        if (searchString && firstTabSelected) {
-            notes = this.searchNotesSimple(searchString, notes, notes);
-                                 
-        } else if (searchString) {
+        if (this.searchString) {
             notes = this.getNotesForType(type);                
-            notes = this.searchNotesSimple(searchString, notes, notes);
+            notes = this.searchNotesSimple(this.searchString, notes, notes);
             
         } else {
             notes = this.getNotesForType(type); 
         }
 
+        this.notesList.html('');
+        if (hashAtSearch && this.searchString) {
+            this.addCustomSearchDisplay(this.searchString);
+        }
+
         this.addNotes(notes);
         this.updateNotesCount(notes);
+        this.notesList.scrollTop(0); 
+    },
+
+    addCustomSearchDisplay: function(name){
+        this.notesList.append("<li class=\"custom_search\">"
+                              + "<div class=\"text\">Searching for: <b>"  + name + "</b> <a class=\"remove_custom_search\">remove</a></div>"
+                              + "</li>");
+    },
+    
+    removeCustomSearch: function() {
+        this.searchString = "";
+        this.updateNotesDisplay();
     },
 
     updateSelectedCount: function(num){
@@ -193,6 +222,7 @@ Atomate = {
         searchDiv.keyup(function(evt){ 
                             var keycode = evt.which;
                             var val = searchDiv.val();
+                            this_.searchString = val;
                             
                             if (keycode == 39 || keycode == 37 || keycode == 190){ return; }
 
@@ -269,17 +299,6 @@ Atomate = {
     },
 
     linkifyNote: function(text) {
-            /*
-        var tweet = text.replace(/[A-Za-z]+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&amp;\?\/.=]+/g, function(url) { 
-                                     var wrap = document.createElement('div');
-                                     var anch = document.createElement('a');
-                                     anch.href = url;
-                                     anch.target = "_blank";
-                                     anch.innerHTML = url;
-                                     wrap.appendChild(anch);
-                                     return wrap.innerHTML;
-                                 });
-             */
         text = text.replace(
                 /((https?\:\/\/)|(www\.))(\S+)(\w{2,4})(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/gi,
             function(url){
@@ -290,8 +309,8 @@ Atomate = {
                 return '<a href="' + full_url + '" target="_blank">' + url + '</a>';
             });
 
-        text = text.replace(/(^|\s)@(\w+)/g, '$1<a href="http://www.twitter.com/$2" target="_blank">@$2</a>');
-        return text.replace(/(^|\s)#(\w+)/g, '$1<a href="http://search.twitter.com/search?q=%23$2" target="_blank">#$2</a>');
+        text = text.replace(/(^|\s)@(\w+)/g, '$1<a class=\"at_link\" data-id=\"$2\">@$2</a>');
+        return text.replace(/(^|\s)#(\w+)/g, '$1<a class=\"hash_link\" data-id=\"$2\">#$2</a>');
     },
 
     getItemHtml: function(item) {
