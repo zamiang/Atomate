@@ -94,10 +94,6 @@ window.fbAsyncInit = function() {
 
 Atomate.auth.Facebook =  {
     parent: Atomate.auth,
-    initialize: function() {
-        
-    },
-
     savePhoto: function(entry) {
         // STILL TESTING
         console.log(entry);
@@ -108,8 +104,8 @@ Atomate.auth.Facebook =  {
 			                 id : p.id,
 			                 name: p.title._content,
 			                 source: "facebook",
-			                 'date uploaded':makeSpecificDateTime(start),
-			                 'created time': makeSpecificDateTime(start),
+			                 'date uploaded':this.parent.makeSpecificDateTime(start),
+			                 'created time': this.parent.makeSpecificDateTime(start),
 			                 'user id': p.owner.nsid,
 			                 username: p.owner.username,
 			                 location: p.owner.location,
@@ -131,7 +127,7 @@ Atomate.auth.Facebook =  {
 			                 name: entry.name,
 			                 picture: entry.picture,
 		                     'status type': entry.type,
-			                 'created time': makeSpecificDateTime(start)					  
+			                 'created time': this.parent.makeSpecificDateTime(start)					  
 		                 });
 
     },
@@ -151,7 +147,7 @@ Atomate.auth.Facebook =  {
 			                 url: entry.website,
 			                 timezone: entry.timezone,
 			                 'relationship status': entry.relationship_status,			 
-			                 'last updated': makeSpecificDateTime(start),
+			                 'last updated': this.parent.makeSpecificDateTime(start),
 			                 birthday: entry.birthday // NOTE: this needs to be parsed -- issue: it seems to return inconsistent date formats
 
 			                 // TODO: add location, hometown, work, education and relationships
@@ -168,8 +164,8 @@ Atomate.auth.Facebook =  {
 			                 id: entry.id,
 			                 name: entry.name,
 			                 source: 'Facebook',
-			                 "start time": makeSpecificDateTime(start),
-			                 "end time": makeSpecificDateTime(end),
+			                 "start time": this.parent.makeSpecificDateTime(start),
+			                 "end time": this.parent.makeSpecificDateTime(end),
 			                 location: entry.location
 		                 });
     },
@@ -186,7 +182,7 @@ Atomate.auth.Facebook =  {
 			                 source: 'Facebook',
 			                 subject: entry.subject, 
 			                 message: entry.message, 
-			                 "sent time": makeSpecificDateTime(start),
+			                 "sent time": this.parent.makeSpecificDateTime(start),
 			                 sender: {fbid: entry.from.id }
 		                 });
     }

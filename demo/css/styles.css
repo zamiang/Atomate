@@ -664,3 +664,24 @@ input[type="submit"] {
 .popup .remove:hover {
     opacity:0.6;
 }
+
+#progress li {
+    padding: 6px;
+    border-bottom: 1px solid #DDD;
+    padding-left: 0px;
+}
+
+#progress li .remove {
+    padding: 2px;
+    border: 1px solid transparent;
+    height: 8px;
+    width: 8px;
+    vertical-align: middle;
+    float:right;
+    background:#f3f3f3;
+}
+
+#progress li .remove:hover {
+    border: 1px solid #DDD;
+    background: white;
+}
