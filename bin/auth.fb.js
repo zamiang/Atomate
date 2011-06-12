@@ -32,7 +32,7 @@ window.fbAsyncInit = function() {
 					                    var toSave = response.data.length;
 					                    var saved = 0;
 					                    
-					                    interval_map(response.data, function(entry) { 
+					                    parent.interval_map_lite(response.data, function(entry) { 
 							                             FB.api('/' + entry.id, function(response) {
 								                                    if (response !== undefined){
 									                                    parent.logProgress('<li>saving ' + response.name + '\'s facebook profile</li>');
@@ -47,36 +47,34 @@ window.fbAsyncInit = function() {
 				                    if (response.data !== undefined){
 					                    try {
 					                        parent.logProgress('<li>saving ' + response.data.length + ' facebook events</li>');
-
-					                        interval_map(response.data, function(entry) { Atomate.auth.Facebook.saveEvent(entry); });
+					                        parent.interval_map_lite(response.data, function(entry) { Atomate.auth.Facebook.saveEvent(entry); });
 					                    } catch(x) { console.log(x); }
 				                    }
 				                });
 			             
 			             FB.api('/me/inbox', function(response) {
 				                    if (response.data !== undefined){
-					                    parent.logProgress('<li>saving ' + response.data.length + ' facebook messages</li>');
-					                    
-					                    interval_map(response.data, function(entry) { Atomate.auth.Facebook.saveMessage(entry); });
+					                    parent.logProgress('<li>saving ' + response.data.length + ' facebook messages</li>');					                    
+					                    parent.interval_map_lite(response.data, function(entry) { Atomate.auth.Facebook.saveMessage(entry); });
 				                    }
 				                });
 			             
 			             FB.api('/me/feed', function(response) {
 				                    if (response.data !== undefined){
-					                    parent.logProgress('<li>saving ' + response.data.length + ' facebook feed items</li>');
-					                    
-					                    interval_map(response.data, function(entry) { Atomate.auth.Facebook.saveFeedEntry(entry); });
+					                    parent.logProgress('<li>saving ' + response.data.length + ' facebook feed items</li>');					                    
+					                    parent.interval_map_lite(response.data, function(entry) { Atomate.auth.Facebook.saveFeedEntry(entry); });
 				                    }
 				                });
 			             
 			             FB.api('/me/albums', function(response) {
 				                    console.log("your albums", response); 
-				                    response.data.map(function(entry){ 
-				                                          FB.api('/' + entry.id, function(response) {
-				                                                     if (response !== undefined){
-			                                                             console.log(response);
-				                                                         parent.logProgress('saving ' + response.data.length + ' facebook photos from album ' + entry.id);
-				                                                         interval_map(response.data, function(entry) { Atomate.auth.Facebook.savePhoto(entry); });
+				                    response.data.map(function(album){ 
+				                                          FB.api('/' + album.id, function(photo_response) {
+				                                                     if (response !== undefined) {
+			                                                             console.log('photo_response');
+			                                                             console.log(photo_response);
+				                                                         parent.logProgress('saving ' + photo_response.data.length + ' facebook photos from album ' + album.id);
+				                                                         parent.interval_map_lite(photo_response.data, function(entry) { Atomate.auth.Facebook.savePhoto(entry, album); });
 				                                                     }
 				                                                 });
 				                                      });

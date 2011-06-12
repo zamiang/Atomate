@@ -42,6 +42,7 @@ Atomate.auth = {
         if (!this.progressDiv) {
             this.progressDiv = jQuery('#progress');
         }
+        console.log(text);
         this.progressDiv.append("<li><span>" + text + "</span><img src=\"../img/remove.png\" class=\"remove\" />");        
     },
 
