@@ -176,7 +176,7 @@ Atomate.auth.Facebook =  {
 
     saveMessage: function(entry) {
         // filtering out messages from facebook events
-        if(entity && entity.from && 'star_time' in entity.from){
+        if (entry && entry.from && 'star_time' in entry.from){
             var start = new Date(entry.updated_time.substring(0,entry.updated_time.length - 5)).valueOf();
             
             this.parent.saveItem({
