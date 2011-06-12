@@ -175,7 +175,7 @@
         </footer>
 
         <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-        <script src="http://connect.facebook.net/en_US/all.js#appId=213602652007737&amp;xfbml=1"></script>
+        <script src="http://connect.facebook.net/en_US/all.js#appId=223573334338274&amp;xfbml=1"></script>
         <script src="../lib/jquery.min.js"></script>
         <script src="../lib/underscore.js"></script>
         <script src="../lib/backbone.js"></script>
@@ -191,7 +191,7 @@
 
         <script src="../bin/auth.js"></script>
         <script src="../bin/auth.flickr.js"></script>
-        <script src="../bin/auth.facebook.js"></script>
+        <script src="../bin/auth.fb.js"></script>
         <script src="../bin/auth.gcal.js"></script>
         <script src="../bin/auth.gcontacts.js"></script>
 
@@ -235,9 +235,7 @@
      google.setOnLoadCallback(init);
 
      function login() {
-
           var token = google.accounts.user.login(CONTACTS_FEED_URL);
-
           var token = google.accounts.user.login(EVENT_FEED_URL);
      };
     </script>
