@@ -28,6 +28,8 @@
             <fb:like href="http://atomate.me" send="true" layout="button_count" width="125" show_faces="true" font="lucida grande"></fb:like>
         </div>
 
+        <p><fb:login-button autologoutlink="true"></fb:login-button></p>
+
         <header>
             <h1>Atomate</h1>
             <img class="logo" src="../img/atomate_bot.png" />
@@ -172,6 +174,7 @@
             <div id="fb-root"></div>
         </footer>
 
+        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
         <script src="http://connect.facebook.net/en_US/all.js#appId=213602652007737&amp;xfbml=1"></script>
         <script src="../lib/jquery.min.js"></script>
         <script src="../lib/underscore.js"></script>
@@ -185,6 +188,59 @@
         <script src="../bin/validator.js"></script>
         <script src="../bin/trie.js"></script>
         <script src="../bin/tracking.js"></script>
+
+        <script src="../bin/auth.js"></script>
+        <script src="../bin/auth.flickr.js"></script>
+        <script src="../bin/auth.facebook.js"></script>
+        <script src="../bin/auth.gcal.js"></script>
+        <script src="../bin/auth.gcontacts.js"></script>
+
+        <script type="text/javascript;version=1.8">
+      google.load("gdata", "2.x", {packages: ["calendar, contacts"]}); // nice of them not to put this in the docs
+
+     // A google.gdata.calendar.CalendarService object that can be used to access
+     // private feed using AuthSub.
+     var calendarService;
+     var contactsService;
+
+     var EVENT_FEED_URL =  "http://www.google.com/calendar/feeds/"
+     var CONTACTS_FEED_URL = 'https://www.google.com/m8/feeds';
+
+      function showMessage(e) {
+          Atomate.auth.logProgress(e);
+      }
+
+      function error(e) {
+          Atomate.auth.logError(e);
+      }
+
+     function init() {
+         if (!google.accounts.user.checkLogin(EVENT_FEED_URL)){
+             login();
+         }
+
+         try {
+             calendarService = new google.gdata.calendar.CalendarService('Atomate.0.4');
+             contactsService = new google.gdata.contacts.ContactsService('Atomate.0.4');
+
+             GoogleCalendar.initialize();
+         }  catch(x){ alert(x); }
+     }
+
+     function handleError(e) {
+         error(e)
+         console.log(e.cause ? e.cause.statusText : e.message);
+     }
+
+     google.setOnLoadCallback(init);
+
+     function login() {
+
+          var token = google.accounts.user.login(CONTACTS_FEED_URL);
+
+          var token = google.accounts.user.login(EVENT_FEED_URL);
+     };
+    </script>
         <script type="text/javascript">
     // MIX PANEL
     var mpq = ["init", "d3950de9980b43abe44956d1511c6af5"];
