@@ -158,35 +158,37 @@ Atomate.auth.Facebook =  {
 
 
     saveEvent: function(entry) {
-        var start = new Date(entry.start_time.substring(0,entry.end_time.length - 5)).valueOf();
-        var end = new Date(entry.end_time.substring(0,entry.end_time.length - 5)).valueOf();
-
-        this.parent.saveItem({
-			                 type:"schemas.Event",
-			                 id: entry.id,
-			                 name: entry.name,
-			                 source: 'Facebook',
-			                 "start time": this.parent.makeSpecificDateTime(start),
-			                 "end time": this.parent.makeSpecificDateTime(end),
-			                 location: entry.location
-		                 });
+        if (entry && entry.start_time && entry.end_time) {
+            var start = new Date(entry.start_time.substring(0,entry.end_time.length - 5)).valueOf();
+            var end = new Date(entry.end_time.substring(0,entry.end_time.length - 5)).valueOf();
+            
+            this.parent.saveItem({
+			                         type:"schemas.Event",
+			                         id: entry.id,
+			                         name: entry.name,
+			                         source: 'Facebook',
+			                         "start time": this.parent.makeSpecificDateTime(start),
+			                         "end time": this.parent.makeSpecificDateTime(end),
+			                         location: entry.location
+		                         });
+        }
     },
 
     saveMessage: function(entry) {
         // filtering out messages from facebook events
-        if (entry.from.start_time !== undefined){ return; }
-
-        var start = new Date(entry.updated_time.substring(0,entry.updated_time.length - 5)).valueOf();
-
-        this.parent.saveItem({
-			                 type:"schemas.Email",
-			                 id: entry.id,
-			                 source: 'Facebook',
-			                 subject: entry.subject, 
-			                 message: entry.message, 
-			                 "sent time": this.parent.makeSpecificDateTime(start),
-			                 sender: {fbid: entry.from.id }
-		                 });
+        if(entity && entity.from && 'star_time' in entity.from){
+            var start = new Date(entry.updated_time.substring(0,entry.updated_time.length - 5)).valueOf();
+            
+            this.parent.saveItem({
+			                         type:"schemas.Email",
+			                         id: entry.id,
+			                         source: 'Facebook',
+			                         subject: entry.subject, 
+			                         message: entry.message, 
+			                         "sent time": this.parent.makeSpecificDateTime(start),
+			                         sender: {fbid: entry.from.id }
+		                         });
+        }    
     }
 };
 
