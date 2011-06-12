@@ -102,7 +102,7 @@ Atomate.auth.Facebook =  {
         console.log(entry);
         var start = entry.updated_time ? new Date(entry.updated_time.substring(0,entry.updated_time.length - 5)).valueOf() : new Date().valueOf();    
         
-        parent.saveItem({
+        this.parent.saveItem({
 			                 type:"schemas.Photo",
 			                 id : p.id,
 			                 name: p.title._content,
@@ -120,7 +120,7 @@ Atomate.auth.Facebook =  {
 
     saveFeedEntry: function(entry) {
         var start = entry.updated_time ? new Date(entry.updated_time.substring(0,entry.updated_time.length - 5)).valueOf() : new Date().valueOf();
-        parent.saveItem({
+        this.parent.saveItem({
 			                 id: "facebook_status" + entry.id,
 		                     type:"schemas.StatusUpdate",
 			                 text: entry.description,
@@ -137,7 +137,7 @@ Atomate.auth.Facebook =  {
 
     saveFriend: function(entry) {
         var start = entry.updated_time ? new Date(entry.updated_time.substring(0,entry.updated_time.length - 5)).valueOf() : new Date().valueOf();
-        parent.saveItem({
+        this.parent.saveItem({
 			                 type:'schemas.Person',
 			                 id: entry.id,
 			                 fbid: entry.id,
@@ -161,7 +161,7 @@ Atomate.auth.Facebook =  {
         var start = new Date(entry.start_time.substring(0,entry.end_time.length - 5)).valueOf();
         var end = new Date(entry.end_time.substring(0,entry.end_time.length - 5)).valueOf();
 
-        parent.saveItem({
+        this.parent.saveItem({
 			                 type:"schemas.Event",
 			                 id: entry.id,
 			                 name: entry.name,
@@ -178,7 +178,7 @@ Atomate.auth.Facebook =  {
 
         var start = new Date(entry.updated_time.substring(0,entry.updated_time.length - 5)).valueOf();
 
-        parent.saveItem({
+        this.parent.saveItem({
 			                 type:"schemas.Email",
 			                 id: entry.id,
 			                 source: 'Facebook',
