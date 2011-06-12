@@ -9,6 +9,7 @@ Atomate.auth = {
     initialize: function(params) {
         this.progressDiv = jQuery('#progress');
         this.me = this.getMe();
+        this.data = [];
         
         this.displayServices();
         //this.updateFromServices();
@@ -56,7 +57,8 @@ Atomate.auth = {
     },
 
     saveItem: function(item) {
-        console.log('saaaaaving');
+        console.log('saving');
         console.log(item);        
+        this.data.push(item);
     }  
 };
