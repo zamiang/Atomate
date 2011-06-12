@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html> 
+  <head>
+    <meta name="google-site-verification" content="mip2rw9r2ei7TFIBvcoPNHmmsu2B-mtLFg-9XKdcT8A" />
+    <link rel="shortcut icon" href="/img/feeder.ico">
+    <title>Feeder | Google Calendar</title>
+    <style>
+      @import url("css/reset-fonts-grids.css");
+      @import url("css/feeder.css");
+    </style>
+    <script type="application/javascript;version=1.8" src="js/jquery-1.4.2.min.js">jQuery.noConflict();</script>
+    <script type="application/javascript;version=1.8" src="js/gcal-lite.js"></script>
+    <script type="application/javascript;version=1.8" src="js/plum-util-ns.js"></script>
+    <script type="application/javascript;version=1.8" src="js/feeder-util.js"></script>
+    <script type="application/javascript;version=1.8" src="js/fakejv3.js"></script>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript;version=1.8">
+      google.load("gdata", "2.x", {packages: ["calendar"]}); // nice of them not to put this in the docs
+
+     // A google.gdata.calendar.CalendarService object that can be used to access
+     // private feed using AuthSub.
+     var calendarService;     
+
+     var EVENT_FEED_URL =  "http://www.google.com/calendar/feeds/"
+
+      function showMessage(e) {
+          jQuery('#loading ul').append('<li>' + e + '</li>');
+      }
+      
+      function error(e) {
+          JV3.log(e); 
+          showMessage(e);
+      }
+      
+     function init() {
+         if (!google.accounts.user.checkLogin(EVENT_FEED_URL)){
+             login();
+         }
+     
+         try {
+             calendarService = new google.gdata.calendar.CalendarService('Atomate.0.4');
+             GoogleCalendar.initialize();
+         }  catch(x){ alert(x); }
+     }
+
+     function handleError(e) {
+         JV3.log("There was an error!");
+         showMessage(e);
+         JV3.log(e.cause ? e.cause.statusText : e.message);
+         JV3.log(e);
+     }
+
+     google.setOnLoadCallback(init);
+
+     function login() {
+          var token = google.accounts.user.login(EVENT_FEED_URL);
+     };
+    </script>    
+  </head>
+  <body>
+  <body>    
+    <div id="authimages">
+      <img src="img/google_16.gif" />
+      <img src="img/feeder.ico" height=16></img>
+    </div>
+    <div id="loading"> 
+      <h2>Feeder for Google Calendar</h2>
+      <h3>
+	Feeder is able to import events from your
+	your <a href="https://www.google.com/accounts/ManageAccount"
+		target="_blank">Google</a> calendar.
+      </h3>	    
+      <h3>
+	<b>Note</b>: when you first authenticate Feeder with
+	Google Calendar, Google will ask permission one time
+	for each of your calendars.
+      </h3>
+      <ul>
+      </ul>	
+    </div>
+  </body>
+</html>

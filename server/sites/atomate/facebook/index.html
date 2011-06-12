@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:fb="http://www.facebook.com/2008/fbml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="shortcut icon" href="../img/feeder.ico">
+    <title>Feeder | Facebook</title>
+    <style>
+      @import url("../css/reset-fonts-grids.css");
+      @import url("../css/feeder.css");
+    </style>
+    <script type="application/javascript;version=1.8" src="../js/jquery-1.4.2.min.js"></script>
+    <script type="application/javascript;version=1.8" src="../js/plum-util-ns.js"></script>
+    <script type="application/javascript;version=1.8" src="../js/fakejv3.js"></script>
+    <script type="application/javascript;version=1.8" src="../js/feeder-util.js"></script>
+  </head>
+  <body>
+    <div id="authimages">
+      <img src="../img/facebook_16.gif" />
+      <img src="../img/feeder.ico" height=16></img>
+    </div>
+    <div id="loading"> 
+      <h2>Feeder for Facebook</h2>
+      <h3>
+	This Feeder imports your <a href="http://www.facebook.com" target="_blank">Facebook</a>
+	<b>events</b> and <b>inbox</b>, as well as your
+	friends' <b>profiles</b> and <b>status updates</b>.
+      </h3>	    
+      <p><fb:login-button autologoutlink="true"></fb:login-button></p>
+      <p><fb:like></fb:like></p>      
+      <br />
+      <ul>
+      </ul>	
+      <div id="fb-root"></div>
+      <script type="application/javascript;version=1.8" src="../js/facebook.js"></script>      
+    </div>
+  </body>
+</html>

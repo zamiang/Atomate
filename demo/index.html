@@ -1,0 +1,227 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+    <head>
+        <meta name="google-site-verification" content="mip2rw9r2ei7TFIBvcoPNHmmsu2B-mtLFg-9XKdcT8A" />
+        <title>Atomate - demo</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta property="og:title" content="Atomate - Your digital personal assistant">
+        <meta property="og:app_id" content="122681067752275">
+        <meta property="og:site_name" content="Atomate">
+        <meta property="og:image" content="http://atomate.me/img/atomate_logo.png">
+        <meta property="og:url" content="http://atomate.me">
+        <meta property="og:type" content="website">
+        <meta property="og:description" content="Atomate helps you stay organized by giving you one place to find and update all the things you need for you day. It parties responsibly">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="favicon.ico">
+        <link rel="stylesheet" href="css/styles.css?v=2">
+    </head>
+    <body>
+        <a href="http://github.com/Zamiang/Atomate">
+            <img style="position: absolute; top: 0; left: 0; border: 0;" src="https://d3nwyuy0nl342s.cloudfront.net/img/5d21241b64dc708fcbb701f68f72f41e9f1fadd6/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f7265645f6161303030302e706e67" alt="Fork me on GitHub">
+        </a>
+
+        <div class="social">
+            <fb:like href="http://atomate.me" send="true" layout="button_count" width="125" show_faces="true" font="lucida grande"></fb:like>
+        </div>
+
+        <header>
+            <h1>Atomate</h1>
+            <img class="logo" src="../img/atomate_bot.png" />
+            <h2>Your digital personal assistant</h2>
+        </header>
+        <div id="container">
+            <!--
+                <ul id="instructions">
+                    <img class="remove" src="../img/remove.png">
+                    <li>Double-click to edit.</li>
+                    <li>Search or enter to add notes</li>
+                </ul>
+                -->
+
+            <ul id="tabs">
+                <div class="selected settings">
+                    <div class="settings_img"><img src="../img/settings_16.png" /></div>
+                    <ul class="settings_list">
+                        <li>
+                            <a href="print.html">Print View</a>
+                        </li>
+                        <li>
+                            <a href="trashbin.html">Trash Bin</a>
+                        </li>
+                        <li data-type="settings" data-name="settings" class="tab_settings">
+                            <a href="#settings">Account Settings</a>
+                        </li>
+                    </ul>
+                </div>
+            </ul>
+
+            <div id="main" role="main">
+                <input id="main_input" type="text"></input>
+                <ul id="notes"></ul>
+                <div id="stats">
+                    <div class="actions">
+                        <a id="tag_notes">Tag <span class="num">0</span> selected</a> &#8226;
+                        <a id="delete_notes">Delete <span class="num">0</span> selected</a>
+                    </div>
+
+                    <div class="num_notes">
+                        <span class="num">0</span> notes
+                    </div>
+                </div>
+
+                <div id="settings">
+                    <h1>Atomate Settings</h1>
+                    <h2>Synced Services</h2>
+                    <ul class="services">
+                        <li data-id="gcal">
+                            <img src="../img/gcal.png" />
+                            <b>Google Calendar</b>
+                        </li>
+                        <li data-id="gcontacts">
+                            <img src="../img/gcontacts.png" />
+                            <b>Google Contacts</b>
+                        </li>
+                        <li data-id="listit">
+                            <img src="../img/listit.png" />
+                            <b>List-it</b>
+                        </li>
+                    </ul>
+                    <h2>Add Services</h2>
+                    <ul class="services">
+                        <li>
+                            <img src="../img/facebook.png" />
+                            <b>Facebook</b>
+                        </li>
+                        <li>
+                            <img src="../img/twitter.png" />
+                            <b>Twitter</b>
+                        </li>
+                    </ul>
+                    <h2>Account Settings</h2>
+                    <ul class="form">
+                        <li class="form_container">
+                            <label><b>Email</b></label>
+                            <input id="id_email" type="text" />
+                        </li>
+                        <li class="form_container">
+                            <label><b>Password</b></label>
+                            <input id="id_old_password" type="text" />
+                        </li>
+                        <li class="form_container">
+                            <label><b>Font Size</b></label><br />
+                            <select>
+                                <option val="8">8</option>
+                                <option val="10">10</option>
+                                <option val="12" selected>12</option>
+                                <option val="14">14</option>
+                                <option val="16">16</option>
+                                <option val="18">18</option>
+                                <option val="events">Events</option>
+                            </select>
+                        </li>
+                        <li class="form_container">
+                            <input id="id_notifications" type="checkbox" checked />
+                            <label>Email me with updates from Atomate</label>
+                        </li>
+                        <li class="form_container">
+                            <input id="id_errors" type="checkbox" checked />
+                            <label>Email me when Atomate encounters an error</label>
+                        </li>
+                        <li class="form_spacer">
+                            <input id="id_submit" type="submit" value="Save" />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <ul id="add_tab" class="popup form">
+            <img class="remove" src="../img/remove.png">
+            <h1>Add a tab</h1>
+            <div class="form_container">
+                <label>Use an Atomate tab:</label>
+
+                <select>
+                    <option val="none">none</option>
+                    <option val="now">Now</option>
+                    <option val="notes">Notes</option>
+                    <option val="todo">Todo</option>
+                    <option val="events">Events</option>
+                </select>
+            </div>
+            <div class="form_container">
+                <label>Save a search:</label>
+                <input id="id_tab_search" type="text" />
+            </div>
+
+            <div class="form_spacer">
+                <input id="id_tab_add_submit" type="submit" value="Add a Tab" />
+            </div>
+        </ul>
+
+        <footer>
+            <a href="/about.html">About</a> &#8226;
+            <a href="/team.html">Team</a> &#8226;
+            <a href="/demo.html">Demo</a> &#8226;
+            <a href="https://github.com/Zamiang/Atomate">Source</a> &#8226;
+            <a href="/help">Help</a>
+            <div id="fb-root"></div>
+        </footer>
+
+        <!--
+        <script src="http://connect.facebook.net/en_US/all.js#appId=213602652007737&amp;xfbml=1"></script>
+        -->
+        <script src="../lib/jquery.min.js"></script>
+        <script src="../lib/underscore.js"></script>
+        <script src="../lib/backbone.js"></script>
+
+        <script src="js/test_data.js"></script>
+        <script src="js/redacted_notes.js"></script>
+        <script src="../bin/atomate.js"></script>
+        <script src="../bin/util.js"></script>
+        <script src="../bin/detector.js"></script>
+        <script src="../bin/validator.js"></script>
+        <script src="../bin/trie.js"></script>
+        <script src="../bin/tracking.js"></script>
+        <script type="text/javascript">
+    // MIX PANEL
+    var mpq = ["init", "d3950de9980b43abe44956d1511c6af5"];
+    mixPanelInit = function() {
+        try {
+            // TODO: email MixPanel about this - to run callbacks they require a global called 'mpmetrics'
+            mpmetrics = new MixpanelLib("d3950de9980b43abe44956d1511c6af5");
+            return mpmetrics
+        } catch(err) {
+            var null_fn = function () {};
+            mpmetrics = {
+                track: null_fn,
+                track_funnel: null_fn,
+                register: null_fn,
+                register_once: null_fn,
+                register_funnel: null_fn,
+                identify: null_fn
+            };
+            return mpmetrics
+        }
+    };
+
+    jQuery(document).ready(function(){
+                               Atomate.initialize({
+                                                      trackingmodule: mpq,
+                                                      mixPanelInit: mixPanelInit,
+                                                      redactedNotes: REDACTED_NOTES
+                                                  });
+                           });
+        </script>
+        <script>
+            var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]]; // Change UA-XXXXX-X to be your site's ID
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+            g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
+            s.parentNode.insertBefore(g,s)}(document,"script"));
+        </script>
+    </body>
+</html>

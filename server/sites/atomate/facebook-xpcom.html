@@ -1,0 +1,51 @@
+<html> 
+  <head>
+    <meta name="google-site-verification" content="mip2rw9r2ei7TFIBvcoPNHmmsu2B-mtLFg-9XKdcT8A" />
+    <title>Atomate facebook feeder</title>
+    <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/XdCommReceiver.debug.js" type="text/javascript"></script>
+    <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" type="text/javascript"></script> 
+    <!--<script src="frameworks/FacebookApi.debug.js" type="text/javascript"></script>-->
+    <script type="application/javascript;version=1.8" src="js/facebook.js"></script>
+    <script type="application/javascript;version=1.8">
+var store = undefined;
+var actlog = undefined;
+var sync = undefined;
+
+update_display = function(s) {
+   // jQuery("#f").contents().find("body").html(s);
+};
+
+function fb_sync(){
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    try {
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserRead");
+        self.JV3 = Components.classes['@electronic.max/listit;1'].getService().wrappedJSObject;
+        self.plumutil = self.JV3.plumutil;
+        init_fb(function() { update_friends(); }, function() { alert("login failure"); });
+    } catch (e) { alert(e);  }    
+}
+
+function init_fb(win,fail) {
+   // use_plum => true if you want to send your friends to PLUM running on localhost
+   // use_local_db => true if you want to stash your friends in a sqlite local triplestore
+   // db_params => for local triplestore only:
+   //         filename: name of sqlite db file
+   //         table : name of table to use in sqlite db
+   // returns: instance of facesmasher initialized   
+   self.fs = JV3.newify(FaceSmasher,JV3,win,fail);
+   return self.fs; 
+}
+
+function update_friends() {
+   self.results=[];
+   self.fs.updateFriends(undefined, function(result) { self.results.push(result); })  //  brenn: 174800237
+}
+fb_sync();
+    </script>
+  </head>
+  <body>
+  <img src="img/atomate_bot.jpg" height=40></img>
+  this is the atomate facebook sync
+<!--  <textarea style="width: 1000px; height: 300px;" id="_traceTextBox"> </textarea> -->
+</body>
+</html>
