@@ -263,12 +263,13 @@ ul#tabs .settings {
 }
 
 ul#tabs .settings .settings_img {
-    height: 16px;
-    width: 16px;
-    padding: 0px;
+    padding: 2px;
     position: absolute;
-    top: 4px;
+    top: 0px;
     right: 6px;
+
+    border: 1px solid #fff;
+    border-bottom: 0px solid #fff;
 }
 
 ul#tabs .settings .settings_list {
@@ -285,6 +286,7 @@ ul#tabs .settings .settings_list {
     width: 100px;
     z-index: 10;
     margin:0px;
+    padding-top:8px;
 }
 
 ul#tabs .settings .settings_list li {
@@ -296,6 +298,20 @@ ul#tabs .settings .settings_list li {
     margin:0px;
 }
 
+ul#tabs .settings .settings_list li a {
+    margin:0px;
+    margin-top:2px;
+    margin-bottom:2px;
+    padding:0px;
+}
+
+ul#tabs .settings:hover .settings_img {
+    background: -webkit-linear-gradient(rgba(234, 238, 243, 0.2), #EAEEF3), -webkit-linear-gradient(left, #EAEEF3, #EAEEF3 97%, #D3D7DB);
+    font-weight:normal;
+    border: 1px solid #DDE5F3;
+    border-bottom: 0px solid #8FAAD9;
+}
+
 ul#tabs .settings:hover .settings_list {
     display:block;
 }
@@ -304,25 +320,63 @@ ul#tabs .settings:hover .settings_list {
 #tabs li {
     display: inline-block;
     margin: 0px;
+    padding:0px;
     list-style: none;
     width: auto;
-    padding: 12px;
     background: -webkit-linear-gradient(rgba(234, 238, 243, 0.2), #EAEEF3), -webkit-linear-gradient(left, #EAEEF3, #EAEEF3 97%, #D3D7DB);
-    padding: 4px 10px 4px 10px;
-    margin-right: -0.8px;
     font-weight:normal;
     border: 1px solid #DDE5F3;
     border-bottom: 0px solid #8FAAD9;
     color:#666;
+    margin-right:3px;
+}
+
+#tabs li a {
+    display:inline-block;
+    padding: 4px 10px 4px 10px;
+    color:#666;
+}
+
+#tabs li:hover .remove {
+    display:inline-block;
+}
+
+#tabs li .remove {
+    display:none;
+    padding: 2px;
+    border: 1px solid transparent;
+    height: 8px;
+    width: 8px;
+    margin-top: -5px;
+    vertical-align: middle;
+    margin-left: -6px;
+    margin-right: 4px;
+}
+
+#tabs li .remove:hover {
+    border: 1px solid #DDD;
+    background: white;
 }
 
 #tabs li.selected {
     background: -webkit-linear-gradient(left, #BBCEE9, #BBCEE9 97%, #AABEDC);
     border: 1px solid #8FAAD9;
     border-bottom: 0px solid #8FAAD9;
-    color: black;
     text-shadow: #BBCEE9 0 1px 1px;
+}
+
+#tabs li.selected a {
     font-weight:bold;
+    color: black;
+}
+
+#tabs li.selected .remove {
+    display:inline-block;
+}
+
+#tabs li.tab_add:hover .remove {
+    display:none;
+
 }
 
 #tabs li:hover {
@@ -330,6 +384,7 @@ ul#tabs .settings:hover .settings_list {
     font-weight:bold;
     cursor:pointer;
     color:#333;
+    text-decoration:underline;
 }
 
 #main {
@@ -440,18 +495,19 @@ input[type="submit"] {
   settings
   */
 
-#contents {
+#settings {
     margin:2px;
     background:#fff;
     padding:20px;
+    display:none;
 }
 
-#contents h1 {
+#settings h1 {
     font-size:22px;
     display:block;
 }
 
-#contents .services {
+#settings .services {
     margin:0px;
     padding:0px;
     margin-top:10px;
@@ -459,7 +515,7 @@ input[type="submit"] {
 
 }
 
-#contents .services li {
+#settings .services li {
     display:inline-block;
     height:80px;
     width:80px;
@@ -472,17 +528,17 @@ input[type="submit"] {
     vertical-align:top;
 }
 
-#contents .services li:hover {
+#settings .services li:hover {
     background:#f3f3f3;
 }
 
-#contents .form {
+#settings .form {
     padding:0px;
     margin:0px;
     list-style:none;
 }
 
-#contents .form li {
+#settings .form li {
     padding:0px;
     margin:0px;
     list-style:none;
@@ -491,18 +547,18 @@ input[type="submit"] {
 
 }
 
-#contents .form label {
+#settings .form label {
     font-size:12px;
 }
 
-#contents .form input[type="text"] {
+#settings .form input[type="text"] {
     display:block;
     width:180px;
     padding:2px;
     font-size:12px;
 }
 
-#contents li.form_spacer {
+#settings li.form_spacer {
     border-top:1px solid #ddd;
 
     padding-bottom:2px;

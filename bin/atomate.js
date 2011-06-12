@@ -1,20 +1,95 @@
+"strict mode";
 /*
  * Atomate base
  * needs to be loaded 1st and initialized on document ready
  * 
+ * tabs are either a special native type
+ * 'native' == something more than a simple search query
+ * eventually it would be great to expose some way of adding these
+ * 
+ * something can be 'native' + have a search query
+ * 
  */
 
 Atomate = {
+    defaultTabs: [{
+                      name:'Now',
+                      type:'native',
+                      default: true
+                  }, {
+                      name:'Notes',
+                      type:'native'
+                  }, {
+                      name:'Todo',
+                      type:'native'
+                  }, {
+                      name:'Events',
+                      type:'native'
+                  }, {
+                      name:'Contacts',
+                      type:'native'
+                  }, {
+                      name:'Foobar',
+                      type:'search',
+                      search:'foobar'
+                  }],
     initialize: function(params) {
         this.notes = this.buildTrieForNotes(params.redactedNotes.slice(0, 100));
 
         this.tracking.initialize(params);
         this.notesList = jQuery("#notes");
+        this.tabsList = jQuery('#tabs');
         this.addNotes(this.notes);
 
-
+        this.buildTabs();
         this.setupSearch(jQuery('#main_input'), this.notes);
     },
+    
+    buildTabs: function(tabs) {
+        var this_ = this;
+        var locationHash = this.getLocationHash();
+        if (!tabs) {
+            tabs = this.defaultTabs;
+        }         
+
+        tabs.push({
+                      name:'+',
+                      type:'add'
+                  });
+
+        jQuery.fn.append.apply(this.tabsList, tabs.map(function(tab){
+                                                             return this_.getTabHtml(tab);
+                                                         }));        
+        //todo make draggable
+        if (locationHash) {
+            this.initNotesDisplay(locationHash);            
+            this.tabsList.find('li').removeClass('selected');
+            this.tabsList.find('.tab_' + locationHash).addClass('selected');
+        }        
+    },
+
+    initNotesDisplay: function(t) {
+        if (t == 'settings') {
+            jQuery('#stats, #notes, #main_input').hide();
+            jQuery('#settings').show();
+
+        }
+    },
+    
+    getLocationHash: function(){
+        return window.location.hash.replace('#', '');        
+    },
+
+    getTabHtml: function(tab) { 
+            return "<li class=\"tab_" + tab.name.toLowerCase()
+            + (tab.default ? ' selected' : "")
+            + "\">" 
+            + "<a href=\"#" + tab.name.toLowerCase() + "\">" + tab.name + "</a>"
+            + "<img class=\"remove\" src=\"../img/remove.png\" />"
+            + "</li>";
+        
+    },
+    
     setupSearch: function(searchDiv, notes) {
         var this_ = this;
         searchDiv.keyup(function(evt){ 
