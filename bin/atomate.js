@@ -44,8 +44,8 @@ Atomate = {
         this.notesCount = jQuery('#stats .num_notes .num');
 
         var startingTabName = this.getLocationHash();
-        var startingTab = startingTabName ? this.getTabForTabName(startingTabName) : this.tabs[0]; 
-
+        var startingTab = startingTabName.length > 1 ? this.getTabForTabName(startingTabName) : this.tabs[0]; 
+        
         this.buildTabs(this.tabs, startingTab);
         this.setupSearch(this.searchDiv, this.notes);
         this.setupMouseEvents();
@@ -146,7 +146,6 @@ Atomate = {
                                                            return this_.getTabHtml(tab, startingTab);
                                                        }));        
         //todo make draggable
-        this.changeTab(startingTab.name, startingTab.type);
     },
 
     updateNotesDisplay: function(name, type, hashAtSearch) {
