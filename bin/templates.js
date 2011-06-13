@@ -75,7 +75,10 @@ Atomate.templates = {
         return "<li class=\"type_" + this.getItemType(item.type) + "\">"
             + this.getActionsHtml(item)
             + "<img class=\"profile_photo\" src=\"" + this.getPersonPhotoUrl(item) + "\" />"
-            + "<div class=\"text\"><a class=\"at_link\" data-id=\"" + item.searchTxt + "\">"  + item['first name'] + " " + item['last name'] + "</a></div>"
+            + "<div class=\"text\">"
+            + "<a class=\"at_link\" data-id=\"" + item.searchTxt + "\">"  + item['first name'] + " " + item['last name'] + "</a>"
+            + (item.fbid ? "<br /><a class=\"external\" href=\"http://www.facebook.com/profile.php?id=" + item.fbid + "\" target=\"_blank\">Facebook</a>" : "")
+            + "</div>"
             + "</li>";
     },
 

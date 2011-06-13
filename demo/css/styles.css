@@ -489,6 +489,17 @@ ul#tabs .settings:hover .settings_list {
     padding-left:12px;
 }
 
+#notes li.type_person .text .at_link {
+    font-size:14px;
+    font-weight:bold;
+}
+
+#notes li.type_person .text .external {
+    color:#666;
+    text-decoration:underline;
+    font-size:11px;
+}
+
 #notes li .context a {
     text-decoration:underline;
     color: #666;
