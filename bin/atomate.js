@@ -34,7 +34,7 @@ Atomate = {
                       search:'#javascript'
                   }],
     initialize: function(params) {
-        this.notes = this.buildTrieForNotes(params.redactedNotes.slice(0, 1000));
+        this.notes = params.redactedNotes.slice(0, 1000);
         this.people = this.getPeople();
         this.events = this.getEvents();
 
@@ -117,7 +117,7 @@ Atomate = {
                                                                  return false;
                                                              });
 
-        this.notesList.find('li').live('dblclick', 
+        this.notesList.find('li.note').live('dblclick', 
                                        function(evt) {
                                            var jObj = jQuery(this);
                                            this_.makeNoteEditable(jObj);
@@ -192,7 +192,7 @@ Atomate = {
                   });
         
         jQuery.fn.append.apply(this.tabsList, tabs.map(function(tab){
-                                                           return this_.getTabHtml(tab, startingTab);
+                                                           return this_.templates.getTabHtml(tab, startingTab);
                                                        }));        
         //todo make draggable
     },
@@ -233,9 +233,7 @@ Atomate = {
     },
 
     addCustomSearchDisplay: function(name){
-        this.notesList.append("<li class=\"custom_search\">"
-                              + "<div class=\"text\">Searching for: <b>"  + name + "</b> <a class=\"remove_custom_search\">remove</a></div>"
-                              + "</li>");
+        this.notesList.append(this.templates.getCustomSearchHtml(name));
     },
     
     removeCustomSearch: function() {
@@ -281,24 +279,7 @@ Atomate = {
     getLocationHash: function(){
         return window.location.hash.replace('#', '');        
     },
-    
-    getTabName: function(tab) {
-        if (tab.name == "+") {
-            return 'plus'; 
-        }
-        return tab.name.toLowerCase();
-    },
-
-    getTabHtml: function(tab, startingTab) { 
-        return "<li data-type=\"" + tab.type + "\""
-            + " data-name=\"" + this.getTabName(tab) + "\" class=\"tab_" + this.getTabName(tab)
-            + (startingTab.name.toLowerCase() == tab.name.toLowerCase() ? ' selected' : "")
-            + "\">" 
-            + "<a href=\"#" + tab.name.toLowerCase() + "\">" + tab.name + "</a>"
-            + "<img class=\"remove\" src=\"../img/remove.png\" />"
-            + "</li>";        
-    },
-    
+        
     setupSearch: function(searchDiv, notes) {
         var this_ = this;
         searchDiv.keyup(function(evt){ 
@@ -340,6 +321,32 @@ Atomate = {
                             });
     },
 
+    showPopup: function(id) {
+        jQuery("#" + id).show();    
+        jQuery('#container, header').css('opacity', 0.2);
+    },
+
+    hidePopup: function() {
+        jQuery('.popup').hide();    
+        
+        jQuery('#container, header').css('opacity', 1);
+    },
+
+    addNotes: function(notes) {
+        var this_ = this;
+        if (!notes) {
+            return;
+        }
+        jQuery.fn.append.apply(this.notesList, notes.map(function(n){ 
+                                                             return this_.templates.getItemHtml(n);
+                                                         }));
+    }
+};
+
+
+
+/**
+ * 
     searchNotes: function(word, notes) {
         var this_ = this;
         return notes.filter(function(note){  
@@ -359,100 +366,5 @@ Atomate = {
                          });  
     },
 
-    showPopup: function(id) {
-        jQuery("#" + id).show();    
-        jQuery('#container, header').css('opacity', 0.2);
-    },
 
-    hidePopup: function() {
-        jQuery('.popup').hide();    
-        
-        jQuery('#container, header').css('opacity', 1);
-    },
-
-    addNotes: function(notes) {
-        var this_ = this;
-        if (!notes) {
-            return;
-        }
-        jQuery.fn.append.apply(this.notesList, notes.map(function(n){ 
-                                                             if (!n.type) { // is a note -- temporary
-                                                                 return this_.getNoteHtml(n);
-                                                             } else if (n.type == "schemas.Person") {
-                                                                 return this_.getPersonHtml(n);
-                                                             } else if (n.type == "schemas.Event") {
-                                                                 return this_.getEventHtml(n);                                                                 
-                                                             }
-                                                         }));
-        //this.notesList.html(notes.map(function(n){ return this_.getItemHtml(n); }).join(''));
-    },
-
-    linkifyNote: function(text) {
-        text = text.replace(
-                /((https?\:\/\/)|(www\.))(\S+)(\w{2,4})(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/gi,
-            function(url){
-                var full_url = url;
-                if (!full_url.match('^https?:\/\/')) {
-                    full_url = 'http://' + full_url;
-                }
-                return '<a href="' + full_url + '" target="_blank">' + url + '</a>';
-            });
-
-        text = text.replace(/(^|\s)@(\w+)/g, '$1<a class=\"at_link\" data-id=\"@$2\">@$2</a>');
-        return text.replace(/(^|\s)#(\w+)/g, '$1<a class=\"hash_link\" data-id=\"#$2\">#$2</a>');
-    },
-
-    getPersonPhotoUrl: function(item) {
-        if (item.fbid) {
-            return "http://graph.facebook.com/" + item.fbid + "/picture?type=square";
-        }
-    },
-
-    getItemType: function(type){
-      return type.toLowerCase().replace('schemas.', '');
-    },
-
-    getActionsHtml: function(item) {
-        // may eventually want to have different actions depending on the type of item
-        return "<div class=\"actions\"><img class=\"item_remove\" src=\"../img/remove.png\" /><img class=\"item_edit\" src=\"../img/settings_16.png\" /></div>";  
-    },
-    
-    getPersonHtml: function(item) {
-        return "<li class=\"type_" + this.getItemType(item.type) + "\">"
-            + this.getActionsHtml(item)
-            + "<img class=\"profile_photo\" src=\"" + this.getPersonPhotoUrl(item) + "\" />"
-            + "<div class=\"text\"><a class=\"at_link\" data-id=\"" + item.searchTxt + "\">"  + item['first name'] + " " + item['last name'] + "</a></div>"
-            + "</li>";
-    },
-
-    getEventHtml: function(item) {
-        var link = item.source == "Facebook" ? "http://www.facebook.com/event.php?eid=" + item.id : "";
-
-        return "<li class=\"" + this.getItemType(item.type) + "\">"
-            + this.getActionsHtml(item)
-            + "<div class=\"text\">"
-            + (link ? "<a href=\"" + link + "\" target=\"_blank\">" : "")
-            + item.name
-            + (link ? "</a>" : "")
-            + "</div>"
-            + "<div class=\"context\">"
-            + "<span class=\"context_item\"><img src=\"../img/location.png\" /><a class=\"at_link\" data-id=\"" + item.location + "\">" + item.location + "</a></span>"
-            + "<span class=\"context_item\"><img src=\"../img/calendar.png\" />From <b>" + Atomate.util.getNaturalDate(item['start time'].val)
-            + "</b> to <b>" + Atomate.util.getNaturalDate(item['end time'].val) + "</b></span>"
-            + "</div>"
-            + "</li>";       
-    },
-
-    getNoteHtml: function(item) {
-        return "<li class=\"" + this.getItemType(item.category) + "\">"
-            + this.getActionsHtml(item)
-            + "<div class=\"text\">"  + this.linkifyNote(item.contents) + "</div>"
-            + "<div class=\"context\">"
-            + "<span class=\"context_item\"><img src=\"../img/location.png\" />New York, NY</span>"
-            + "<span class=\"context_item\"><img src=\"../img/calendar.png\" />Tomorrow 5:30pm</span>"
-            + "</div>"
-            + "</li>";       
-    }
-};
-
-
+ */
