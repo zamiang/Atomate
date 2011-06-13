@@ -67,7 +67,7 @@ Atomate = {
     getEvents: function(){
         return FBDATA.filter(function(d){
                                  if (d.type == 'schemas.Event') {return true;} return false;                           
-                             }).map(function(d){ d.searchTxt = d.name.toLowerCase(); return d; });        
+                             }).map(function(d){ d.searchTxt = d.name.toLowerCase() + " " + d.location.toLowerCase(); return d; });        
     },
 
     setupMouseEvents: function(){
@@ -118,10 +118,41 @@ Atomate = {
                                                              });
 
         this.notesList.find('li').live('dblclick', 
-                                      function(evt) {
-                                          var jObj = jQuery(this);
-                                          this_.makeNoteEditable(jObj);
-                                      });                        
+                                       function(evt) {
+                                           var jObj = jQuery(this);
+                                           this_.makeNoteEditable(jObj);
+                                       });        
+        
+        this.notesList.find('li .actions .item_remove').live('click', 
+                                                             function(evt){
+                                                                 evt.stopPropagation();                                                       
+                                                                 jQuery(this).parent().parent().slideUp();
+                                                                 // todo - intersect w/ data and call delete on those items
+                                                                 return false;
+                                                             });
+
+        this.notesList.find('li .actions .item_edit').live('click', 
+                                                             function(evt){
+                                                                 evt.stopPropagation();                                                       
+                                                                 console.log(jQuery(this));
+                                                                 // todo - intersect w/ data and call delete on those items
+                                                                 return false;
+                                                             });
+
+
+        jQuery('#delete_notes').click(function() {  
+                                          var notes = this_.notesList.find('li.selected');
+                                          
+                                          // todo - intersect w/ data and call delete on those items
+
+                                          notes.slideUp();
+                                      });
+
+        jQuery('#tag_notes').click(function() {  
+                                       alert('about to tag some notes');
+                                       var notes = this_.notesList.find('li.selected');
+                                       // todo - intersect w/ data and allow the user to tag those items
+                                      });
 
 
         jQuery('.popup .remove').live('click', 
@@ -197,6 +228,7 @@ Atomate = {
 
         this.addNotes(notes);
         this.updateNotesCount(notes);
+        this.updateSelectedCount(0);
         this.notesList.scrollTop(0); 
     },
 
@@ -380,8 +412,14 @@ Atomate = {
       return type.toLowerCase().replace('schemas.', '');
     },
 
+    getActionsHtml: function(item) {
+        // may eventually want to have different actions depending on the type of item
+        return "<div class=\"actions\"><img class=\"item_remove\" src=\"../img/remove.png\" /><img class=\"item_edit\" src=\"../img/settings_16.png\" /></div>";  
+    },
+    
     getPersonHtml: function(item) {
         return "<li class=\"type_" + this.getItemType(item.type) + "\">"
+            + this.getActionsHtml(item)
             + "<img class=\"profile_photo\" src=\"" + this.getPersonPhotoUrl(item) + "\" />"
             + "<div class=\"text\"><a class=\"at_link\" data-id=\"" + item.searchTxt + "\">"  + item['first name'] + " " + item['last name'] + "</a></div>"
             + "</li>";
@@ -391,6 +429,7 @@ Atomate = {
         var link = item.source == "Facebook" ? "http://www.facebook.com/event.php?eid=" + item.id : "";
 
         return "<li class=\"" + this.getItemType(item.type) + "\">"
+            + this.getActionsHtml(item)
             + "<div class=\"text\">"
             + (link ? "<a href=\"" + link + "\" target=\"_blank\">" : "")
             + item.name
@@ -406,6 +445,7 @@ Atomate = {
 
     getNoteHtml: function(item) {
         return "<li class=\"" + this.getItemType(item.category) + "\">"
+            + this.getActionsHtml(item)
             + "<div class=\"text\">"  + this.linkifyNote(item.contents) + "</div>"
             + "<div class=\"context\">"
             + "<span class=\"context_item\"><img src=\"../img/location.png\" />New York, NY</span>"

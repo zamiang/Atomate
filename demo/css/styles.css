@@ -448,15 +448,33 @@ ul#tabs .settings:hover .settings_list {
     border-top: 1px solid transparent;
 }
 
-/*
-  #notes li .controls {
+#notes li .actions {
     position:absolute;
+    display:none;
+    right:10px;
+    top:10px;
 }
 
-#notes li:hover .controls {
+#notes li:hover .actions {
     display:block;
 }
-*/
+
+#notes li .actions img {
+    padding: 2px;
+    border: 1px solid transparent;
+    height: 8px;
+    width: 8px;
+    vertical-align: middle;
+    float:right;
+    background:#f3f3f3;
+    cursor:pointer;
+    margin-left:4px;
+}
+
+#notes li .actions img:hover {
+    border: 1px solid #DDD;
+    background: white;
+}
 
 #notes li .context {
     font-size: 11px;
