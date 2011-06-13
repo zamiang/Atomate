@@ -103,7 +103,7 @@ Atomate.templates = {
             + "<div class=\"text\">"  + this.linkifyNote(item.contents) + "</div>"
             + "<div class=\"context\">"
             + "<span class=\"context_item\"><img src=\"../img/location.png\" />New York, NY</span>"
-            + "<span class=\"context_item\"><img src=\"../img/calendar.png\" />Tomorrow 5:30pm</span>"
+            + "<span class=\"context_item\"><img src=\"../img/calendar.png\" />Tomorrow 5:30pm</span><span>" + item.category + "</span>"
             + "</div>"
             + "</li>";       
     }

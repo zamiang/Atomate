@@ -39,7 +39,7 @@ Atomate = {
                       search:'#javascript'
                   }],
     initialize: function(params) {
-        this.notes = params.redactedNotes.slice(0, 100);
+        this.notes = params.redactedNotes.slice(0, 2000);
         this.people = this.getPeople();
         this.events = this.getEvents();
 
@@ -244,7 +244,20 @@ Atomate = {
                 return this.people;
             } else if (name == 'events') {
                 return this.events;
+            } else if (name == 'now') {
+                return this.notes.filter(function(n){
+                                             return n.contents.indexOf('http') < 0 && n.category != "Journal" && n.category != "Reference";
+                                         });
+            } else if (name == 'todo') {
+                return this.notes.filter(function(n){
+                                             return n.contents.indexOf('todo') > -1;
+                                         });
+            } else if (name == 'notes') {
+                return this.notes.filter(function(n){
+                                             return n.category == 'Reference' || n.category == 'Journal';
+                                         });
             }
+
             // todo
             return this.notes;            
         } else if (type == "search") {
