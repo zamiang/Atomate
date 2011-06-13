@@ -43,6 +43,19 @@
                     <li>Search or enter to add notes</li>
                 </ul>
                 -->
+            <div id="input">
+                <textarea id="main_input" rows="1" cols="52"></textarea>
+                <div class="controls clearfix">
+                    <input id="id_note_save" type="submit" value="Save" />
+                    <div class="location_input">
+                        <label>Add location:</label>
+                        <select>
+                            <option val="here">Here</option>
+                        </select>
+                        <img class="remove" src="../img/remove.png" />
+                    </div>
+                </div>
+            </div>
 
             <ul id="tabs">
                 <div class="selected settings">
@@ -62,7 +75,6 @@
             </ul>
 
             <div id="main" role="main">
-                <input id="main_input" type="text"></input>
                 <ul id="notes"></ul>
                 <div id="stats">
                     <div class="actions">

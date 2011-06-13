@@ -52,7 +52,7 @@ Atomate.auth.GoogleCalendar = {
         interval_map(result.feed.entry, function(entry){
 		                 try {
 			                 if (entry.getTimes()[0]){
-			                     var start = new Date(entry.getTimes()[0].getStartTime().date).valueOf();
+			                     var start = new Date(entry.getTimes()[0].getStartTime().date).valueOf(); // ewwwwwww
 			                     var end = new Date(entry.getTimes()[0].getEndTime().date).valueOf();
 			                     
 			                     showMessage('saving: ' + entry.getTitle().getText());

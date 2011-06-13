@@ -16,6 +16,7 @@ Atomate = {
     tabsList: jQuery('#tabs'),
     searchDiv: jQuery('#main_input'),
     settingsDiv: jQuery('#settings'),
+    inputControlsDiv: jQuery('#input .controls'),
     notesCount: jQuery('#stats .num_notes .num'),
     defaultTabs: [{
                       name:'Now',
@@ -143,8 +144,21 @@ Atomate = {
 
         jQuery('.popup .remove').live('click', function(item) { this_.hidePopup(); });                                
     },
+
+    resizeIt: function(jObj) {
+        var str = jObj.val();
+        var cols = jObj.attr('cols');
+        var linecount = 0;
+
+        str.split("\n").map(function(l) {
+					            linecount += 1 + Math.floor( l.length / cols ); // take into account long lines
+                            });
+
+        jObj.attr({rows: linecount });
+    },
     
     changeTab: function(name, type){
+        this.searchString = undefined;
         if (type == "add") {
             this.showAddPopup();
         } else if (type == 'settings') {
@@ -189,6 +203,8 @@ Atomate = {
         this.name = name;
 
         var notes;
+
+        console.log(this.searchString);
 
         if (!this.searchString || !this.searchString.trim()) {
             this.searchString = undefined;
@@ -277,27 +293,35 @@ Atomate = {
         
     setupSearch: function(searchDiv, notes) {
         var this_ = this;
-        searchDiv.keyup(function(evt){ 
-                            var keycode = evt.which;
-                            var val = searchDiv.val();
-                            this_.searchString = val;
-                            
-                            if (keycode == 39 || keycode == 37 || keycode == 190){ return; }
+        searchDiv.keyup(function(evt) { 
+                            try {
+                                this_.resizeIt(searchDiv);
+                                var keycode = evt.which;
+                                var val = searchDiv.val();
+                                this_.searchString = val ? val.trim() : undefined;
+                                
+                                if (keycode == 39 || keycode == 37 || keycode == 190){ return; }
+                                
+                                //  up
+                                if (keycode == 38) {
+                                    // select type of entered data
+                                    return;
+                                }
+                                
+                                // down
+                                if (keycode == 40) {
+                                    // select type of entered data
+                                    return;
+                                }
+                                       
+                                if (!val || val.replace(/\n/g,'').length < 1) {                                    
+                                    this_.inputControlsDiv.hide();
 
-                            //  up
-                            if (keycode == 38) {
-                                // select type of entered data
-                                return;
-                            }
+                                } else if (this_.inputControlsDiv.is(':hidden')) {
+                                    this_.inputControlsDiv.show();
+                                }
 
-                            // down
-                            if (keycode == 40) {
-                                // select type of entered data
-                                return;
-                            }
-
-                            try {                                
-                                this_.updateNotesDisplay();
+                                this_.updateNotesDisplay(); 
                             } catch (x) {
                                 console.log(x);
                             }
