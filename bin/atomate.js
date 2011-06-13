@@ -26,7 +26,7 @@ Atomate = {
                       name:'Events',
                       type:'native'
                   }, {
-                      name:'Contacts',
+                      name:'People',
                       type:'native'
                   }, {
                       name:'javascript',
@@ -35,6 +35,8 @@ Atomate = {
                   }],
     initialize: function(params) {
         this.notes = this.buildTrieForNotes(params.redactedNotes.slice(0, 1000));
+        this.people = this.getPeople();
+        this.events = this.getEvents();
 
         this.tracking.initialize(params);
         this.tabs = params.tabs || this.defaultTabs;
@@ -51,6 +53,21 @@ Atomate = {
         this.setupMouseEvents();
         this.updateNotesDisplay(startingTab.name.toLowerCase(), startingTab.type);
         this.auth.initialize();
+    },
+
+    getPeople: function(){
+        return FBDATA.filter(function(d){
+                                       if (d.type == 'schemas.Person') { return true ;}
+                                       return false;                           
+                                  }).sort(function(a, b) {
+                        return a['first name'][0].toLowerCase() > b['first name'][0].toLowerCase();
+                    }).map(function(d){ d.searchTxt = "@" + (d['first name'] + d['last name']).toLowerCase(); return d; });
+    },
+
+    getEvents: function(){
+        return FBDATA.filter(function(d){
+                                 if (d.type == 'schemas.Event') {return true;} return false;                           
+                             }).map(function(d){ d.searchTxt = d.name.toLowerCase(); return d; });        
     },
 
     setupMouseEvents: function(){
@@ -150,7 +167,7 @@ Atomate = {
     },
 
     updateNotesDisplay: function(name, type, hashAtSearch) {
-        if (type == this.type){ return; }
+        if (name == this.name){ return; }
 
         type = type || this.type;
         name = name || this.name;
@@ -158,12 +175,17 @@ Atomate = {
         this.type = type;
         this.name = name;
 
-        var notes = this.notes;
+        var notes;
 
-        if (this.searchString) {            
+        if (!this.searchString || !this.searchString.trim()) {
+            this.searchString = undefined;
+        }
+
+        if (this.searchString) {
+            // search only current tab
             notes = this.getNotesForType(name, type);                
             notes = this.searchNotesSimple(this.searchString, notes, notes);
-            
+
         } else {
             notes = this.getNotesForType(name, type); 
         }
@@ -205,7 +227,12 @@ Atomate = {
         type = type || this.type;
         name = name || this.name;
 
-        if (type == 'native'){
+        if (type == 'native') {
+            if (name == 'people') {
+                return this.people;
+            } else if (name == 'events') {
+                return this.events;
+            }
             // todo
             return this.notes;            
         } else if (type == "search") {
@@ -261,14 +288,10 @@ Atomate = {
                                 return;
                             }
 
-                            if (val.length > 1) {
-                                // oops this doesnt work w/ spaces
-                                this_.notesList.html('');
-
-                                this_.addNotes(this_.searchNotesSimple(val, notes, notes));
-                            } else {
-                                this_.notesList.html('');
-                                this_.addNotes(notes);
+                            try {                                
+                                this_.updateNotesDisplay();
+                            } catch (x) {
+                                console.log(x);
                             }
                         });  
     },
@@ -277,13 +300,13 @@ Atomate = {
     searchNotesSimple: function(word, notes) {
         var this_ = this;
         return notes.filter(function(note){  
-                                if (note.contents.indexOf(word) > -1){
+                                var txt = note.contents ? note.contents : note.searchTxt;
+                                if (txt && txt.indexOf(word) > -1){
                                     return true;
                                 }
                                 return false;
                             });
     },
-
 
     searchNotes: function(word, notes) {
         var this_ = this;
@@ -315,13 +338,20 @@ Atomate = {
         jQuery('#container, header').css('opacity', 1);
     },
 
-
     addNotes: function(notes) {
         var this_ = this;
         if (!notes) {
             return;
         }
-        jQuery.fn.append.apply(this.notesList, notes.map(function(n){ return this_.getItemHtml(n); }));
+        jQuery.fn.append.apply(this.notesList, notes.map(function(n){ 
+                                                             if (!n.type) { // is a note -- temporary
+                                                                 return this_.getNoteHtml(n);
+                                                             } else if (n.type == "schemas.Person") {
+                                                                 return this_.getPersonHtml(n);
+                                                             } else if (n.type == "schemas.Event") {
+                                                                 return this_.getEventHtml(n);                                                                 
+                                                             }
+                                                         }));
         //this.notesList.html(notes.map(function(n){ return this_.getItemHtml(n); }).join(''));
     },
 
@@ -340,14 +370,49 @@ Atomate = {
         return text.replace(/(^|\s)#(\w+)/g, '$1<a class=\"hash_link\" data-id=\"#$2\">#$2</a>');
     },
 
-    getItemHtml: function(item) {
-        return "<li class=\"" +  item.category.toLowerCase() + "\">"
+    getPersonPhotoUrl: function(item) {
+        if (item.fbid) {
+            return "http://graph.facebook.com/" + item.fbid + "/picture?type=square";
+        }
+    },
+
+    getItemType: function(type){
+      return type.toLowerCase().replace('schemas.', '');
+    },
+
+    getPersonHtml: function(item) {
+        return "<li class=\"type_" + this.getItemType(item.type) + "\">"
+            + "<img class=\"profile_photo\" src=\"" + this.getPersonPhotoUrl(item) + "\" />"
+            + "<div class=\"text\"><a class=\"at_link\" data-id=\"" + item.searchTxt + "\">"  + item['first name'] + " " + item['last name'] + "</a></div>"
+            + "</li>";
+    },
+
+    getEventHtml: function(item) {
+        var link = item.source == "Facebook" ? "http://www.facebook.com/event.php?eid=" + item.id : "";
+
+        return "<li class=\"" + this.getItemType(item.type) + "\">"
+            + "<div class=\"text\">"
+            + (link ? "<a href=\"" + link + "\" target=\"_blank\">" : "")
+            + item.name
+            + (link ? "</a>" : "")
+            + "</div>"
+            + "<div class=\"context\">"
+            + "<span class=\"context_item\"><img src=\"../img/location.png\" /><a class=\"at_link\" data-id=\"" + item.location + "\">" + item.location + "</a></span>"
+            + "<span class=\"context_item\"><img src=\"../img/calendar.png\" />From <b>" + Atomate.util.getNaturalDate(item['start time'].val)
+            + "</b> to <b>" + Atomate.util.getNaturalDate(item['end time'].val) + "</b></span>"
+            + "</div>"
+            + "</li>";       
+    },
+
+    getNoteHtml: function(item) {
+        return "<li class=\"" + this.getItemType(item.category) + "\">"
             + "<div class=\"text\">"  + this.linkifyNote(item.contents) + "</div>"
             + "<div class=\"context\">"
             + "<span class=\"context_item\"><img src=\"../img/location.png\" />New York, NY</span>"
             + "<span class=\"context_item\"><img src=\"../img/calendar.png\" />Tomorrow 5:30pm</span>"
             + "</div>"
-            + "</li>";
-       
+            + "</li>";       
     }
 };
+
+

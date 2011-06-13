@@ -1139,7 +1139,10 @@ Atomate.util = {
 	    } catch(e) {
 	        this.log("synchronize.ajaxJSON " + e + " " + e.lineNumber + " " + e.fileName);
 	    }	    
-    }    
+    },
+    getNaturalDate: function(epoch) {
+        return new Date(epoch).format('ddd, mmmm dS, h:MM TT');
+    }
 };
 
 

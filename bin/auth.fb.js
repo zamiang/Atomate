@@ -191,14 +191,3 @@ Atomate.auth.Facebook =  {
         }    
     }
 };
-
-// Facebook initialize
-(function() {
-     var e = document.createElement('script');
-     e.type = 'text/javascript';
-     e.src = document.location.protocol +
-	     '//connect.facebook.net/en_GB/all.js';
-     e.async = true;
-     document.getElementById('fb-root').appendChild(e);
- }());
-

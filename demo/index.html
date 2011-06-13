@@ -179,12 +179,13 @@
         </footer>
 
         <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-        <script src="http://connect.facebook.net/en_US/all.js#appId=223573334338274&amp;xfbml=1"></script>
         <script src="../lib/jquery.min.js"></script>
         <script src="../lib/underscore.js"></script>
         <script src="../lib/backbone.js"></script>
+        <script src="../lib/dateformat.js"></script>
 
         <script src="js/test_data.js"></script>
+        <script src="js/fb_data.js"></script>
         <script src="js/redacted_notes.js"></script>
         <script src="../bin/atomate.js"></script>
         <script src="../bin/util.js"></script>
@@ -199,7 +200,19 @@
         <script src="../bin/auth.gcal.js"></script>
         <script src="../bin/auth.gcontacts.js"></script>
 
-        <script type="text/javascript;version=1.8">
+        <script>
+            /**
+            // Facebook initialize
+(function() {
+     var e = document.createElement('script');
+     e.type = 'text/javascript';
+     e.src = document.location.protocol +
+	     '//connect.facebook.net/en_GB/all.js';
+     e.async = true;
+     document.getElementById('fb-root').appendChild(e);
+ }());
+
+            // gdata initialize
       google.load("gdata", "2.x", {packages: ["calendar, contacts"]}); // nice of them not to put this in the docs
 
      // A google.gdata.calendar.CalendarService object that can be used to access
@@ -242,8 +255,7 @@
           var token = google.accounts.user.login(CONTACTS_FEED_URL);
           var token = google.accounts.user.login(EVENT_FEED_URL);
      };
-    </script>
-        <script type="text/javascript">
+
     // MIX PANEL
     var mpq = ["init", "d3950de9980b43abe44956d1511c6af5"];
     mixPanelInit = function() {
@@ -264,20 +276,19 @@
             return mpmetrics
         }
     };
-
-    jQuery(document).ready(function(){
-                               Atomate.initialize({
-                                                      trackingmodule: mpq,
-                                                      mixPanelInit: mixPanelInit,
-                                                      redactedNotes: REDACTED_NOTES
-                                                  });
-                           });
-        </script>
-        <script>
             var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]]; // Change UA-XXXXX-X to be your site's ID
             (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
             g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
             s.parentNode.insertBefore(g,s)}(document,"script"));
+        */
+
+     jQuery(document).ready(function(){
+                               Atomate.initialize({
+                                                      //trackingmodule: mpq,
+                                                      //mixPanelInit: mixPanelInit,
+                                                      redactedNotes: REDACTED_NOTES
+                                                  });
+                           });
         </script>
     </body>
 </html>

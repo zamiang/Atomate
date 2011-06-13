@@ -465,6 +465,12 @@ ul#tabs .settings:hover .settings_list {
     margin-left: -2px;
 }
 
+#notes li.type_person .text {
+    display:inline-block;
+    vertical-align:top;
+    padding-left:12px;
+}
+
 #notes li .context a {
     text-decoration:underline;
     color: #666;

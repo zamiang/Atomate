@@ -21,6 +21,10 @@ Atomate.tracking = {
         var trackingmodule = params.trackingmodule;
         var mixPanelInit = params.mixPanelInit;
 
+        if (!trackingmodule || !mixPanelInit) {
+            return;
+        }
+
         /**
          * example params for mix panel
          * 
