@@ -13,7 +13,9 @@ Atomate.templates = {
             return this.getPersonHtml(n);
         } else if (n.type == "schemas.Event") {
             return this.getEventHtml(n);                                                                 
-        }       
+        } else {
+            return this.getNoteHtml(n);
+        }
     },
     
     getCustomSearchHtml: function(name){
@@ -88,7 +90,7 @@ Atomate.templates = {
             + (link ? "</a>" : "")
             + "</div>"
             + "<div class=\"context\">"
-            + "<span class=\"context_item\"><img src=\"../img/location.png\" /><a class=\"at_link\" data-id=\"" + item.location + "\">" + item.location + "</a></span>"
+            + "<span class=\"context_item\"><img src=\"../img/location.png\" /><a class=\"at_link\" data-id=\"" + item.location.toLowerCase() + "\">" + item.location + "</a></span>"
             + "<span class=\"context_item\"><img src=\"../img/calendar.png\" />From <b>" + Atomate.util.getNaturalDate(item['start time'].val)
             + "</b> to <b>" + Atomate.util.getNaturalDate(item['end time'].val) + "</b></span>"
             + "</div>"

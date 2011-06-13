@@ -12,6 +12,11 @@
  */
 
 Atomate = {
+    notesList: jQuery("#notes"),
+    tabsList: jQuery('#tabs'),
+    searchDiv: jQuery('#main_input'),
+    settingsDiv: jQuery('#settings'),
+    notesCount: jQuery('#stats .num_notes .num'),
     defaultTabs: [{
                       name:'Now',
                       type:'native',
@@ -34,16 +39,12 @@ Atomate = {
                       search:'#javascript'
                   }],
     initialize: function(params) {
-        this.notes = params.redactedNotes.slice(0, 1000);
+        this.notes = params.redactedNotes.slice(0, 100);
         this.people = this.getPeople();
         this.events = this.getEvents();
 
         this.tracking.initialize(params);
         this.tabs = params.tabs || this.defaultTabs;
-        this.notesList = jQuery("#notes");
-        this.tabsList = jQuery('#tabs');
-        this.searchDiv = jQuery('#main_input');
-        this.notesCount = jQuery('#stats .num_notes .num');
 
         var startingTabName = this.getLocationHash();
         var startingTab = startingTabName.length > 1 ? this.getTabForTabName(startingTabName) : this.tabs[0]; 
@@ -53,21 +54,6 @@ Atomate = {
         this.setupMouseEvents();
         this.updateNotesDisplay(startingTab.name.toLowerCase(), startingTab.type);
         this.auth.initialize();
-    },
-
-    getPeople: function(){
-        return FBDATA.filter(function(d){
-                                       if (d.type == 'schemas.Person') { return true ;}
-                                       return false;                           
-                                  }).sort(function(a, b) {
-                        return a['first name'][0].toLowerCase() > b['first name'][0].toLowerCase();
-                    }).map(function(d){ d.searchTxt = "@" + (d['first name'] + d['last name']).toLowerCase(); return d; });
-    },
-
-    getEvents: function(){
-        return FBDATA.filter(function(d){
-                                 if (d.type == 'schemas.Event') {return true;} return false;                           
-                             }).map(function(d){ d.searchTxt = d.name.toLowerCase() + " " + d.location.toLowerCase(); return d; });        
     },
 
     setupMouseEvents: function(){
@@ -155,11 +141,7 @@ Atomate = {
                                       });
 
 
-        jQuery('.popup .remove').live('click', 
-                              function(item) {
-                                  this_.hidePopup();
-                              });                        
-
+        jQuery('.popup .remove').live('click', function(item) { this_.hidePopup(); });                                
     },
     
     changeTab: function(name, type){
@@ -168,10 +150,10 @@ Atomate = {
         } else if (type == 'settings') {
             this.tabsList.find('li').removeClass('selected');
             jQuery('#stats, #notes, #main_input').hide();
-            jQuery('#settings').show();
+            this.settingsDiv.show();
         } else {
             jQuery('#stats, #notes, #main_input').show();
-            jQuery('#settings').hide();
+            this.settingsDiv.hide();
 
             this.updateNotesDisplay(name, type);            
             this.tabsList.find('li').removeClass('selected');
@@ -321,6 +303,21 @@ Atomate = {
                             });
     },
 
+    getPeople: function(){
+        return FBDATA.filter(function(d){
+                                 if (d.type == 'schemas.Person') { return true ;}
+                                 return false;                           
+                             }).sort(function(a, b) {
+                                         return a['first name'][0].toLowerCase() > b['first name'][0].toLowerCase();
+                                     }).map(function(d){ d.searchTxt = "@" + (d['first name'] + d['last name']).toLowerCase(); return d; });
+    },
+    
+    getEvents: function(){
+        return FBDATA.filter(function(d){
+                                 if (d.type == 'schemas.Event') {return true;} return false;                           
+                             }).map(function(d){ d.searchTxt = d.name.toLowerCase() + " " + d.location.toLowerCase(); return d; });        
+    },
+    
     showPopup: function(id) {
         jQuery("#" + id).show();    
         jQuery('#container, header').css('opacity', 0.2);
@@ -334,15 +331,10 @@ Atomate = {
 
     addNotes: function(notes) {
         var this_ = this;
-        if (!notes) {
-            return;
-        }
-        jQuery.fn.append.apply(this.notesList, notes.map(function(n){ 
-                                                             return this_.templates.getItemHtml(n);
-                                                         }));
+        if (!notes) { return; }
+        jQuery.fn.append.apply(this.notesList, notes.map(function(n){ return this_.templates.getItemHtml(n); }));
     }
 };
-
 
 
 /**
