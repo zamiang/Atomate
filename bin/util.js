@@ -11,7 +11,19 @@ Atomate.util = {
     parent: Atomate,
     getCurrentLocation: function(cont,error){
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(cont, error);            
+            navigator.geolocation.getCurrentPosition(function(l) {
+                                                         if (l && l.coords) {
+                                                             jQuery.getJSON("http://maps.googleapis.com/maps/api/geocode/json", {
+                                                                                latlng:[l.coords.latitude,l.coords.longitude],
+                                                                                sensor:"true"                                                                            
+                                                                            }, function(response) {
+                                                                                console.log(response);
+                                                                                cont(location);
+                                                                            });
+                                                         } else {
+                                                             error(l);
+                                                         }
+                                                     }, error);            
         } else {
             error('not supported');            
         }
