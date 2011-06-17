@@ -208,86 +208,115 @@
         <script src="../bin/auth.gcontacts.js"></script>
 
         <script>
-            /**
-            // Facebook initialize
-(function() {
-     var e = document.createElement('script');
-     e.type = 'text/javascript';
-     e.src = document.location.protocol +
-	     '//connect.facebook.net/en_GB/all.js';
-     e.async = true;
-     document.getElementById('fb-root').appendChild(e);
- }());
-
-            // gdata initialize
-      google.load("gdata", "2.x", {packages: ["calendar, contacts"]}); // nice of them not to put this in the docs
-
-     // A google.gdata.calendar.CalendarService object that can be used to access
-     // private feed using AuthSub.
-     var calendarService;
-     var contactsService;
-
-     var EVENT_FEED_URL =  "http://www.google.com/calendar/feeds/"
-     var CONTACTS_FEED_URL = 'https://www.google.com/m8/feeds';
-
-      function showMessage(e) {
-          Atomate.auth.logProgress(e);
-      }
-
-      function error(e) {
-          Atomate.auth.logError(e);
-      }
-
-     function init() {
-         if (!google.accounts.user.checkLogin(EVENT_FEED_URL)){
-             login();
-         }
-
-         try {
-             calendarService = new google.gdata.calendar.CalendarService('Atomate.0.4');
-             contactsService = new google.gdata.contacts.ContactsService('Atomate.0.4');
-
-             GoogleCalendar.initialize();
-         }  catch(x){ alert(x); }
-     }
-
-     function handleError(e) {
-         error(e)
-         console.log(e.cause ? e.cause.statusText : e.message);
-     }
-
-     google.setOnLoadCallback(init);
-
-     function login() {
-          var token = google.accounts.user.login(CONTACTS_FEED_URL);
-          var token = google.accounts.user.login(EVENT_FEED_URL);
-     };
-
-    // MIX PANEL
-    var mpq = ["init", "d3950de9980b43abe44956d1511c6af5"];
-    mixPanelInit = function() {
-        try {
-            // TODO: email MixPanel about this - to run callbacks they require a global called 'mpmetrics'
-            mpmetrics = new MixpanelLib("d3950de9980b43abe44956d1511c6af5");
-            return mpmetrics
-        } catch(err) {
-            var null_fn = function () {};
-            mpmetrics = {
-                track: null_fn,
-                track_funnel: null_fn,
-                register: null_fn,
-                register_once: null_fn,
-                register_funnel: null_fn,
-                identify: null_fn
-            };
-            return mpmetrics
+    // Facebook initialize
+    if (window.location.origin != "file://") {
+        (function() {
+             var e = document.createElement('script');
+             e.type = 'text/javascript';
+             e.src = document.location.protocol +
+	             '//connect.facebook.net/en_GB/all.js';
+             e.async = true;
+             document.getElementById('fb-root').appendChild(e);
+         }());
+        
+        // it srsly hurts that all this google crap can't be in an external js file 
+        // gdata initialize
+        google.load("gdata", "2.x", {packages: ["calendar, contacts"]}); // nice of them not to put this in the docs
+        google.load("maps", "2", {"callback" : mapsLoaded});
+        
+        // A google.gdata.calendar.CalendarService object that can be used to access
+        // private feed using AuthSub.
+        var calendarService;
+        var contactsService;
+        var EVENT_FEED_URL =  "http://www.google.com/calendar/feeds/"
+        var CONTACTS_FEED_URL = 'https://www.google.com/m8/feeds';
+        
+        function showMessage(e) {
+            Atomate.auth.logProgress(e);
         }
-    };
-            var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]]; // Change UA-XXXXX-X to be your site's ID
-            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-            g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
-            s.parentNode.insertBefore(g,s)}(document,"script"));
-        */
+        
+        function error(e) {
+            Atomate.auth.logError(e);
+        }
+
+        function mapsLoaded() {
+            var browserSupportFlag
+
+            // Try W3C Geolocation (Preferred)
+            if(navigator.geolocation) {
+                browserSupportFlag = true;
+                navigator.geolocation.getCurrentPosition(function(position) {
+                                                             Atomate.currentLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+                                                             console.log(Atomate.currentLocation);
+                                                         }, function() {
+                                                             handleNoGeolocation(browserSupportFlag);
+                                                         });
+                // Browser doesn't support Geolocation
+            } else {
+                browserSupportFlag = false;
+                handleNoGeolocation(browserSupportFlag);
+            }
+
+            function handleNoGeolocation(errorFlag) {
+                if (errorFlag == true) {
+                    error("Geolocation service failed.");
+                } else {
+                    showMessage("Your browser doesn't support geolocation.");
+                }
+            }
+        }
+
+        function init() {
+            if (!google.accounts.user.checkLogin(EVENT_FEED_URL)){
+                login();
+            }
+
+            try {
+                calendarService = new google.gdata.calendar.CalendarService('Atomate.0.4');
+                contactsService = new google.gdata.contacts.ContactsService('Atomate.0.4');
+
+                GoogleCalendar.initialize();
+            }  catch(x){ alert(x); }
+        }
+
+        function handleError(e) {
+            error(e)
+            console.log(e.cause ? e.cause.statusText : e.message);
+        }
+
+        google.setOnLoadCallback(init);
+
+        function login() {
+            var token = google.accounts.user.login(CONTACTS_FEED_URL);
+            var token = google.accounts.user.login(EVENT_FEED_URL);
+        };
+    }
+/**
+// MIX PANEL
+var mpq = ["init", "d3950de9980b43abe44956d1511c6af5"];
+mixPanelInit = function() {
+    try {
+        // TODO: email MixPanel about this - to run callbacks they require a global called 'mpmetrics'
+        mpmetrics = new MixpanelLib("d3950de9980b43abe44956d1511c6af5");
+        return mpmetrics
+    } catch(err) {
+        var null_fn = function () {};
+        mpmetrics = {
+            track: null_fn,
+            track_funnel: null_fn,
+            register: null_fn,
+            register_once: null_fn,
+            register_funnel: null_fn,
+            identify: null_fn
+        };
+        return mpmetrics
+    }
+};
+var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]]; // Change UA-XXXXX-X to be your site's ID
+(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+               g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
+               s.parentNode.insertBefore(g,s)}(document,"script"));
+*/
 
      jQuery(document).ready(function(){
                                Atomate.initialize({
