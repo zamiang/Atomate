@@ -17,7 +17,6 @@ Atomate = {
     searchDiv: jQuery('#main_input'),
     settingsDiv: jQuery('#settings'),
     inputControlsDiv: jQuery('#input .controls'),
-    notesCount: jQuery('#stats .num_notes .num'),
     defaultTabs: [{
                       name:'Now',
                       type:'native',
@@ -85,8 +84,6 @@ Atomate = {
                                       function(evt) {
                                           var jObj = jQuery(this);
                                           jObj.toggleClass('selected');
-                                          
-                                          this_.updateSelectedCount(this_.notesList.find('.selected').length);
                                       });
 
         this.notesList.find('li .hash_link, li .at_link').live('click', 
@@ -163,10 +160,10 @@ Atomate = {
             this.showAddPopup();
         } else if (type == 'settings') {
             this.tabsList.find('li').removeClass('selected');
-            jQuery('#stats, #notes, #main_input').hide();
+            jQuery('#notes, #main_input').hide();
             this.settingsDiv.show();
         } else {
-            jQuery('#stats, #notes, #main_input').show();
+            jQuery('#notes, #main_input').show();
             this.settingsDiv.hide();
 
             this.updateNotesDisplay(name, type);            
@@ -225,8 +222,6 @@ Atomate = {
         }
 
         this.addNotes(notes);
-        this.updateNotesCount(notes);
-        this.updateSelectedCount(0);
         this.notesList.scrollTop(0); 
     },
 
@@ -237,18 +232,6 @@ Atomate = {
     removeCustomSearch: function() {
         this.searchString = "";
         this.updateNotesDisplay();
-    },
-
-    updateSelectedCount: function(num){
-      jQuery('#stats .actions .num').text(num);  
-    },
-    
-    updateNotesCount: function(notes){
-        if (!notes) {
-            return this.notesCount.text(0);
-        }
-        var num = notes.length;
-        this.notesCount.text(num);
     },
 
     getNotesForType: function(name, type) {
