@@ -68,6 +68,7 @@ Atomate = {
                                           return false;
                                       });                        
 
+        /*
         this.tabsList.find('li .remove').live('click', 
                                       function(evt) {
                                           evt.stopPropagation();
@@ -79,6 +80,7 @@ Atomate = {
                                           return false;
                                           // todo - SAVE that the user removed this
                                       });                        
+         */
 
         this.notesList.find('li').live('click', 
                                       function(evt) {
@@ -118,7 +120,6 @@ Atomate = {
         this.notesList.find('li .actions .item_edit').live('click', 
                                                              function(evt){
                                                                  evt.stopPropagation();                                                       
-                                                                 console.log(jQuery(this));
                                                                  // todo - intersect w/ data and call delete on those items
                                                                  return false;
                                                              });
@@ -179,13 +180,18 @@ Atomate = {
     buildTabs: function(tabs, startingTab) {
         var this_ = this;
 
+
+        jQuery.fn.append.apply(jQuery('#sort_tabs'), tabs.map(function(tab){
+                                                                  return this_.templates.getTabHtml(tab, startingTab, true);
+                                                              }));        
+        
         tabs.push({
                       name:'+',
                       type:'add'
                   });
         
         jQuery.fn.append.apply(this.tabsList, tabs.map(function(tab){
-                                                           return this_.templates.getTabHtml(tab, startingTab);
+                                                           return this_.templates.getTabHtml(tab, startingTab, false);
                                                        }));        
         //todo make draggable
     },
@@ -200,8 +206,6 @@ Atomate = {
         this.name = name;
 
         var notes;
-
-        console.log(this.searchString);
 
         if (!this.searchString || !this.searchString.trim()) {
             this.searchString = undefined;

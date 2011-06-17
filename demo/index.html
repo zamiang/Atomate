@@ -144,9 +144,12 @@
         </div>
 
         <ul id="add_tab" class="popup form">
-            <img class="remove" src="../img/remove.png">
-            <h1>Add a tab</h1>
-            <div class="form_container">
+            <img class="remove top_remove" src="../img/remove.png">
+            <h1>Edit your tabs</h1>
+            <ul id="sort_tabs"></ul>
+
+            <div class="add_tab form_container">
+                <h1>Add a tab</h1><br />
                 <label>Use an Atomate tab:</label>
 
                 <select>
@@ -160,10 +163,11 @@
             <div class="form_container">
                 <label>Save a search:</label>
                 <input id="id_tab_search" type="text" />
+                <input id="id_tab_add_submit" type="submit" value="Add a tab" />
             </div>
 
             <div class="form_spacer">
-                <input id="id_tab_add_submit" type="submit" value="Add a Tab" />
+                <input id="id_tab_add_submit" type="submit" value="Save" />
             </div>
         </ul>
 

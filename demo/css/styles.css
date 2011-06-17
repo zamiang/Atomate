@@ -403,7 +403,7 @@ ul#tabs .settings:hover .settings_list {
     border-top: 1px solid #8FAAD9;
     background: -webkit-linear-gradient(left, #BBCEE9, #BBCEE9 97%, #AABEDC);
     padding:2px;
-    margin-top:41px;
+    margin-top:35px;
 }
 
 #notes {
@@ -604,11 +604,11 @@ input[type="submit"] {
 }
 
 #main_input {
-    width: auto;
+    width: 94.5%;
 }
 
 #input {
-    margin: 18px;
+    margin: 12px;
 }
 
 #input .controls {
@@ -771,7 +771,7 @@ input[type="submit"] {
     display:none;
 }
 
-.popup .remove {
+.popup .top_remove {
     position:absolute;
     right:20px;
     top:20px;
@@ -780,6 +780,32 @@ input[type="submit"] {
 
 .popup .remove:hover {
     opacity:0.6;
+}
+
+.popup #sort_tabs {
+    background:#fff;
+    border:1px solid #ddd;
+    list-style:none;
+    margin:0px;
+    margin-top:6px;
+    margin-bottom:6px;
+}
+
+.popup #sort_tabs li:last-child {
+    border-bottom:0px solid #ddd;
+}
+
+.popup #sort_tabs li {
+    padding:6px;
+    list-style:none;
+    margin:0px;
+    border-bottom:1px solid #ddd;
+    cursor:pointer;
+}
+
+.popup #sort_tabs li .remove {
+    float:right;
+    cursor:pointer;
 }
 
 #progress {

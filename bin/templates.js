@@ -52,13 +52,13 @@ Atomate.templates = {
         return tab.name.toLowerCase();
     },
     
-    getTabHtml: function(tab, startingTab) { 
+    getTabHtml: function(tab, startingTab, showRemove) { 
         return "<li data-type=\"" + tab.type + "\""
             + " data-name=\"" + this.getTabName(tab) + "\" class=\"tab_" + this.getTabName(tab)
             + (startingTab.name.toLowerCase() == tab.name.toLowerCase() ? ' selected' : "")
             + "\">" 
             + "<a href=\"#" + tab.name.toLowerCase() + "\">" + tab.name + "</a>"
-            + "<img class=\"remove\" src=\"../img/remove.png\" />"
+            + (showRemove ? "<img class=\"remove\" src=\"../img/remove.png\" />" : "")
             + "</li>";        
     },
 
