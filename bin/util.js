@@ -9,6 +9,13 @@
 
 Atomate.util = {
     parent: Atomate,
+    getCurrentLocation: function(cont,error){
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(cont, error);            
+        } else {
+            error('not supported');            
+        }
+    },
     log:function(x) {
 	    try { netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");	} catch(e) { }
 	    var aConsoleService = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);

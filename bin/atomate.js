@@ -48,7 +48,12 @@ Atomate = {
 
         var startingTabName = this.getLocationHash();
         var startingTab = startingTabName.length > 1 ? this.getTabForTabName(startingTabName) : this.tabs[0]; 
-        
+
+        this.util.getCurrentLocation(function(s){
+                                          console.log(s);
+                                     }, function(e){
+                                         console.log(e);
+                                     });
         this.buildTabs(this.tabs, startingTab);
         this.setupSearch(this.searchDiv, this.notes);
         this.setupMouseEvents();
@@ -314,7 +319,6 @@ Atomate = {
                             }
                         });  
     },
-
 
     searchNotesSimple: function(word, notes) {
         var this_ = this;
