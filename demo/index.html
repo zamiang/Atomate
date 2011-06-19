@@ -222,7 +222,7 @@
         // it srsly hurts that all this google crap can't be in an external js file 
         // gdata initialize
         google.load("gdata", "2.x", {packages: ["calendar, contacts"]}); // nice of them not to put this in the docs
-        google.load("maps", "2", {"callback" : mapsLoaded});
+        google.load("maps", "3.x", {"callback" : mapsLoaded});
         
         // A google.gdata.calendar.CalendarService object that can be used to access
         // private feed using AuthSub.
