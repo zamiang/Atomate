@@ -181,7 +181,9 @@ h2 {
     text-decoration: none;
     width: auto;
     line-height: 138%;
-    font-weight: normal;
+    font-weight: bold;
+    padding-left: 50px;
+
 }
 
 h3 {
@@ -194,6 +196,7 @@ h3 {
     padding-top: 0px;
     background: #F3F3F3;
     color: #555;
+    padding-left: 50px;
 }
 
 h4 {
@@ -370,19 +373,19 @@ ul li {
 }
 
 .logo {
-    height: 106px;
-    margin-bottom: -34px;
-    margin-left: 18px;
-    margin-top: 25px;
-    width: auto;
-    margin-right:12px;
+height: 95px;
+margin-bottom: -33px;
+margin-left: -4px;
+margin-top: 25px;
+width: auto;
+margin-right: 10px;
 }
 
 .coming_soon {
     position:absolute;
     right:-1px;
     top:-1px;
-    top: 113px;
+    top: 103px;
 }
 
 .downloadlink {
