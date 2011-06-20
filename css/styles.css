@@ -158,7 +158,7 @@ h1 {
     margin:0;
     padding:0 8px;
     text-decoration:none;
-    font-size:18px;
+    font-size:16px;
     font-weight:normal;
     margin-bottom:12px;
 }
@@ -166,15 +166,14 @@ h1 {
 h1 b {
     display:block;
     font-weight:bold;
-    font-size:38px;
+    font-size:32px;
     color:#222;
 }
 
 h2 {
     background: #F3F3F3;
     display: block;
-    font-size: 18pt;
-    font-weight: bold;
+    font-size: 18px;
     line-height: 19px;
     margin: 0px;
     padding: 28px;
@@ -186,14 +185,15 @@ h2 {
 }
 
 h3 {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: normal;
     line-height: 148%;
     margin: 0;
     text-decoration: none;
     padding: 28px;
-    padding-top:0px;
+    padding-top: 0px;
     background: #F3F3F3;
+    color: #555;
 }
 
 h4 {
@@ -201,7 +201,7 @@ h4 {
     display:inline-block;
     font-weight: bold;
     color: #120007;;
-    font-size: 14px;
+    font-size: 18px;
     border: none;
     margin: 0px;
     padding: 0px;
@@ -221,9 +221,11 @@ ul {
 }
 
 form {
-    padding:20px;
-    background:lightblue;
-
+    padding: 10px;
+    border-bottom: 1px solid #DDD;
+    margin-bottom: 13px;
+    padding-bottom: 23px;
+    text-align:center;
 }
 
 #bg {
@@ -245,7 +247,7 @@ form {
 
 .content {
     padding:0px;
-    width:775px;
+    width:740px;
     z-index:10;
     margin-left: auto;
     margin-right: auto;
@@ -302,11 +304,12 @@ form {
 }
 
 .maincontent h5 {
-   line-height:152%;
+    color:#222;
+    line-height:152%;
 }
 
 .maincontent p {
-/*    margin-bottom:19px;*/
+    margin-bottom:19px;
     font-size:12px;
     color:#444;
 }
@@ -326,6 +329,7 @@ input[type="text"] {
     -webkit-box-shadow: 0 1px 1px #E1E3E7;
     -moz-box-shadow: 0 1px 1px #E1E3E7;
     font-size: 14px;
+    margin-left:4px;
 }
 
 input[type="submit"] {
@@ -338,18 +342,19 @@ input[type="submit"] {
     -moz-text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.35);
     -webkit-text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.35);
     text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.35);
+
     border: 1px solid #3B5615;
     color: white;
     cursor: pointer;
     display: inline-block;
-    font-size: 16px;
+    font-size: 20px;
     line-height: 148%;
     font-weight: bold;
-    height: 16px;
-    margin: 1em 0 0;
+    margin: 0px;
+    margin-left: 9px;
     text-align: center;
     text-decoration: none;
-    padding: 8px 24px 29px;
+    padding: 8px 24px 7px;
     background: #6AAA0B;
 }
 
@@ -366,7 +371,7 @@ ul li {
 
 .logo {
     height: 106px;
-    margin-bottom: -35px;
+    margin-bottom: -34px;
     margin-left: 18px;
     margin-top: 25px;
     width: auto;
