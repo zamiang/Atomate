@@ -123,11 +123,15 @@ html, body {
     color:#222222;
     font-family:'Lucida Grande', Tahoma, Verdana, Arial, sans-serif;
     font-size:75%;
-    background-color:white;
-    width: 840px;
+/*    background-color:white;*/
+    width:auto;
     text-align: left;
     margin-left: auto;
     margin-right: auto;
+}
+
+html {
+    overflow:hidden;
 }
 
 
@@ -154,17 +158,27 @@ h1 {
     margin:0;
     padding:0 8px;
     text-decoration:none;
+    font-size:18px;
+    font-weight:normal;
+    margin-bottom:12px;
+}
+
+h1 b {
+    display:block;
+    font-weight:bold;
+    font-size:38px;
+    color:#222;
 }
 
 h2 {
     background: #F3F3F3;
-    color: #333;
     display: block;
-    font-size: 19pt;
+    font-size: 18pt;
     font-weight: bold;
     line-height: 19px;
     margin: 0px;
-    padding: 19px;
+    padding: 28px;
+    padding-bottom:8px;
     text-decoration: none;
     width: auto;
     line-height: 138%;
@@ -172,17 +186,19 @@ h2 {
 }
 
 h3 {
-    color:#333333;
-    font-size:28px;
-    font-weight:normal;
-    line-height:21px;
-    margin:0;
-    text-decoration:none;
-    margin-bottom:18px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 148%;
+    margin: 0;
+    text-decoration: none;
+    padding: 28px;
+    padding-top:0px;
+    background: #F3F3F3;
 }
 
 h4 {
     text-decoration: none;
+    display:inline-block;
     font-weight: bold;
     color: #120007;;
     font-size: 14px;
@@ -204,21 +220,36 @@ ul {
     vertical-align: top;
 }
 
-.subscribe form {
+form {
     padding:20px;
     background:lightblue;
 
 }
 
+#bg {
+    position:absolute;
+    top:0px;
+    left:0px;
+    z-index:0;
+    width:100%;
+    height:100%;
+}
+
+
 .social {
     position:absolute;
     top:10px;
     right:10px;
+    z-index:10;
 }
 
 .content {
     padding:0px;
-    width:840px;
+    width:775px;
+    z-index:10;
+    margin-left: auto;
+    margin-right: auto;
+    position:relative;
 }
 
 
@@ -249,10 +280,14 @@ ul {
 
 .shadowedcontent {
     margin-bottom: 28px;
+    border: 1px solid #DDD;
+    background: rgba(255, 255, 255, 0.98);
+/*    position:relative;*/
+    /*
     -moz-box-shadow: -1px 6px 16px #DDD;
     -webkit-box-shadow: -1px 6px 16px #DDD;
     box-shadow: -1px 6px 16px #DDD;
-    border: 1px solid #DDD;
+    */
 }
 
 .video {
@@ -261,7 +296,7 @@ ul {
     height:250px;
 }
 .maincontent {
-    padding:40px;
+    padding:28px;
     font-size:15px;
     line-height:142%;
 }
@@ -271,8 +306,7 @@ ul {
 }
 
 .maincontent p {
-    width:70%;
-    margin-bottom:29px;
+/*    margin-bottom:19px;*/
     font-size:12px;
     color:#444;
 }
@@ -307,7 +341,7 @@ input[type="submit"] {
     border: 1px solid #3B5615;
     color: white;
     cursor: pointer;
-    display: block;
+    display: inline-block;
     font-size: 16px;
     line-height: 148%;
     font-weight: bold;
@@ -331,11 +365,19 @@ ul li {
 }
 
 .logo {
-    height:auto;
-    margin-bottom:-29px;
-    margin-left:32px;
-    margin-top:-11px;
-    width:auto;
+    height: 106px;
+    margin-bottom: -35px;
+    margin-left: 18px;
+    margin-top: 25px;
+    width: auto;
+    margin-right:12px;
+}
+
+.coming_soon {
+    position:absolute;
+    right:-1px;
+    top:-1px;
+    top: 113px;
 }
 
 .downloadlink {
