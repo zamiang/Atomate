@@ -182,6 +182,7 @@
 
         <script type="text/javascript" src="http://www.google.com/jsapi"></script>
         <script src="../lib/jquery.min.js"></script>
+        <script src="../lib/jquery.ui.min.js"></script>
         <script src="../lib/underscore.js"></script>
         <script src="../lib/backbone.js"></script>
         <script src="../lib/dateformat.js"></script>
@@ -280,7 +281,7 @@
 
         function init() {
             // TEMPORARY 
-            //return;
+            return;
 
             if (google.accounts && !google.accounts.user.checkLogin(EVENT_FEED_URL + " " + CONTACTS_FEED_URL + " " + EVENT_FEED_URL2 + " " + CONTACTS_FEED_URL2)){
                 login();

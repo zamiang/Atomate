@@ -122,10 +122,8 @@ Atomate = {
 
 
         jQuery('#delete_notes').click(function() {  
-                                          var notes = this_.notesList.find('li.selected');
-                                          
+                                          var notes = this_.notesList.find('li.selected');                                         
                                           // todo - intersect w/ data and call delete on those items
-
                                           notes.slideUp();
                                       });
 
@@ -145,9 +143,9 @@ Atomate = {
         var linecount = 0;
 
         str.split("\n").map(function(l) {
-					            linecount += 1 + Math.floor( l.length / cols ); // take into account long lines
-                            });
-
+		linecount += 1 + Math.floor( l.length / cols ); // take into account long lines
+	    });
+	
         jObj.attr({rows: linecount });
     },
     
@@ -189,7 +187,7 @@ Atomate = {
         jQuery.fn.append.apply(this.tabsList, tabs.map(function(tab){
                                                            return this_.templates.getTabHtml(tab, startingTab, false);
                                                        }));        
-        //todo make draggable
+        //todo make draggable / sortable
     },
 
     updateNotesDisplay: function(name, type, hashAtSearch) {
