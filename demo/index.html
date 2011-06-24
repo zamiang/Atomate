@@ -264,11 +264,11 @@
         // private feed using AuthSub.
         var CalendarService;
         var ContactsService;
-        //var EVENT_FEED_URL =  "http://www.google.com/calendar/feeds/";
-        var EVENT_FEED_URL = "http://www.google.com/calendar/feeds/default/allcalendars/full";
+        var EVENT_FEED_URL =  "http://www.google.com/calendar/feeds/";
+        var EVENT_FEED_URL2 = "http://www.google.com/calendar/feeds/default/allcalendars/full";
 
-        //var CONTACTS_FEED_URL = "https://www.google.com/m8/feeds";
-        var CONTACTS_FEED_URL = "https://www.google.com/m8/feeds/contacts/default/full";
+        var CONTACTS_FEED_URL = "https://www.google.com/m8/feeds/";
+        var CONTACTS_FEED_URL2 = "https://www.google.com/m8/feeds/contacts/default/full";
 
         function showMessage(e) {
             Atomate.auth.logProgress(e);
@@ -280,14 +280,9 @@
 
         function init() {
             // TEMPORARY 
-            return;
+            //return;
 
-            // sometimes google.accounts is undefined?
-            if (google.accounts && !google.accounts.user.checkLogin(EVENT_FEED_URL)){
-                login();
-            }
-
-            if (google.accounts && !google.accounts.user.checkLogin(CONTACTS_FEED_URL)){
+            if (google.accounts && !google.accounts.user.checkLogin(EVENT_FEED_URL + " " + CONTACTS_FEED_URL + " " + EVENT_FEED_URL2 + " " + CONTACTS_FEED_URL2)){
                 login();
             }
 
@@ -311,8 +306,7 @@
         google.setOnLoadCallback(init);
 
         function login() {
-            var token = google.accounts.user.login(CONTACTS_FEED_URL);
-            var token = google.accounts.user.login(EVENT_FEED_URL);
+            token = google.accounts.user.login(EVENT_FEED_URL + " " + CONTACTS_FEED_URL + " " + EVENT_FEED_URL2 + " " + CONTACTS_FEED_URL2);
         };
     }
 /**
