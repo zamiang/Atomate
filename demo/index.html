@@ -216,6 +216,40 @@
              document.getElementById('fb-root').appendChild(e);
          }());
 
+/**
+// MIX PANEL
+var mpq = ["init", "d3950de9980b43abe44956d1511c6af5"];
+mixPanelInit = function() {
+    try {
+        // TODO: email MixPanel about this - to run callbacks they require a global called 'mpmetrics'
+        mpmetrics = new MixpanelLib("d3950de9980b43abe44956d1511c6af5");
+        return mpmetrics
+    } catch(err) {
+        var null_fn = function () {};
+        mpmetrics = {
+            track: null_fn,
+            track_funnel: null_fn,
+            register: null_fn,
+            register_once: null_fn,
+            register_funnel: null_fn,
+            identify: null_fn
+        };
+        return mpmetrics
+    }
+};
+var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]]; // Change UA-XXXXX-X to be your site's ID
+(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+               g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
+               s.parentNode.insertBefore(g,s)}(document,"script"));
+*/
+
+     jQuery(document).ready(function(){
+                               Atomate.initialize({
+                                                      //trackingmodule: mpq,
+                                                      //mixPanelInit: mixPanelInit,
+                                                      redactedNotes: REDACTED_NOTES
+                                                  });
+                           });
 
         function mapsLoaded() {
             var browserSupportFlag
@@ -310,40 +344,6 @@
             token = google.accounts.user.login(EVENT_FEED_URL + " " + CONTACTS_FEED_URL + " " + EVENT_FEED_URL2 + " " + CONTACTS_FEED_URL2);
         };
     }
-/**
-// MIX PANEL
-var mpq = ["init", "d3950de9980b43abe44956d1511c6af5"];
-mixPanelInit = function() {
-    try {
-        // TODO: email MixPanel about this - to run callbacks they require a global called 'mpmetrics'
-        mpmetrics = new MixpanelLib("d3950de9980b43abe44956d1511c6af5");
-        return mpmetrics
-    } catch(err) {
-        var null_fn = function () {};
-        mpmetrics = {
-            track: null_fn,
-            track_funnel: null_fn,
-            register: null_fn,
-            register_once: null_fn,
-            register_funnel: null_fn,
-            identify: null_fn
-        };
-        return mpmetrics
-    }
-};
-var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]]; // Change UA-XXXXX-X to be your site's ID
-(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-               g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
-               s.parentNode.insertBefore(g,s)}(document,"script"));
-*/
-
-     jQuery(document).ready(function(){
-                               Atomate.initialize({
-                                                      //trackingmodule: mpq,
-                                                      //mixPanelInit: mixPanelInit,
-                                                      redactedNotes: REDACTED_NOTES
-                                                  });
-                           });
         </script>
     </body>
 </html>

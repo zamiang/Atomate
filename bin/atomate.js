@@ -278,7 +278,7 @@ Atomate = {
                             try {
                                 this_.resizeIt(searchDiv);
                                 var keycode = evt.which;
-                                var val = searchDiv.val();
+                                var val = jQuery(this).val();
                                 this_.searchString = val ? val.trim() : undefined;
                                 
                                 if (keycode == 39 || keycode == 37 || keycode == 190){ return; }
@@ -302,7 +302,33 @@ Atomate = {
                                     this_.inputControlsDiv.show();
                                 }
 
-                                this_.updateNotesDisplay(); 
+
+				// begin search code based on tags and names
+				if (keycode == 32) {
+				    this_.acMode = undefined;
+				    //this_.autocomplete.hide();
+
+				    // '@' key was pressed
+				} else if (evt.shiftKey && keycode == 50) {
+				    this_.acMode = 'person';
+
+				    // '#' key was pressed
+				} else if (evt.shiftKey && keycode == 51) {
+				    this_.acMode = 'tab';
+
+				} else if (this_.acMode) {
+				    var e = this.jquery ? this[0] : this;
+				    var m = e.selectionEnd;  
+				    var maxLength = val.slice(0, m).length;
+				    var stepBack = 0;
+				    while (val[m - stepBack] != " " && val.slice(m - stepBack, m).length < maxLength) {
+					stepBack++;
+				    }
+				    var search = val.slice(m - stepBack, m);
+				}
+				
+				// this searches the notes
+                                // this_.updateNotesDisplay(); 
                             } catch (x) {
                                 console.log(x);
                             }
@@ -319,14 +345,14 @@ Atomate = {
                                 return false;
                             });
     },
-
+    
     getPeople: function(){
         return FBDATA.filter(function(d){
-                                 if (d.type == 'schemas.Person') { return true ;}
-                                 return false;                           
-                             }).sort(function(a, b) {
-                                         return a['first name'][0].toLowerCase() > b['first name'][0].toLowerCase();
-                                     }).map(function(d){ d.searchTxt = "@" + (d['first name'] + d['last name']).toLowerCase(); return d; });
+		if (d.type == 'schemas.Person') { return true ;}
+		return false;                           
+	    }).sort(function(a, b) {
+		    return a['first name'][0].toLowerCase() > b['first name'][0].toLowerCase();
+		}).map(function(d){ d.searchTxt = "@" + (d['first name'] + d['last name']).toLowerCase(); return d; });
     },
     
     getEvents: function(){
