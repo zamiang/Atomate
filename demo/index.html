@@ -223,9 +223,19 @@
             if (navigator.geolocation) {
                 browserSupportFlag = true;
                 navigator.geolocation.getCurrentPosition(function(position) {
-                                                             Atomate.currentLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-                                                             console.log(Atomate.currentLocation);
-                                                             console.log('winnnnnnnnnnnnnnnnin');
+                                                             var geocoder = new google.maps.Geocoder();
+                                                             var latlng =  new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+
+                                                             geocoder.geocode({'latLng': latlng}, function(results, status) {
+                                                                 if (status == google.maps.GeocoderStatus.OK) {
+                                                                     //console.log(results);
+                                                                     var loc = results[0]; // todo: be smarter about this
+                                                                     Atomate.setLocationFromGeocode(loc,latlng); 
+
+                                                                 } else {
+                                                                     handleError("Geocoder failed due to: " + status);
+                                                                 }
+                                                             });
                                                          }, function() {
                                                              handleNoGeolocation(browserSupportFlag);
                                                          });
@@ -254,10 +264,10 @@
         // private feed using AuthSub.
         var CalendarService;
         var ContactsService;
-        var EVENT_FEED_URL =  "http://www.google.com/calendar/feeds/";
+        //var EVENT_FEED_URL =  "http://www.google.com/calendar/feeds/";
         var EVENT_FEED_URL = "http://www.google.com/calendar/feeds/default/allcalendars/full";
 
-        var CONTACTS_FEED_URL = "https://www.google.com/m8/feeds";
+        //var CONTACTS_FEED_URL = "https://www.google.com/m8/feeds";
         var CONTACTS_FEED_URL = "https://www.google.com/m8/feeds/contacts/default/full";
 
         function showMessage(e) {
@@ -269,6 +279,9 @@
         }
 
         function init() {
+            // TEMPORARY 
+            return;
+
             // sometimes google.accounts is undefined?
             if (google.accounts && !google.accounts.user.checkLogin(EVENT_FEED_URL)){
                 login();

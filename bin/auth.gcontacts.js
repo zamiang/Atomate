@@ -65,7 +65,6 @@ Atomate.auth.gcontacts = {
 		parent.saveItem(contact);
 		return contact;
 	    });
-	//console.log(contacts);
 	showMessage('just saved ' + contacts.length + ' contacts from Google Contacts');
     }
 };

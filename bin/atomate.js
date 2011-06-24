@@ -50,16 +50,20 @@ Atomate = {
         var startingTab = startingTabName.length > 1 ? this.getTabForTabName(startingTabName) : this.tabs[0]; 
 	if (!startingTab){ startingTab = this.tabs[0] } // incase the url gets screwy w/ all the redirects
 
-        this.util.getCurrentLocation(function(s){                                         
-                                          console.log(s);
-                                     }, function(e){
-                                         console.log(e);
-                                     });
         this.buildTabs(this.tabs, startingTab);
         this.setupSearch(this.searchDiv, this.notes);
         this.setupMouseEvents();
         this.updateNotesDisplay(startingTab.name.toLowerCase(), startingTab.type);
         this.auth.initialize();
+    },
+
+    setLocationFromGeocode: function(loc, queryLatLng){
+	this.currentLocation = {	    
+	    latlng: {lat: loc.geometry.location.lat(), lng: loc.geometry.location.lng()},
+	    queryLatlng: {lat: queryLatLng.lat(), lng: queryLatLng.lng()},
+	    name: loc.formatted_address,
+	    type: loc.type
+	}
     },
 
     setupMouseEvents: function(){
@@ -73,20 +77,6 @@ Atomate = {
                                           Atomate.changeTab(name, type);
                                           return false;
                                       });                        
-
-        /*
-        this.tabsList.find('li .remove').live('click', 
-                                      function(evt) {
-                                          evt.stopPropagation();
-                                          var jObj = jQuery(this).parent();
-                                          var type = jObj.attr('class');
-                                          type = type.replace('tab_', '');
-
-                                          jObj.hide();
-                                          return false;
-                                          // todo - SAVE that the user removed this
-                                      });                        
-         */
 
         this.notesList.find('li').live('click', 
                                       function(evt) {
