@@ -24,12 +24,6 @@
             <img style="position: absolute; top: 0; left: 0; border: 0;" src="https://d3nwyuy0nl342s.cloudfront.net/img/5d21241b64dc708fcbb701f68f72f41e9f1fadd6/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f7265645f6161303030302e706e67" alt="Fork me on GitHub">
         </a>
 
-        <!--
-            <div class="social">
-                <fb:like href="http://atomate.me" send="true" layout="button_count" width="125" show_faces="true" font="lucida grande"></fb:like>
-            </div>
-        -->
-
         <p><fb:login-button autologoutlink="true"></fb:login-button></p>
 
         <header>
@@ -221,35 +215,17 @@
              document.getElementById('fb-root').appendChild(e);
          }());
 
-        // it srsly hurts that all this google crap can't be in an external js file
-        // gdata initialize
-        google.load("gdata", "2.x", {packages: ["calendar, contacts"]}); // nice of them not to put this in the docs
-        google.load("maps", "3.x", {"callback" : mapsLoaded});
-
-        // A google.gdata.calendar.CalendarService object that can be used to access
-        // private feed using AuthSub.
-        var calendarService;
-        var contactsService;
-        var EVENT_FEED_URL =  "http://www.google.com/calendar/feeds/"
-        var CONTACTS_FEED_URL = 'https://www.google.com/m8/feeds';
-
-        function showMessage(e) {
-            Atomate.auth.logProgress(e);
-        }
-
-        function error(e) {
-            Atomate.auth.logError(e);
-        }
 
         function mapsLoaded() {
             var browserSupportFlag
 
             // Try W3C Geolocation (Preferred)
-            if(navigator.geolocation) {
+            if (navigator.geolocation) {
                 browserSupportFlag = true;
                 navigator.geolocation.getCurrentPosition(function(position) {
                                                              Atomate.currentLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
                                                              console.log(Atomate.currentLocation);
+                                                             console.log('winnnnnnnnnnnnnnnnin');
                                                          }, function() {
                                                              handleNoGeolocation(browserSupportFlag);
                                                          });
@@ -268,16 +244,49 @@
             }
         }
 
+
+        // it srsly hurts that all this google crap can't be in an external js file
+        // gdata initialize
+        google.load("gdata", "2.x", {packages: ["contacts, calendar"]}); // nice of them not to put this in the docs
+        google.load("maps", "3.x", {"callback" : mapsLoaded, "other_params" : "sensor=false"});
+
+        // A google.gdata.calendar.CalendarService object that can be used to access
+        // private feed using AuthSub.
+        var CalendarService;
+        var ContactsService;
+        var EVENT_FEED_URL =  "http://www.google.com/calendar/feeds/";
+        var EVENT_FEED_URL = "http://www.google.com/calendar/feeds/default/allcalendars/full";
+
+        var CONTACTS_FEED_URL = "https://www.google.com/m8/feeds";
+        var CONTACTS_FEED_URL = "https://www.google.com/m8/feeds/contacts/default/full";
+
+        function showMessage(e) {
+            Atomate.auth.logProgress(e);
+        }
+
+        function error(e) {
+            Atomate.auth.logError(e);
+        }
+
         function init() {
-            if (!google.accounts.user.checkLogin(EVENT_FEED_URL)){
+            // sometimes google.accounts is undefined?
+            if (google.accounts && !google.accounts.user.checkLogin(EVENT_FEED_URL)){
                 login();
             }
 
-            try {
-                calendarService = new google.gdata.calendar.CalendarService('Atomate.0.4');
-                contactsService = new google.gdata.contacts.ContactsService('Atomate.0.4');
+            if (google.accounts && !google.accounts.user.checkLogin(CONTACTS_FEED_URL)){
+                login();
+            }
 
-                GoogleCalendar.initialize();
+            try {    
+                 if (google.gdata && google.gdata.calendar) {
+                    CalendarService = new google.gdata.calendar.CalendarService('Atomate.0.4');
+                    Atomate.auth.gcal.initialize();
+                 }
+                 if (google.gdata && google.gdata.contacts) {
+                    ContactsService = new google.gdata.contacts.ContactsService('Atomate.0.4');
+                    Atomate.auth.gcontacts.initialize();
+                }
             }  catch(x){ alert(x); }
         }
 

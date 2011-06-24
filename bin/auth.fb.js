@@ -8,17 +8,17 @@
  * used in the FB.api('/me/*...   
  */
 
-var client_id = 223573334338274;
-var redir_url = "http://atomate.me/facebook/";
-
 window.fbAsyncInit = function() {
+    // TEMPORARY
+    return false;
+
     var parent = Atomate.auth;
     FB.init({
-	            appId: '223573334338274', 
-	            status: true, 
-	            cookie: true, 
-	            xfbml: true, 
-	            scope:"user_events,read_mailbox,read_friendlists,user_events"});
+	        appId: 122681067752275, //223573334338274;
+		status: true, 
+		cookie: true, 
+		xfbml: true, 
+		scope:"user_events,read_mailbox,read_friendlists,user_events"});
     FB.login(function(response) {
 		         if (response.session) {
 		             if (response.perms) {
@@ -122,7 +122,7 @@ Atomate.auth.Facebook =  {
         var start = entry.updated_time ? new Date(entry.updated_time.substring(0,entry.updated_time.length - 5)).valueOf() : new Date().valueOf();
         this.parent.saveItem({
 			                 id: "facebook_status" + entry.id,
-		                     type:"schemas.StatusUpdate",
+		                         type:"schemas.StatusUpdate",
 			                 text: entry.description,
 			                 sender: {fbid: entry.from.id},
 			                 link: entry.link,

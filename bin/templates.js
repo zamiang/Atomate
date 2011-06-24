@@ -53,6 +53,7 @@ Atomate.templates = {
     },
     
     getTabHtml: function(tab, startingTab, showRemove) { 
+	if (tab && tab.name !== undefined) {
         return "<li data-type=\"" + tab.type + "\""
             + " data-name=\"" + this.getTabName(tab) + "\" class=\"tab_" + this.getTabName(tab)
             + (startingTab.name.toLowerCase() == tab.name.toLowerCase() ? ' selected' : "")
@@ -60,6 +61,7 @@ Atomate.templates = {
             + "<a href=\"#" + tab.name.toLowerCase() + "\">" + tab.name + "</a>"
             + (showRemove ? "<img class=\"remove\" src=\"../img/remove.png\" />" : "")
             + "</li>";        
+	}
     },
 
     getItemType: function(type){

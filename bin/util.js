@@ -723,6 +723,7 @@ Atomate.util = {
 	    //             function(x) { alert('done!'); console.log(x); },  // continuation
 	    //             400) ; // time between successive elements
 	    var r = [];
+	    cont = cont || function(){};
 	    var remain = lst.concat();
 	    //timer_manager = timer_manager === undefined ? window : timer_manager;
 	    var alarm = undefined;

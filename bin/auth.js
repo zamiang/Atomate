@@ -28,7 +28,6 @@ Atomate.auth = {
 
     },
   
-
     interval_map_lite: function(list, fn, cont) {
         var this_ = this;
 		// current interval is derived by:
@@ -57,6 +56,7 @@ Atomate.auth = {
     },
 
     saveItem: function(item) {
+	if (!this.data) { this.data = []; }
         this.data.push(item);
     }  
 };
