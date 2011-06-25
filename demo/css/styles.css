@@ -555,7 +555,7 @@ input[type="search"]::-webkit-search-decoration {
 }
 
 
-input[type="text"], textarea {
+textarea {
     padding-left: 8px;
     font-size: 14px;
     margin:0px;
@@ -580,6 +580,19 @@ input[type="text"], textarea {
     text-align: -webkit-auto;
     resize: none;
     width:468px;
+}
+
+input[type="text"], 
+    padding-left: 8px;
+    font-size: 14px;
+    margin:0px;
+
+    -webkit-appearance: textfield;
+    -webkit-rtl-ordering: logical;
+    -webkit-user-select: text;
+    background:#fff;
+    text-align: -webkit-auto;
+    border:1px solid #fff;
 }
 
 input[type="submit"] {
@@ -838,4 +851,67 @@ input[type="submit"] {
 #progress li .remove:hover {
     border: 1px solid #DDD;
     background: white;
+}
+
+
+/* jquery ui autocomplete styling */
+/* styling the jquery ui autocomplete */
+ul.ui-autocomplete {
+    -moz-box-shadow:0 6px 5px #666;
+    -webkit-box-shadow:0 6px 5px #666;
+    background-color:#FFF;
+    border:1px solid #CCC;
+    border-top:medium none;
+    box-shadow:0 6px 5px #666;
+    display:block;
+    list-style:none outside none;
+    margin:-6px 0 0;
+    max-height:300px;
+    overflow-x:hidden;
+    overflow-y:auto;
+    padding:0;
+    width:350px;
+}
+
+.ui-autocomplete a {
+    color:#333;
+    cursor:default;
+    display:block;
+    font-size:11px;
+    margin:0;
+    min-height:23px;
+    overflow:hidden;
+    padding:8px 7px 4px;
+    width:97%;
+}
+
+.ui-autocomplete a:hover {
+    cursor:pointer;
+    text-decoration:underline;
+}
+
+ul.ui-autocomplete li:nth-child(even) {
+    border-bottom:1px solid #ccc;
+    border-top:1px solid #ccc;
+}
+
+.ui-autocomplete .result_container {
+    display:block;
+    float:left;
+    width:80%;
+}
+
+.ui-autocomplete a.ui-state-hover .small {
+    background-color:#A5D867;
+    cursor:pointer;
+}
+
+.ui-autocomplete a.ui-state-hover {
+    background-color:#A5D867;
+    color:#333;
+    text-decoration:none;
+}
+
+.ui-autocomplete-loading {
+    background:url("../../img/ajax-loader.gif") no-repeat scroll right center #FFF;
 }

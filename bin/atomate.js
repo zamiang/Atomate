@@ -2,13 +2,13 @@
 /*
  * Atomate base
  * needs to be loaded 1st and initialized on document ready
- * 
+ *
  * tabs are either a special native type
  * 'native' == something more than a simple search query that we define (eventually it would be great to expose some way of adding these)
  * 'search' == a string that is searched for
- * 
+ *
  * something can be 'native' + have a search query
- * 
+ *
  */
 
 Atomate = {
@@ -20,7 +20,7 @@ Atomate = {
     defaultTabs: [{
                       name:'Now',
                       type:'native',
-                      default: true
+                  default: true
                   }, {
                       name:'Notes',
                       type:'native'
@@ -39,102 +39,89 @@ Atomate = {
                       search:'#javascript'
                   }],
     initialize: function(params) {
-        this.notes = params.redactedNotes.slice(0, 2000);
+        this.notes = params.redactedNotes.slice(0, 200);
         this.people = this.getPeople();
         this.events = this.getEvents();
-
-        this.tracking.initialize(params);
         this.tabs = params.tabs || this.defaultTabs;
-
-        var startingTabName = this.getLocationHash();
-        var startingTab = startingTabName.length > 1 ? this.getTabForTabName(startingTabName) : this.tabs[0]; 
-	if (!startingTab){ startingTab = this.tabs[0] } // incase the url gets screwy w/ all the redirects
+        var startingTab = this.getStartingTab();
 
         this.buildTabs(this.tabs, startingTab);
         this.setupSearch(this.searchDiv, this.notes);
         this.setupMouseEvents();
         this.updateNotesDisplay(startingTab.name.toLowerCase(), startingTab.type);
         this.auth.initialize();
-    },
-
-    setLocationFromGeocode: function(loc, queryLatLng){
-	this.currentLocation = {	    
-	    latlng: {lat: loc.geometry.location.lat(), lng: loc.geometry.location.lng()},
-	    queryLatlng: {lat: queryLatLng.lat(), lng: queryLatLng.lng()},
-	    name: loc.formatted_address,
-	    type: loc.type
-	}
+        this.tracking.initialize(params);
+        this.autocomplete.initialize();
     },
 
     setupMouseEvents: function(){
         var this_ = this;
-        this.tabsList.find('li').live('click', 
+        this.tabsList.find('li').live('click',
                                       function(item) {
                                           var jObj = jQuery(this);
                                           var name = jObj.attr('data-name').toLowerCase();
                                           var type = jObj.attr('data-type').toLowerCase();
-                                          
+
                                           Atomate.changeTab(name, type);
                                           return false;
-                                      });                        
-
-        this.notesList.find('li').live('click', 
-                                      function(evt) {
-                                          var jObj = jQuery(this);
-                                          jObj.toggleClass('selected');
                                       });
 
-        this.notesList.find('li .hash_link, li .at_link').live('click', 
-                                      function(evt) {
-                                          var search = jQuery(this).attr('data-id');
-                                          this_.searchString = search;
-                                          this_.updateNotesDisplay(undefined, undefined, true);
-                                      });
+        this.notesList.find('li').live('click',
+                                       function(evt) {
+                                           var jObj = jQuery(this);
+                                           jObj.toggleClass('selected');
+                                       });
 
-        this.notesList.find('li .remove_custom_search').live('click', 
+        this.notesList.find('li .hash_link, li .at_link').live('click',
+                                                               function(evt) {
+                                                                   var search = jQuery(this).attr('data-id');
+                                                                   this_.searchString = search;
+                                                                   this_.updateNotesDisplay(undefined, undefined, true);
+                                                               });
+
+        this.notesList.find('li .remove_custom_search').live('click',
                                                              function(evt){
-                                                                 evt.stopPropagation();                                                       
+                                                                 evt.stopPropagation();
                                                                  jQuery(this).parent().parent().remove();
-                                                                 this_.removeCustomSearch();            
+                                                                 this_.removeCustomSearch();
                                                                  return false;
                                                              });
 
-        this.notesList.find('li.note').live('dblclick', 
-                                       function(evt) {
-                                           var jObj = jQuery(this);
-                                           this_.makeNoteEditable(jObj);
-                                       });        
-        
-        this.notesList.find('li .actions .item_remove').live('click', 
+        this.notesList.find('li.note').live('dblclick',
+                                            function(evt) {
+                                                var jObj = jQuery(this);
+                                                this_.makeNoteEditable(jObj);
+                                            });
+
+        this.notesList.find('li .actions .item_remove').live('click',
                                                              function(evt){
-                                                                 evt.stopPropagation();                                                       
+                                                                 evt.stopPropagation();
                                                                  jQuery(this).parent().parent().slideUp();
                                                                  // todo - intersect w/ data and call delete on those items
                                                                  return false;
                                                              });
 
-        this.notesList.find('li .actions .item_edit').live('click', 
-                                                             function(evt){
-                                                                 evt.stopPropagation();                                                       
-                                                                 // todo - intersect w/ data and call delete on those items
-                                                                 return false;
-                                                             });
+        this.notesList.find('li .actions .item_edit').live('click',
+                                                           function(evt){
+                                                               evt.stopPropagation();
+                                                               // todo - intersect w/ data and call delete on those items
+                                                               return false;
+                                                           });
+	    /*
+         jQuery('#delete_notes').click(function() {
+         var notes = this_.notesList.find('li.selected');
+         // todo - intersect w/ data and call delete on those items
+         notes.slideUp();
+         });
 
+         jQuery('#tag_notes').click(function() {
+         alert('about to tag some notes');
+         var notes = this_.notesList.find('li.selected');
+         // todo - intersect w/ data and allow the user to tag those items
+         });
+	     */
 
-        jQuery('#delete_notes').click(function() {  
-                                          var notes = this_.notesList.find('li.selected');                                         
-                                          // todo - intersect w/ data and call delete on those items
-                                          notes.slideUp();
-                                      });
-
-        jQuery('#tag_notes').click(function() {  
-                                       alert('about to tag some notes');
-                                       var notes = this_.notesList.find('li.selected');
-                                       // todo - intersect w/ data and allow the user to tag those items
-                                      });
-
-
-        jQuery('.popup .remove').live('click', function(item) { this_.hidePopup(); });                                
+        jQuery('.popup .remove').live('click', function(item) { this_.hidePopup(); });
     },
 
     resizeIt: function(jObj) {
@@ -143,50 +130,49 @@ Atomate = {
         var linecount = 0;
 
         str.split("\n").map(function(l) {
-		linecount += 1 + Math.floor( l.length / cols ); // take into account long lines
-	    });
-	
+		                        linecount += 1 + Math.floor( l.length / cols ); // take into account long lines
+	                        });
+
         jObj.attr({rows: linecount });
     },
-    
+
     changeTab: function(name, type){
-        this.searchString = undefined;
+        this.searhchString = undefined;
+        
         if (type == "add") {
             this.showAddPopup();
+            
         } else if (type == 'settings') {
             this.tabsList.find('li').removeClass('selected');
             jQuery('#notes, #main_input').hide();
             this.settingsDiv.show();
+
         } else {
             jQuery('#notes, #main_input').show();
             this.settingsDiv.hide();
 
-            this.updateNotesDisplay(name, type);            
+            this.updateNotesDisplay(name, type);
             this.tabsList.find('li').removeClass('selected');
-            this.tabsList.find('.tab_' + name).addClass('selected');        
+            this.tabsList.find('.tab_' + name).addClass('selected');
         }
     },
 
     showAddPopup: function() {
         this.showPopup('add_tab');
-    }, 
-    
+    },
+
     buildTabs: function(tabs, startingTab) {
         var this_ = this;
 
-
         jQuery.fn.append.apply(jQuery('#sort_tabs'), tabs.map(function(tab){
                                                                   return this_.templates.getTabHtml(tab, startingTab, true);
-                                                              }));        
-        
-        tabs.push({
-                      name:'+',
-                      type:'add'
-                  });
-        
+                                                              }));
+
+        tabs.push({name:'+', type:'add'});
+
         jQuery.fn.append.apply(this.tabsList, tabs.map(function(tab){
                                                            return this_.templates.getTabHtml(tab, startingTab, false);
-                                                       }));        
+                                                       }));
         //todo make draggable / sortable
     },
 
@@ -207,11 +193,11 @@ Atomate = {
 
         if (this.searchString) {
             // search only current tab
-            notes = this.getNotesForType(name, type);                
+            notes = this.getNotesForType(name, type);
             notes = this.searchNotesSimple(this.searchString, notes, notes);
 
         } else {
-            notes = this.getNotesForType(name, type); 
+            notes = this.getNotesForType(name, type);
         }
 
         this.notesList.html('');
@@ -220,13 +206,13 @@ Atomate = {
         }
 
         this.addNotes(notes);
-        this.notesList.scrollTop(0); 
+        this.notesList.scrollTop(0);
     },
 
     addCustomSearchDisplay: function(name){
         this.notesList.append(this.templates.getCustomSearchHtml(name));
     },
-    
+
     removeCustomSearch: function() {
         this.searchString = "";
         this.updateNotesDisplay();
@@ -256,7 +242,7 @@ Atomate = {
             }
 
             // todo
-            return this.notes;            
+            return this.notes;
         } else if (type == "search") {
 
             var search = this.getTabForTabName(name).search;
@@ -269,75 +255,77 @@ Atomate = {
     },
 
     getLocationHash: function(){
-        return window.location.hash.replace('#', '');        
+        return window.location.hash.replace('#', '');
     },
-        
+
     setupSearch: function(searchDiv, notes) {
         var this_ = this;
-        searchDiv.keyup(function(evt) { 
+        searchDiv.keyup(function(evt) {
                             try {
                                 this_.resizeIt(searchDiv);
                                 var keycode = evt.which;
                                 var val = jQuery(this).val();
                                 this_.searchString = val ? val.trim() : undefined;
-                                
+
                                 if (keycode == 39 || keycode == 37 || keycode == 190){ return; }
-                                
+
                                 //  up
                                 if (keycode == 38) {
                                     // select type of entered data
                                     return;
                                 }
-                                
+
                                 // down
                                 if (keycode == 40) {
                                     // select type of entered data
                                     return;
                                 }
-                                       
-                                if (!val || val.replace(/\n/g,'').length < 1) {                                    
+
+                                if (!val || val.replace(/\n/g,'').length < 1) {
                                     this_.inputControlsDiv.hide();
 
                                 } else if (this_.inputControlsDiv.is(':hidden')) {
                                     this_.inputControlsDiv.show();
                                 }
 
+				                // begin search code based on tags and names
+				                if (keycode == 32) {
+				                    this_.acMode = false;
+                                    console.log('hide');
+                                    //this_.autocomplete.autocompleteDiv.hide();
+                                    jQuery('.ui-autocomplete').hide();
+                                    
+				                    // '@' key was pressed
+				                } else if (evt.shiftKey && (keycode == 51 || keycode == 50)) {
+				                    console.log('show');
+                                    this_.acShow = true;
 
-				// begin search code based on tags and names
-				if (keycode == 32) {
-				    this_.acMode = undefined;
-				    //this_.autocomplete.hide();
+				                } else if (this_.acShow) {
+				                    var e = this.jquery ? this[0] : this;
+				                    var m = e.selectionEnd;
+				                    var maxLength = val.slice(0, m).length;
+				                    var stepBack = 0;
+				                    while (val[m - stepBack] != " " && val.slice(m - stepBack, m).length < maxLength) {
+					                    stepBack++;
+				                    }
+				                    var search = val.slice(m - stepBack, m);
+                                    console.log(search);
+				                    this_.autocomplete.autocompleteDiv.autocomplete('search', search);
+                                    jQuery('.ui-autocomplete').show();
+                                    this_.searchDiv.autocomplete('search', search);
+				                }
 
-				    // '@' key was pressed
-				} else if (evt.shiftKey && keycode == 50) {
-				    this_.acMode = 'person';
-
-				    // '#' key was pressed
-				} else if (evt.shiftKey && keycode == 51) {
-				    this_.acMode = 'tab';
-
-				} else if (this_.acMode) {
-				    var e = this.jquery ? this[0] : this;
-				    var m = e.selectionEnd;  
-				    var maxLength = val.slice(0, m).length;
-				    var stepBack = 0;
-				    while (val[m - stepBack] != " " && val.slice(m - stepBack, m).length < maxLength) {
-					stepBack++;
-				    }
-				    var search = val.slice(m - stepBack, m);
-				}
-				
-				// this searches the notes
-                                // this_.updateNotesDisplay(); 
+				                // this searches the notes
+                                // this_.updateNotesDisplay();
                             } catch (x) {
                                 console.log(x);
                             }
-                        });  
+                        });
     },
 
     searchNotesSimple: function(word, notes) {
         var this_ = this;
-        return notes.filter(function(note){  
+        return notes.filter(function(note){
                                 var txt = note.contents ? note.contents : note.searchTxt;
                                 if (txt && txt.indexOf(word) > -1){
                                     return true;
@@ -345,31 +333,44 @@ Atomate = {
                                 return false;
                             });
     },
-    
+
     getPeople: function(){
-        return FBDATA.filter(function(d){
-		if (d.type == 'schemas.Person') { return true ;}
-		return false;                           
-	    }).sort(function(a, b) {
-		    return a['first name'][0].toLowerCase() > b['first name'][0].toLowerCase();
-		}).map(function(d){ d.searchTxt = "@" + (d['first name'] + d['last name']).toLowerCase(); return d; });
+        return FBDATA.filter(function(d){ if (d.type === 'schemas.Person') { return true ;} return false;  })
+	        .map(function(d){ d.searchTxt = "@" + (d['first name'] + d['last name']).toLowerCase(); d.searchTxt = d.searchTxt.split(' ').join(''); return d; })
+            .sort(function(a, b) { return a.searchTxt[1] > b.searchTxt[1]; });
     },
-    
+
     getEvents: function(){
         return FBDATA.filter(function(d){
-                                 if (d.type == 'schemas.Event') {return true;} return false;                           
-                             }).map(function(d){ d.searchTxt = d.name.toLowerCase() + " " + d.location.toLowerCase(); return d; });        
+                                 if (d.type == 'schemas.Event') {return true;} return false;
+                             }).map(function(d){ d.searchTxt = d.name.toLowerCase() + " " + d.location.toLowerCase(); return d; });
     },
-    
+
     showPopup: function(id) {
-        jQuery("#" + id).show();    
+        jQuery("#" + id).show();
         jQuery('#container, header').css('opacity', 0.2);
     },
 
     hidePopup: function() {
-        jQuery('.popup').hide();    
-        
+        jQuery('.popup').hide();
+
         jQuery('#container, header').css('opacity', 1);
+    },
+
+    getStartingTab: function() {
+        var startingTabName = this.getLocationHash();
+        var startingTab = startingTabName.length > 1 ? this.getTabForTabName(startingTabName) : this.tabs[0];
+	    if (!startingTab){ startingTab = this.tabs[0] } // incase the url gets screwy w/ all the redirects
+	    return startingTab;
+    },
+
+    setLocationFromGeocode: function(loc, queryLatLng){
+	    this.currentLocation = {
+	        latlng: {lat: loc.geometry.location.lat(), lng: loc.geometry.location.lng()},
+	        queryLatlng: {lat: queryLatLng.lat(), lng: queryLatLng.lng()},
+	        name: loc.formatted_address,
+	        type: loc.type
+	    }
     },
 
     addNotes: function(notes) {
@@ -381,10 +382,10 @@ Atomate = {
 
 
 /**
- * 
+ *
     searchNotes: function(word, notes) {
         var this_ = this;
-        return notes.filter(function(note){  
+        return notes.filter(function(note){
                                 this_.trie.findTrieWord(word, note.trie);
                             });
     },
@@ -394,11 +395,11 @@ Atomate = {
                              if (note && note.contents.length > 0) {
                                  var words = note.contents.replace(/\n/g, "").split(" ");
                                  note.trie = Atomate.trie.buildTrie(words);
-                                 
+
                                  //note.trie = Atomate.trie.optimizeTrie(trie);
                              }
-                             return note;    
-                         });  
+                             return note;
+                         });
     },
 
 
