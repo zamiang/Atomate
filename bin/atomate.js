@@ -269,51 +269,12 @@ Atomate = {
 
                                 if (keycode == 39 || keycode == 37 || keycode == 190){ return; }
 
-                                //  up
-                                if (keycode == 38) {
-                                    // select type of entered data
-                                    return;
-                                }
-
-                                // down
-                                if (keycode == 40) {
-                                    // select type of entered data
-                                    return;
-                                }
-
                                 if (!val || val.replace(/\n/g,'').length < 1) {
                                     this_.inputControlsDiv.hide();
 
                                 } else if (this_.inputControlsDiv.is(':hidden')) {
                                     this_.inputControlsDiv.show();
                                 }
-
-				                // begin search code based on tags and names
-				                if (keycode == 32) {
-				                    this_.acMode = false;
-                                    console.log('hide');
-                                    //this_.autocomplete.autocompleteDiv.hide();
-                                    jQuery('.ui-autocomplete').hide();
-                                    
-				                    // '@' key was pressed
-				                } else if (evt.shiftKey && (keycode == 51 || keycode == 50)) {
-				                    console.log('show');
-                                    this_.acShow = true;
-
-				                } else if (this_.acShow) {
-				                    var e = this.jquery ? this[0] : this;
-				                    var m = e.selectionEnd;
-				                    var maxLength = val.slice(0, m).length;
-				                    var stepBack = 0;
-				                    while (val[m - stepBack] != " " && val.slice(m - stepBack, m).length < maxLength) {
-					                    stepBack++;
-				                    }
-				                    var search = val.slice(m - stepBack, m);
-                                    console.log(search);
-				                    this_.autocomplete.autocompleteDiv.autocomplete('search', search);
-                                    jQuery('.ui-autocomplete').show();
-                                    this_.searchDiv.autocomplete('search', search);
-				                }
 
 				                // this searches the notes
                                 // this_.updateNotesDisplay();

@@ -8,38 +8,61 @@ Atomate.autocomplete = {
     parent: Atomate,
     initialize: function() { 
 	    var data = this.parent.people.map(function(p){ return p.searchTxt; });
-	    var tags = this.parent.notes.map(function(n){ return n.contents; }).join(' ').match(/[#]+[A-Za-z0-9-_]+/g); // looks for hash tags in text
+	    var tags = this.parent.notes.map(function(n){ return n.contents; }).join(' ').toLowerCase().match(/[#]+[A-Za-z0-9-_]+/g); // looks for hash tags in text
 	    
 	    this.data = this.parent.util.uniq(data.concat(tags));	
 	    this.autocompleteDiv = this.setupAutocompleteDiv(this.parent.searchDiv, this.setAutocompleteVal);
     },
     
     setupAutocompleteDiv: function(searchDiv, cont) {
-	return searchDiv.autocomplete({
-		                              minLength: 0,
-		                              source: this.data,
-		                              search: function() {
-		                                  if (this.value[0] === "@" || this.value[0] === "#" ) {
-			                                  return true;
-		                                  }
-		                                  return false;
-		                              },
-		                              focus: function( event, ui ) {
-		                                  console.log('focusing');
-		                                  cont(ui.item.value, searchDiv);
-		                                  return false;
-		                              },
-		                              select: function( event, ui ) {
-		                                  console.log('select');
-		                                  cont(ui.item.value, searchDiv);
-		                                  return false;
-		                              }
-	                              });
-    },
-    
-    setAutocompleteVal: function(val, searchDiv) {
-	    console.log(val);
-	    searchDiv.val(val);
+        var this_ = this;
+
+        function split(val) {      
+            return val.split(' ');
+        }
+        
+        function extractLast(term) {            
+            return split(term).pop();
+        }
+        
+	    return searchDiv
+            .bind("keydown", function(event) {
+                      if (event.keyCode === $.ui.keyCode.TAB && $(this).data("autocomplete").menu.active) {
+                          event.preventDefault();
+                      }
+                  })
+            .autocomplete({
+		                      minLength: 3,
+                              source: function(request, response) {                                              
+                                  var term = request.term;
+                                  var results = [];
+                                  
+                                  if (term.indexOf("@") >= 0 || term.indexOf("#") >= 0) {                                                  
+                                      term = extractLast(request.term);
+                                      
+                                      if (term && term.length > 0 && (term.indexOf("@") == 0 || term.indexOf("#") == 0)) {                                                      
+                                          results = jQuery.ui.autocomplete.filter(this_.data, term);
+                                      } 
+                                  }
+                                  response(results);
+                              },
+		                      focus: function( event, ui ) {
+                                  // focus is weird
+                                  return false;
+		                      },
+                              select: function(event, ui) {                                              
+                                  var terms = split(this.value);
+                                  
+                                  // remove the current input
+                                  terms.pop();
+                                  // add the selected item
+                                  terms.push(ui.item.value);
+                                  // add placeholder to get the comma-and-space at the end
+                                  terms.push("");
+                                  this.value = terms.join(" ");
+                                  return false;
+                              }
+                          });
     }
 };
 
