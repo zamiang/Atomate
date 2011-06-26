@@ -330,7 +330,7 @@
 
         function init() {
             // TEMPORARY
-            return;
+            //return;
 
             if (google.accounts && !google.accounts.user.checkLogin(EVENT_FEED_URL + " " + CONTACTS_FEED_URL + " " + EVENT_FEED_URL2 + " " + CONTACTS_FEED_URL2)){
                 login();
@@ -343,7 +343,8 @@
                 }
                 if (google.gdata && google.gdata.contacts) {
                     ContactsService = new google.gdata.contacts.ContactsService('Atomate.0.4');
-                    Atomate.auth.gcontacts.initialize();
+
+                    //Atomate.auth.gcontacts.initialize(); // TEMPORARY REMOVAL
                 }
             }  catch(x){ alert(x); }
         }

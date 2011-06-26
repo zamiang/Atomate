@@ -41,7 +41,7 @@ Atomate.auth.gcal = {
     entryCallback:  function(result) {        
 	    var parent = Atomate.auth;
         var calendarName = result.feed.title.$t;
-        var calendarNameTag = calendarName.split(' ').join('').toLowerCase();
+        var calendarNameTag = calendarName.split(' ').join('').toLowerCase().replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"");
 	    var calendarLink = result.feed.getLink().href;
 	    var now = new Date().valueOf();
         var calendarCache = [];
@@ -54,14 +54,14 @@ Atomate.auth.gcal = {
 			                                  var end = new Date(entry.getTimes()[0].getEndTime().date).valueOf();
                                               var link = entry.getHtmlLink() ? entry.getHtmlLink().getHref() : undefined;
                                               
-					                          // remove events in the past
+					                          // do not save events in the past
 					                          if (end < now) { return; };
 			                                  
 			                                  calendarCache.push({
 			                                                         jid: entry.id,                                                
                                                                      version:0,
-                                                                     created: new Date().valueOf(),
-                                                                     modified: 0, //new Date().valueOf(),
+                                                                     created: now, 
+                                                                     modified: 0, 
 			                                                         contents: entry.getTitle().getText() + " " + link + " " + " #gcal" + " #" + calendarNameTag,
                                                                      tags: "#gcal #" + calendarNameTag,
                                                                      type: 'event',

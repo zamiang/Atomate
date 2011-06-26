@@ -31,7 +31,7 @@ window.fbAsyncInit = function() {
 				                    if (response.data !== undefined){
                                         var fb_people_cache = [];
 									    parent.logProgress('saving ' + response.data.length + ' people\'s Facebook profile');
-					                    parent.interval_map_lite(response.data.slice(0, 5), 
+					                    parent.interval_map_lite(response.data, 
                                                                  function(entry) { 
 							                                         FB.api('/' + entry.id, function(response) {
 								                                                if (response !== undefined){
@@ -40,7 +40,7 @@ window.fbAsyncInit = function() {
 								                                                }
 								                                            });
 						                                         }, function(){
-                                                                     console.log(fb_people_cache)
+                                                                     //console.log(fb_people_cache)
                                                                      console.log('about to save fb people');
                                                                      Atomate.database.person.putAllPeopleInDB(fb_people_cache);
                                                                  });
@@ -54,7 +54,7 @@ window.fbAsyncInit = function() {
 					                    parent.interval_map_lite(response.data, 
                                                                  function(entry) { parent.Facebook.saveEvent(entry, fb_event_cache); },                                                                               
                                                                  function(){
-                                                                     console.log(fb_event_cache)
+                                                                     //console.log(fb_event_cache)
                                                                      console.log('about to save fb events');                                                                     
                                                                      Atomate.database.notes.putAllNotesInDB(fb_event_cache);
                                                                  });
@@ -106,7 +106,7 @@ Atomate.auth.Facebook =  {
     parent: Atomate.auth,
     saveFriend: function(entry, list) {
         var start = entry.updated_time ? new Date(entry.updated_time.substring(0,entry.updated_time.length - 5)).valueOf() : new Date().valueOf();
-        var id = (entry['first_name'] + entry['last_name']).toLowerCase();
+        var id = (entry['first_name'] + entry['last_name']).toLowerCase().replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"");
         id = id.split(' ').join('');
 
         list.push({
