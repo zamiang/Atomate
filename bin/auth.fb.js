@@ -140,6 +140,7 @@ Atomate.auth.Facebook =  {
     },
 
     saveEvent: function(entry, list) {
+        return;
         if (entry && entry.start_time && entry.end_time) {
             var start = new Date(entry.start_time.substring(0,entry.end_time.length - 5)).valueOf();
             var end = new Date(entry.end_time.substring(0,entry.end_time.length - 5)).valueOf();

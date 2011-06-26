@@ -7,10 +7,12 @@
 Atomate.auth.gcal = {
     parent: Atomate.auth,
     feedUri: 'http://www.google.com/calendar/feeds/default/allcalendars/full',
-    
+
     initialize: function() {
 		try {
+            //return;
 			showMessage('logged in and about to start saving from Google Calendar');
+            
 			this.getMyFeed();
 		} catch (x) {
 			showMessage(x);
@@ -40,11 +42,15 @@ Atomate.auth.gcal = {
     entryCallback:  function(result) {        
 	    var parent = Atomate.auth;
         var calendarName = result.feed.title.$t;
-        var calendarNameTag = calendarName.split(' ').join('').toLowerCase().replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+        var calendarNameTag = calendarName.split(' ').join('').toLowerCase().replace(/[\.,-\/#!$%\^&\*;:{}=\-_@`'~()]/g,"");
 	    var calendarLink = result.feed.getLink().href;
 	    var now = new Date().valueOf();
         var calendarCache = [];
    	    showMessage('saving upcomming events from: <a href="' + calendarLink + '" target="_blank">' + calendarName + "</a>");    
+
+        if (calendarName == "US Holidays") {
+            return;
+        }
         
         Atomate.util.interval_map(result.feed.entry, function(entry){
 		                              try {
@@ -52,22 +58,23 @@ Atomate.auth.gcal = {
 			                                  var start = new Date(entry.getTimes()[0].getStartTime().date).valueOf(); // ewwwwwww
 			                                  var end = new Date(entry.getTimes()[0].getEndTime().date).valueOf();
                                               var link = entry.getHtmlLink() ? entry.getHtmlLink().getHref() : undefined;
-                                              
+                                              var contents = entry.getTitle().getText() + " #gcal" + " #" + calendarNameTag;
 					                          // do not save events in the past
 					                          if (end < now) { return; };
-			                                  
+			                           
 			                                  calendarCache.push({
-			                                                         jid: entry.id,                                                
+			                                                         jid: Atomate.util.Base64.encode(contents),
                                                                      version:0,
                                                                      created: now, 
                                                                      modified: 0, 
-			                                                         contents: entry.getTitle().getText() + " " + link + " " + " #gcal" + " #" + calendarNameTag,
+			                                                         contents: contents,
                                                                      tags: "#gcal #" + calendarNameTag,
                                                                      type: 'event',
 			                                                         source: 'Google',
-							                                         reminder: parent.makeSpecificDateTime(start)
+							                                         reminder: start
                                                                      
                                                                      // TODO:
+                                                                     // link:link,
 							                                         //authors: entry.getAuthors().map(function(x){ if(x.email) {return " " + x.email.getValue()} }),
 							                                         //participants: entry.getParticipants().map(function(x){ return " " + x.email }) // Feeder will search for people with this email
  							                                         //link: entry.getHtmlLink() ? entry.getHtmlLink().getHref() : undefined,

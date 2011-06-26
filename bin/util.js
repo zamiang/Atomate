@@ -75,7 +75,6 @@ Atomate.util = {
 	    return y === undefined ? x : x && y;
     },
     scriptLoadCB:function(srcpath,cbname,cb,d) {
-
 	    // if you are calling this method then you must have a window environment
 	    if (self.__scriptload_cb === undefined) { self.__scriptload_cb = {}; }
 	    if (self.__subscript_callback === undefined) {
@@ -367,12 +366,6 @@ Atomate.util = {
 	    script.type = 'text/javascript';
 	    script.src = path;
 	    document.getElementsByTagName('head')[0].appendChild(script);  
-    },
-    loadXUL: function(path) {
-	    var script = document.createElement("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul",'script');
-	    script.type = 'text/javascript';
-	    script.src = path;
-	    document.getElementsByTagName('overlay')[0].appendChild(script);  
     },
     strRemoved:function(str,tgt) {
 	    return str.split(tgt).join('');
@@ -1200,7 +1193,6 @@ Atomate.util.Base64 = {
 		    output = output +
 		        this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
 		        this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
-
         }
 
         return output;

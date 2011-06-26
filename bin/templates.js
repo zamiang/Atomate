@@ -12,7 +12,7 @@ Atomate.templates = {
         } else if (n.type == "person") {
             return this.getPersonHtml(n);
         } else if (n.type == "event") {
-            return this.getEventHtml(n);                                                                 
+            return this.getNoteHtml(n);                                                                 
         } else {
             return this.getNoteHtml(n);
         }
@@ -83,33 +83,15 @@ Atomate.templates = {
             + "</div>"
             + "</li>";
     },
-
-    getEventHtml: function(item) {
-        var link = item.source == "Facebook" ? "http://www.facebook.com/event.php?eid=" + item.id : "";
-
-        return "<li class=\"" + this.getItemType(item.type) + "\">"
-            + this.getActionsHtml(item)
-            + "<div class=\"text\">"
-            + (link ? "<a href=\"" + link + "\" target=\"_blank\">" : "")
-            + item.name
-            + (link ? "</a>" : "")
-            + "</div>"
-            + "<div class=\"context\">"
-            + "<span class=\"context_item\"><img src=\"../img/location.png\" /><a class=\"at_link\" data-id=\"" + item.location.toLowerCase() + "\">" + item.location + "</a></span>"
-            + "<span class=\"context_item\"><img src=\"../img/calendar.png\" />From <b>" + Atomate.util.getNaturalDate(item['start time'].val)
-            + "</b> to <b>" + Atomate.util.getNaturalDate(item['end time'].val) + "</b></span>"
-            + "</div>"
-            + "</li>";       
-    },
-
+    
     getNoteHtml: function(item) {
-        console.log(item);
         return "<li class=\"note " + this.getItemType(item.type) + "\">"
             + this.getActionsHtml(item)
             + "<div class=\"text\">"  + this.linkifyNote(item.contents) + "</div>"
             + "<div class=\"context\">"
-            + "<span class=\"context_item\"><img src=\"../img/location.png\" />New York, NY</span>"
-            + "<span class=\"context_item\"><img src=\"../img/calendar.png\" />Tomorrow 5:30pm</span><span>" + item.category + "</span>"
+            + (item.location ? "<span class=\"context_item\"><img src=\"../img/location.png\" />" + item.location + "</span>" : "")
+            + (item.reminder ? "<span class=\"context_item\"><img src=\"../img/calendar.png\" />" + new Date(item.reminder).format() + "</span>" : "")
+            + (item.type && item.type !== "note" && item.type !== "event" ? "<span>" + item.type + "</span>" : "")
             + "</div>"
             + "</li>";       
     }

@@ -12,7 +12,7 @@ Atomate.database.notes = {
 	    // Adds note (from server) to database
 	    this.parent.DB.transaction(function(tx) {
 	                                   var del = 0;
-	                                   var jid = parseInt(jid, 10);
+	                                   var jid = jid; //, 10);
 	                                   var created = parseInt(created, 10);
 	                                   var edited = parseInt(edited, 10);
 	                                   if (deleted === 1 || deleted === true || deleted === "true") { del = 1; }
@@ -218,7 +218,7 @@ Atomate.database.notes = {
 	                                   var del = 0;
 	                                   if (n.deleted === true || n.deleted === 'true' || n.deleted === 1) {del=1;}
 	                                   return  [
-		                                   parseInt(n.jid, 10),
+		                                   n.jid,
 		                                   parseInt(n.version, 10),
 		                                   parseInt(n.created, 10),
 		                                   parseInt(n.edited, 10),

@@ -42,29 +42,24 @@ Atomate = {
                       type:'search',
                       search:'#javascript'
                   }],
-    initialize: function(params) {
-        debug('starting');
-        try {
-            var this_ = this;
-            this.database.initialize();
-            this.auth.initialize();
-            this.tracking.initialize(params);
-            this.tabs = params.tabs || this.defaultTabs;
-
-            var startingTab = this.getStartingTab();
-            
-            this.getData(function() {                             
-                             this_.autocomplete.initialize();            
-                             this_.buildTabs(this_.tabs, startingTab);
-                             this_.setupSearch(this_.searchDiv, this_.notes);
-                             this_.setupMouseEvents();
-                             this_.updateNotesDisplay(startingTab.name.toLowerCase(), startingTab.type);
-                         });
-        } catch (x) {
-            debug(x);
-        }
+    initialize: function(params) {        
+        var this_ = this;
+        this.database.initialize();
+        this.auth.initialize();
+        this.tracking.initialize(params);
+        this.tabs = params.tabs || this.defaultTabs;
+        
+        var startingTab = this.getStartingTab();
+        
+        this.getData(function() {                             
+                         this_.autocomplete.initialize();            
+                         this_.buildTabs(this_.tabs, startingTab);
+                         this_.setupSearch(this_.searchDiv, this_.notes);
+                         this_.setupMouseEvents();
+                         this_.updateNotesDisplay(startingTab.name.toLowerCase(), startingTab.type);
+                     });
     },
-
+    
     setupMouseEvents: function(){
         var this_ = this;
         this.tabsList.find('li').live('click',
@@ -224,25 +219,31 @@ Atomate = {
             if (name == 'people') {
                 return this.people;
             } else if (name == 'events') {
-                return this.events;
+                return this.notes.filter(function(n){
+                                             return n.type == 'event';
+                                         });
+
             } else if (name == 'now') {
+                return this.notes;
+                /*
                 return this.notes.filter(function(n){
                                              return n.contents.indexOf('http') < 0 && n.category != "Journal" && n.category != "Reference";
                                          });
+                 */
             } else if (name == 'todo') {
                 return this.notes.filter(function(n){
                                              return n.contents.indexOf('todo') > -1;
                                          });
             } else if (name == 'notes') {
-                return this.notes.filter(function(n){
+                return this.notes.filter(function(n) {
                                              return n.category == 'Reference' || n.category == 'Journal';
                                          });
             }
 
             // todo
             return this.notes;
-        } else if (type == "search") {
 
+        } else if (type == "search") {
             var search = this.getTabForTabName(name).search;
             return this.searchNotesSimple(search, this.notes, this.notes);
         }
