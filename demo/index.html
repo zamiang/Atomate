@@ -44,12 +44,12 @@
                 <div class="controls clearfix">
                     <input id="id_note_save" type="submit" value="Save" />
                     <div class="location_input">
-                        <label>Add location:</label>
+                        <label>Location:</label>
                         <select>
                             <option val="none">None</option>
                         </select>
 
-                        <label>Add time:</label>
+                        <label>Time:</label>
                         <input type="text" placeholder="6/25/2011" id="picker_date"/>
                         <input type="text" placeholder="10:30pm" id="picker_time" />
                         <!--<img class="remove" src="../img/remove.png" />-->
@@ -258,7 +258,6 @@
 
         function mapsLoaded() {
             var browserSupportFlag
-            return true;
 
             // Try W3C Geolocation (Preferred)
             if (navigator.geolocation) {

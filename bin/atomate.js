@@ -321,17 +321,20 @@ Atomate = {
     getStartingTab: function() {
         var startingTabName = this.getLocationHash();
         var startingTab = startingTabName.length > 1 ? this.getTabForTabName(startingTabName) : this.tabs[0];
-	    if (!startingTab){ startingTab = this.tabs[0] } // incase the url gets screwy w/ all the redirects
+	    if (!startingTab){ startingTab = this.tabs[0]; } // incase the url gets screwy w/ all the redirects
 	    return startingTab;
     },
 
-    setLocationFromGeocode: function(loc, queryLatLng){
+    setLocationFromGeocode: function(loc, queryLatLng) {
 	    this.currentLocation = {
 	        latlng: {lat: loc.geometry.location.lat(), lng: loc.geometry.location.lng()},
 	        queryLatlng: {lat: queryLatLng.lat(), lng: queryLatLng.lng()},
 	        name: loc.formatted_address,
 	        type: loc.type
-	    }
+	    };
+
+        console.log('yooooo');
+        jQuery('.location_input select').append(jQuery('<option val="' + this.currentLocation.name + '/>' + this.currentLocation.name + '</option>')); //.data(this.currentLocation));
     },
 
     addNotes: function(notes) {

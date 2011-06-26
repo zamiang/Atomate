@@ -907,6 +907,9 @@ ul.ui-autocomplete {
 }
 
 .ui-autocomplete a:hover {
+    background: -webkit-gradient(linear, 0 0, 0 18%, from(#E6E6E6), to(#f5f5f5));
+    background: -moz-gradient(linear, 0 0, 0 18%, from(#E6E6E6), to(#f5f5f5));
+
     cursor:pointer;
     text-decoration:underline;
 }
@@ -922,13 +925,14 @@ ul.ui-autocomplete li:nth-child(even) {
     width:80%;
 }
 
-.ui-autocomplete a.ui-state-hover .small {
-    background-color:#A5D867;
+.ui-autocomplete a.ui-state-hover .small, .ui-autocomplete .ui-state-hover {
+    background-color:#f3f3f3;
+
     cursor:pointer;
 }
 
 .ui-autocomplete a.ui-state-hover {
-    background-color:#A5D867;
+    background-color:#f3f3f3;
     color:#333;
     text-decoration:none;
 }
