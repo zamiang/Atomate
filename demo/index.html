@@ -48,6 +48,10 @@
                         <select>
                             <option val="none">None</option>
                         </select>
+
+                        <label>Add time:</label>
+                        <input type="text" placeholder="6/25/2011" id="picker_date"/>
+                        <input type="text" placeholder="10:30pm" id="picker_time" />
                         <!--<img class="remove" src="../img/remove.png" />-->
                     </div>
                 </div>
@@ -217,43 +221,44 @@
              document.getElementById('fb-root').appendChild(e);
          }());
 
-/**
-// MIX PANEL
-var mpq = ["init", "d3950de9980b43abe44956d1511c6af5"];
-mixPanelInit = function() {
-    try {
-        // TODO: email MixPanel about this - to run callbacks they require a global called 'mpmetrics'
-        mpmetrics = new MixpanelLib("d3950de9980b43abe44956d1511c6af5");
-        return mpmetrics
-    } catch(err) {
-        var null_fn = function () {};
-        mpmetrics = {
-            track: null_fn,
-            track_funnel: null_fn,
-            register: null_fn,
-            register_once: null_fn,
-            register_funnel: null_fn,
-            identify: null_fn
-        };
-        return mpmetrics
-    }
-};
-var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]]; // Change UA-XXXXX-X to be your site's ID
-(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-               g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
-               s.parentNode.insertBefore(g,s)}(document,"script"));
-*/
+        /**
+         // MIX PANEL
+         var mpq = ["init", "d3950de9980b43abe44956d1511c6af5"];
+         mixPanelInit = function() {
+         try {
+         // TODO: email MixPanel about this - to run callbacks they require a global called 'mpmetrics'
+         mpmetrics = new MixpanelLib("d3950de9980b43abe44956d1511c6af5");
+         return mpmetrics
+         } catch(err) {
+         var null_fn = function () {};
+         mpmetrics = {
+         track: null_fn,
+         track_funnel: null_fn,
+         register: null_fn,
+         register_once: null_fn,
+         register_funnel: null_fn,
+         identify: null_fn
+         };
+         return mpmetrics
+         }
+         };
+         var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]]; // Change UA-XXXXX-X to be your site's ID
+         (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+         g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
+         s.parentNode.insertBefore(g,s)}(document,"script"));
+         */
 
-     jQuery(document).ready(function(){
-                               Atomate.initialize({
-                                                      //trackingmodule: mpq,
-                                                      //mixPanelInit: mixPanelInit,
-                                                      redactedNotes: REDACTED_NOTES
-                                                  });
-                           });
+        jQuery(document).ready(function(){
+                                   Atomate.initialize({
+                                                          //trackingmodule: mpq,
+                                                          //mixPanelInit: mixPanelInit,
+                                                          redactedNotes: REDACTED_NOTES
+                                                      });
+                               });
 
         function mapsLoaded() {
             var browserSupportFlag
+            return true;
 
             // Try W3C Geolocation (Preferred)
             if (navigator.geolocation) {
@@ -263,15 +268,15 @@ var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]]; // Change UA-XXXXX-X
                                                              var latlng =  new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
 
                                                              geocoder.geocode({'latLng': latlng}, function(results, status) {
-                                                                 if (status == google.maps.GeocoderStatus.OK) {
-                                                                     //console.log(results);
-                                                                     var loc = results[0]; // todo: be smarter about this
-                                                                     Atomate.setLocationFromGeocode(loc,latlng); 
+                                                                                  if (status == google.maps.GeocoderStatus.OK) {
+                                                                                      //console.log(results);
+                                                                                      var loc = results[0]; // todo: be smarter about this
+                                                                                      Atomate.setLocationFromGeocode(loc,latlng);
 
-                                                                 } else {
-                                                                     handleError("Geocoder failed due to: " + status);
-                                                                 }
-                                                             });
+                                                                                  } else {
+                                                                                      handleError("Geocoder failed due to: " + status);
+                                                                                  }
+                                                                              });
                                                          }, function() {
                                                              handleNoGeolocation(browserSupportFlag);
                                                          });
@@ -314,29 +319,29 @@ var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]]; // Change UA-XXXXX-X
             Atomate.auth.logError(e);
         }
 
+        function handleError(e) {
+            error(e)
+            console.log(e.cause ? e.cause.statusText : e.message);
+        }
+
         function init() {
-            // TEMPORARY 
+            // TEMPORARY
             return;
 
             if (google.accounts && !google.accounts.user.checkLogin(EVENT_FEED_URL + " " + CONTACTS_FEED_URL + " " + EVENT_FEED_URL2 + " " + CONTACTS_FEED_URL2)){
                 login();
             }
 
-            try {    
-                 if (google.gdata && google.gdata.calendar) {
+            try {
+                if (google.gdata && google.gdata.calendar) {
                     CalendarService = new google.gdata.calendar.CalendarService('Atomate.0.4');
                     Atomate.auth.gcal.initialize();
-                 }
-                 if (google.gdata && google.gdata.contacts) {
+                }
+                if (google.gdata && google.gdata.contacts) {
                     ContactsService = new google.gdata.contacts.ContactsService('Atomate.0.4');
                     Atomate.auth.gcontacts.initialize();
                 }
             }  catch(x){ alert(x); }
-        }
-
-        function handleError(e) {
-            error(e)
-            console.log(e.cause ? e.cause.statusText : e.message);
         }
 
         google.setOnLoadCallback(init);

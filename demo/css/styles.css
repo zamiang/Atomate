@@ -271,6 +271,7 @@ ul#tabs .settings .settings_img {
 
     border: 1px solid #fff;
     border-bottom: 0px solid #fff;
+    height: 18px;
 }
 
 ul#tabs .settings .settings_list {
@@ -319,6 +320,7 @@ ul#tabs .settings .settings_list li a {
 
 ul#tabs .settings:hover .settings_img {
     background: -webkit-linear-gradient(rgba(234, 238, 243, 0.2), #EAEEF3), -webkit-linear-gradient(left, #EAEEF3, #EAEEF3 97%, #D3D7DB);
+    background: -moz-linear-gradient(rgba(234, 238, 243, 0.2), #EAEEF3), -moz-linear-gradient(left, #EAEEF3, #EAEEF3 97%, #D3D7DB);
     font-weight:normal;
     border: 1px solid #DDE5F3;
     border-bottom: 0px solid #8FAAD9;
@@ -335,17 +337,24 @@ ul#tabs .settings:hover .settings_list {
     list-style: none;
     width: auto;
     background: -webkit-linear-gradient(rgba(234, 238, 243, 0.2), #EAEEF3), -webkit-linear-gradient(left, #EAEEF3, #EAEEF3 97%, #D3D7DB);
+    background: -moz-linear-gradient(rgba(234, 238, 243, 0.2), #EAEEF3), -moz-linear-gradient(left, #EAEEF3, #EAEEF3 97%, #D3D7DB);
     font-weight:normal;
     border: 1px solid #DDE5F3;
     border-bottom: 0px solid #8FAAD9;
     color:#666;
     margin-right:3px;
+    height: 22px;
 }
 
 #tabs li a {
     display:inline-block;
     padding: 4px 10px 4px 10px;
     color:#666;
+    text-decoration:none;
+}
+
+#tabs li a:hover, #tabs li:hover {
+    text-decoration:none;
 }
 
 #tabs li:hover .remove {
@@ -371,6 +380,7 @@ ul#tabs .settings:hover .settings_list {
 
 #tabs li.selected {
     background: -webkit-linear-gradient(left, #BBCEE9, #BBCEE9 97%, #AABEDC);
+    background: -moz-linear-gradient(left, #BBCEE9, #BBCEE9 97%, #AABEDC);
     border: 1px solid #8FAAD9;
     border-bottom: 0px solid #8FAAD9;
     text-shadow: #BBCEE9 0 1px 1px;
@@ -402,6 +412,7 @@ ul#tabs .settings:hover .settings_list {
 #main {
     border-top: 1px solid #8FAAD9;
     background: -webkit-linear-gradient(left, #BBCEE9, #BBCEE9 97%, #AABEDC);
+    background: -moz-linear-gradient(left, #BBCEE9, #BBCEE9 97%, #AABEDC);
     padding:2px;
     margin-top:35px;
 }
@@ -436,6 +447,7 @@ ul#tabs .settings:hover .settings_list {
 
 #notes li.selected {
     background: -webkit-gradient(linear, 0 0, 0 18%, from(#E6E6E6), to(#f5f5f5));
+    background: -moz-gradient(linear, 0 0, 0 18%, from(#E6E6E6), to(#f5f5f5));
     border-bottom: 1px solid #ccc;
     border-top: 1px solid #aaa;
 }
@@ -539,6 +551,7 @@ button, input, select, textarea {
 button, input[type="button"], input[type="reset"], input[type="submit"] {
 	cursor: pointer;
 	-webkit-appearance: button;
+    -moz-appearance: button;
 	appearance: button;
 }
 input[type="checkbox"], input[type="radio"] {
@@ -582,7 +595,7 @@ textarea {
     width:468px;
 }
 
-input[type="text"], 
+input[type="text"],
     padding-left: 8px;
     font-size: 14px;
     margin:0px;
@@ -601,6 +614,7 @@ input[type="submit"] {
 
     cursor: pointer;
     -webkit-appearance: button;
+    -moz-appearance: button;
     appearance: button;
 
     -webkit-box-align: center;
@@ -628,6 +642,7 @@ input[type="submit"] {
     display:none;
 }
 
+
 #id_note_save {
     float: right;
     font-size: 14px;
@@ -640,12 +655,18 @@ input[type="submit"] {
     float: left;
     font-size: 11px;
     color: #666;
-    margin: 19px 0px 0px 0px;
+    margin: 9px 0px 0px 0px;
+}
+
+.location_input input[type="text"] {
+    width:50px;
 }
 
 .location_input select {
-    vertical-align:top;
+    vertical-align:middle;
     margin-top:-2px;
+    margin-right:8px;
+
 }
 
 .location_input .remove {
