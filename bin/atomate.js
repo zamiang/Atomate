@@ -39,6 +39,7 @@ Atomate = {
                       search:'#javascript'
                   }],
     initialize: function(params) {
+        this.database.initialize();
         this.notes = params.redactedNotes.slice(0, 200);
         this.people = this.getPeople();
         this.events = this.getEvents();
@@ -327,8 +328,10 @@ Atomate = {
 
     setLocationFromGeocode: function(loc, queryLatLng) {
 	    this.currentLocation = {
-	        latlng: {lat: loc.geometry.location.lat(), lng: loc.geometry.location.lng()},
-	        queryLatlng: {lat: queryLatLng.lat(), lng: queryLatLng.lng()},
+	        lat: loc.geometry.location.lat(),
+            lng: loc.geometry.location.lng(),
+	        qlat: queryLatLng.lat(),
+            qlng: queryLatLng.lng(),
 	        name: loc.formatted_address,
 	        type: loc.type
 	    };

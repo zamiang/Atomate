@@ -42,7 +42,7 @@ Atomate.auth.gcontacts = {
 
 	var contacts = entries.map(function(entry){
 		var start = entry.getUpdated() ? new Date(entry.getUpdated().getValue().getDate().format()).valueOf() : now;
-		var emailAddresses = entry.getEmailAddresses().map(function(e){ return e.getAddress() });
+		var emailAddresses = entry.getEmailAddresses().map(function(e){ return e.getAddress(); });
 		var name = entry.getTitle().getText().split(' ');
 		var photoUrl = entry.getContactPhotoLink() ? entry.getContactPhotoLink().href : undefined; // useless :(
 		var birthday = entry.getBirthday() ? entry.getBirthday().getWhen() : undefined;
