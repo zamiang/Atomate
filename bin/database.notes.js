@@ -5,9 +5,9 @@
 
 Atomate.database.notes = { 
     parent: Atomate.database,
-    schema: 'jid INT PRIMARY KEY, version INT, created INT, edited INT, deleted INT, contents TEXT, modified INT, tags TEXT, type TEXT, reminder INT',
-    properties: '(jid, version, created, edited, deleted, contents, modified, tags, type, reminder)',
-    values: '(?,?,?,?,?,?,?,?,?,?)',
+    schema: 'jid INT PRIMARY KEY, version INT, created INT, edited INT, deleted INT, contents TEXT, modified INT, tags TEXT, type TEXT, reminder INT, source TEXT',
+    properties: '(jid, version, created, edited, deleted, contents, modified, tags, type, reminder, source)',
+    values: '(?,?,?,?,?,?,?,?,?,?,?)',
     addNote:function(jid, version, created, edited, deleted, contents) {
 	    // Adds note (from server) to database
 	    this.parent.DB.transaction(function(tx) {
@@ -17,7 +17,7 @@ Atomate.database.notes = {
 	                                   var edited = parseInt(edited, 10);
 	                                   if (deleted === 1 || deleted === true || deleted === "true") { del = 1; }
 	                                   tx.executeSql('INSERT INTO note VALUES' + this_.values + ';',
-			                                         [jid, version, created, edited, del, contents, 0, tags, type, reminder],
+			                                         [jid, version, created, edited, del, contents, 0, tags, type, reminder, source],
 			                                         function(tx, rs) { debug("NOTE INSERT - note DB"); }
 			                                        );
 	                               });
@@ -34,7 +34,7 @@ Atomate.database.notes = {
 	                                  // Insert note into database
 	                                  this_.parent.DB.transaction(function(tx) {
 		                                                              tx.executeSql('INSERT INTO note VALUES' + this_.values + ';',
-			                                                                        [jid, version, created, edited, deleted, contents, modified, tags, type, reminder],
+			                                                                        [jid, version, created, edited, deleted, contents, modified, tags, type, reminder, source],
 			                                                                        function(tx, rs) { debug("NOTE INSERT - note DB"); }
 			                                                                       );
 	                                                              });
@@ -56,7 +56,7 @@ Atomate.database.notes = {
 	    // Adds PRE-EXISTING note to DB, passes unique JID to continuation 
 	    this.parent.DB.transaction(function(tx) {
 	                                   tx.executeSql('INSERT INTO note VALUES' + this_.values + ';',
-			                                         [jid, version, created, edited, deleted, contents, modified, tags, type, reminder],
+			                                         [jid, version, created, edited, deleted, contents, modified, tags, type, reminder, source],
 			                                         function(tx, rs) { debug("NOTE INSERT - note DB"); }
 			                                        );
 	                               });
@@ -70,7 +70,7 @@ Atomate.database.notes = {
 	    this.parent.DB.transaction(function(tx) {
 	                                   tx.executeSql(
 		                                   'INSERT OR REPLACE INTO note ' + this_.properties + ' VALUES' + this_.values + ';', 
-		                                   [jid, version, created, edited, deleted, contents, modified, tags, type, reminder],
+		                                   [jid, version, created, edited, deleted, contents, modified, tags, type, reminder, source],
 		                                   function(tx, rs) { debug("SUCCESSFUL NOTE UPSERT to DB"); }
 	                                   );
 	                               });
@@ -219,10 +219,11 @@ Atomate.database.notes = {
 		                                   parseInt(n.edited, 10),
 		                                   del,
 		                                   n.contents,
-		                                   n.modified,
+		                                   parseInt(n.modified, 10),
                                            n.tags,
                                            n.type,
-                                           n.reminder
+                                           parseInt(n.reminder, 10),
+                                           n.source
                                        ];
                                    });
 	    // MUCH FASTER THIS WAY, ~ 1000 times faster (no seek time for each transaction!)

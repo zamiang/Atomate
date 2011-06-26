@@ -207,11 +207,11 @@ Atomate.database.person = {
 	                               });
     },
 
-    putAllPersonInDB:function(person) { 
+    putAllPeopleInDB:function(people) { 
 	    // Put/update all person items into database
 	    var sqlQuery = 'INSERT OR REPLACE INTO person ' + this.properties + ' VALUES' + this.values + ';';
 
-        var attributes = person.map(function(n){
+        var attributes = people.map(function(n){
 	                                   var del = 0;
 	                                   if (n.deleted === true || n.deleted === 'true' || n.deleted === 1) {del=1;}
 	                                   return  [
