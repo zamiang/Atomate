@@ -11,6 +11,10 @@
  *
  */
 
+debug = function(msg) {
+    console.log(msg);
+};
+
 Atomate = {
     notesList: jQuery("#notes"),
     tabsList: jQuery('#tabs'),
@@ -39,20 +43,26 @@ Atomate = {
                       search:'#javascript'
                   }],
     initialize: function(params) {
-        this.database.initialize();
-        this.notes = params.redactedNotes.slice(0, 200);
-        this.people = this.getPeople();
-        this.events = this.getEvents();
-        this.tabs = params.tabs || this.defaultTabs;
-        var startingTab = this.getStartingTab();
+        debug('starting');
+        try {
+            var this_ = this;
+            this.database.initialize();
+            this.auth.initialize();
+            this.tracking.initialize(params);
+            this.tabs = params.tabs || this.defaultTabs;
 
-        this.buildTabs(this.tabs, startingTab);
-        this.setupSearch(this.searchDiv, this.notes);
-        this.setupMouseEvents();
-        this.updateNotesDisplay(startingTab.name.toLowerCase(), startingTab.type);
-        this.auth.initialize();
-        this.tracking.initialize(params);
-        this.autocomplete.initialize();
+            var startingTab = this.getStartingTab();
+            
+            this.getData(function() {                             
+                             this_.autocomplete.initialize();            
+                             this_.buildTabs(this_.tabs, startingTab);
+                             this_.setupSearch(this_.searchDiv, this_.notes);
+                             this_.setupMouseEvents();
+                             this_.updateNotesDisplay(startingTab.name.toLowerCase(), startingTab.type);
+                         });
+        } catch (x) {
+            console.log(x);
+        }
     },
 
     setupMouseEvents: function(){
@@ -296,18 +306,17 @@ Atomate = {
                             });
     },
 
-    getPeople: function(){
-        return FBDATA.filter(function(d){ if (d.type === 'schemas.Person') { return true ;} return false;  })
-	        .map(function(d){ d.searchTxt = "@" + (d['first name'] + d['last name']).toLowerCase(); d.searchTxt = d.searchTxt.split(' ').join(''); return d; })
-            .sort(function(a, b) { return a.searchTxt[1] > b.searchTxt[1]; });
+    getData: function() {
+        var this_ = this;
+        this.database.notes.getAllNotes(false, false, function(notes) {    
+                                            this_.notes = notes;
+                                            this_.database.person.getAllPeople(false, false, function(people) {    
+                                                                                  this_.people = people;
+	                                                                              continuation();
+                                                                              });
+                                        });
     },
-
-    getEvents: function(){
-        return FBDATA.filter(function(d){
-                                 if (d.type == 'schemas.Event') {return true;} return false;
-                             }).map(function(d){ d.searchTxt = d.name.toLowerCase() + " " + d.location.toLowerCase(); return d; });
-    },
-
+    
     showPopup: function(id) {
         jQuery("#" + id).show();
         jQuery('#container, header').css('opacity', 0.2);
@@ -368,5 +377,17 @@ Atomate = {
                          });
     },
 
+    getPeople: function() {
+
+        return FBDATA.filter(function(d){ if (d.type === 'schemas.Person') { return true ;} return false;  })
+	        .map(function(d){ d.searchTxt = "@" + (d['first name'] + d['last name']).toLowerCase(); d.searchTxt = d.searchTxt.split(' ').join(''); return d; })
+            .sort(function(a, b) { return a.searchTxt[1] > b.searchTxt[1]; });
+    },
+
+    getEvents: function(){
+        return FBDATA.filter(function(d){
+                                 if (d.type == 'schemas.Event') {return true;} return false;
+                             }).map(function(d){ d.searchTxt = d.name.toLowerCase() + " " + d.location.toLowerCase(); return d; });
+    },
 
  */

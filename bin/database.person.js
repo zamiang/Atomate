@@ -110,7 +110,7 @@ Atomate.database.person = {
 	                               });
     },
 
-    getAllPerson:function(isDeleted, includeOrder, continuation) {
+    getAllPeople:function(isDeleted, includeOrder, continuation) {
 	    // Passes 'person' to continuation
 	    this.parent.DB.transaction(function(tx) {
 	                                   tx.executeSql('SELECT * FROM person WHERE deleted = ? ORDER BY created DESC',
