@@ -333,8 +333,8 @@ Atomate = {
 	        type: loc.type
 	    };
 
-        console.log('yooooo');
-        jQuery('.location_input select option').prepend('<option val="' + this.currentLocation.name + '>' + this.currentLocation.name + '</option>'); //.data(this.currentLocation));
+        jQuery('.location_input select option').prepend('<option>' + Atomate.currentLocation.name + '</option>');
+        //jQuery('.location_input select option').prepend('<option val="' + this.currentLocation.name + '>' + this.currentLocation.name + '</option>'); //.data(this.currentLocation));
     },
 
     addNotes: function(notes) {
