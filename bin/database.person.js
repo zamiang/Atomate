@@ -5,10 +5,12 @@
 
 Atomate.database.person = { 
     parent: Atomate.database,
-    schema: 'jid INT PRIMARY KEY, version INT, created INT, edited INT, deleted INT, contents TEXT, modified INT, tags TEXT, type TEXT, reminder INT',
-    properties: '(jid, version, created, edited, deleted, contents, modified, tags, type, reminder)',
-    values: '(?,?,?,?,?,?,?,?,?,?)',
-    addPerson:function(jid, version, created, edited, deleted, contents) {
+    schema: 'jid TEXT PRIMARY KEY, version INT, created INT, edited INT, deleted INT, contents TEXT, modified INT, '
+        + 'name TEXT, nickname TEXT, email1 TEXT, email2 TEXT, email3 TEXT, photourl TEXT, source TEXT, '
+        + 'fbid INT, gender TEXT, facebookurl TEXT, url TEXT, priority TEXT',
+    properties: 'id, version, created, edited, deleted, contents, modified, name, nickname, email1, email2, email3, photourl, source, fbid, gender, facebookurl, url, priority',    
+    values: '(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',  // 19
+    addPerson:function(jid, version, created, edited, deleted, contents, modified, name, nickname, email1, email2, email3, photourl, source, fbid, gender, facebookurl, url, priority) {
 	    // Adds person (from server) to database
 	    this.parent.DB.transaction(function(tx) {
 	                                   var del = 0;
@@ -17,7 +19,7 @@ Atomate.database.person = {
 	                                   var edited = parseInt(edited, 10);
 	                                   if (deleted === 1 || deleted === true || deleted === "true") { del = 1; }
 	                                   tx.executeSql('INSERT INTO person VALUES' + this_.values + ';',
-			                                         [jid, version, created, edited, del, contents, 0, tags, type, reminder],
+                                                     [jid, version, created, edited, del, contents, 0, name, nickname, email1, email2, email3, photourl, source, fbid, gender, facebookurl, url, priority],
 			                                         function(tx, rs) { debug("PERSON INSERT - person DB"); }
 			                                        );
 	                               });
@@ -34,7 +36,7 @@ Atomate.database.person = {
 	                                  // Insert person into database
 	                                  this_.parent.DB.transaction(function(tx) {
 		                                                              tx.executeSql('INSERT INTO person VALUES' + this_.values + ';',
-			                                                                        [jid, version, created, edited, deleted, contents, modified, tags, type, reminder],
+                                                                                    [jid, version, created, edited, deleted, contents, modified, name, nickname, email1, email2, email3, photourl, source, fbid, gender, facebookurl, url, priority],
 			                                                                        function(tx, rs) { debug("PERSON INSERT - person DB"); }
 			                                                                       );
 	                                                              });
@@ -56,7 +58,7 @@ Atomate.database.person = {
 	    // Adds PRE-EXISTING person to DB, passes unique JID to continuation 
 	    this.parent.DB.transaction(function(tx) {
 	                                   tx.executeSql('INSERT INTO person VALUES' + this_.values + ';',
-			                                         [jid, version, created, edited, deleted, contents, modified, tags, type, reminder],
+                                                     [jid, version, created, edited, deleted, contents, modified, name, nickname, email1, email2, email3, photourl, source, fbid, gender, facebookurl, url, priority],
 			                                         function(tx, rs) { debug("PERSON INSERT - person DB"); }
 			                                        );
 	                               });

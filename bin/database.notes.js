@@ -5,11 +5,9 @@
 
 Atomate.database.notes = { 
     parent: Atomate.database,
-    schema: 'jid TEXT PRIMARY KEY, version INT, created INT, edited INT, deleted INT, contents TEXT, modified INT, '
-        + 'name TEXT, nickname TEXT, email1 TEXT, email2 TEXT, email3 TEXT, photourl TEXT, source TEXT, '
-        + 'fbid INT, gender TEXT, facebookurl TEXT, url TEXT, priority TEXT',
-    properties: 'id, version, created, edited, deleted, contents, modified, name, nickname, email1, email2, email3, photourl, source, fbid, gender, facebookurl, url, priority',    
-    values: '(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',  // 19
+    schema: 'jid INT PRIMARY KEY, version INT, created INT, edited INT, deleted INT, contents TEXT, modified INT, tags TEXT, type TEXT, reminder INT',
+    properties: '(jid, version, created, edited, deleted, contents, modified, tags, type, reminder)',
+    values: '(?,?,?,?,?,?,?,?,?,?)',
     addNote:function(jid, version, created, edited, deleted, contents) {
 	    // Adds note (from server) to database
 	    this.parent.DB.transaction(function(tx) {

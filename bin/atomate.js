@@ -61,7 +61,7 @@ Atomate = {
                              this_.updateNotesDisplay(startingTab.name.toLowerCase(), startingTab.type);
                          });
         } catch (x) {
-            console.log(x);
+            debug(x);
         }
     },
 
@@ -118,19 +118,6 @@ Atomate = {
                                                                // todo - intersect w/ data and call delete on those items
                                                                return false;
                                                            });
-	    /*
-         jQuery('#delete_notes').click(function() {
-         var notes = this_.notesList.find('li.selected');
-         // todo - intersect w/ data and call delete on those items
-         notes.slideUp();
-         });
-
-         jQuery('#tag_notes').click(function() {
-         alert('about to tag some notes');
-         var notes = this_.notesList.find('li.selected');
-         // todo - intersect w/ data and allow the user to tag those items
-         });
-	     */
 
         jQuery('.popup .remove').live('click', function(item) { this_.hidePopup(); });
     },
@@ -311,9 +298,9 @@ Atomate = {
         this.database.notes.getAllNotes(false, false, function(notes) {    
                                             this_.notes = notes;
                                             this_.database.person.getAllPeople(false, false, function(people) {    
-                                                                                  this_.people = people;
-	                                                                              continuation();
-                                                                              });
+                                                                                   this_.people = people;
+	                                                                               continuation();
+                                                                               });
                                         });
     },
     
@@ -358,36 +345,49 @@ Atomate = {
 
 /**
  *
-    searchNotes: function(word, notes) {
-        var this_ = this;
-        return notes.filter(function(note){
-                                this_.trie.findTrieWord(word, note.trie);
-                            });
-    },
+ 
+ jQuery('#delete_notes').click(function() {
+ var notes = this_.notesList.find('li.selected');
+ // todo - intersect w/ data and call delete on those items
+ notes.slideUp();
+ });
+ 
+ jQuery('#tag_notes').click(function() {
+ alert('about to tag some notes');
+ var notes = this_.notesList.find('li.selected');
+ // todo - intersect w/ data and allow the user to tag those items
+ });
+ 
+ searchNotes: function(word, notes) {
+ var this_ = this;
+ return notes.filter(function(note){
+ this_.trie.findTrieWord(word, note.trie);
+ });
+ },
 
-    buildTrieForNotes: function(notes) {
-        return notes.map(function(note) {
-                             if (note && note.contents.length > 0) {
-                                 var words = note.contents.replace(/\n/g, "").split(" ");
-                                 note.trie = Atomate.trie.buildTrie(words);
+ buildTrieForNotes: function(notes) {
+ return notes.map(function(note) {
+ if (note && note.contents.length > 0) {
+ var words = note.contents.replace(/\n/g, "").split(" ");
+ note.trie = Atomate.trie.buildTrie(words);
 
-                                 //note.trie = Atomate.trie.optimizeTrie(trie);
-                             }
-                             return note;
-                         });
-    },
+ //note.trie = Atomate.trie.optimizeTrie(trie);
+ }
+ return note;
+ });
+ },
 
-    getPeople: function() {
+ getPeople: function() {
 
-        return FBDATA.filter(function(d){ if (d.type === 'schemas.Person') { return true ;} return false;  })
-	        .map(function(d){ d.searchTxt = "@" + (d['first name'] + d['last name']).toLowerCase(); d.searchTxt = d.searchTxt.split(' ').join(''); return d; })
-            .sort(function(a, b) { return a.searchTxt[1] > b.searchTxt[1]; });
-    },
+ return FBDATA.filter(function(d){ if (d.type === 'schemas.Person') { return true ;} return false;  })
+ .map(function(d){ d.searchTxt = "@" + (d['first name'] + d['last name']).toLowerCase(); d.searchTxt = d.searchTxt.split(' ').join(''); return d; })
+ .sort(function(a, b) { return a.searchTxt[1] > b.searchTxt[1]; });
+ },
 
-    getEvents: function(){
-        return FBDATA.filter(function(d){
-                                 if (d.type == 'schemas.Event') {return true;} return false;
-                             }).map(function(d){ d.searchTxt = d.name.toLowerCase() + " " + d.location.toLowerCase(); return d; });
-    },
+ getEvents: function(){
+ return FBDATA.filter(function(d){
+ if (d.type == 'schemas.Event') {return true;} return false;
+ }).map(function(d){ d.searchTxt = d.name.toLowerCase() + " " + d.location.toLowerCase(); return d; });
+ },
 
  */
