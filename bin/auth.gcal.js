@@ -24,18 +24,17 @@ Atomate.auth.gcal = {
 	},
     
 	callback: function(result) {
-		showMessage('got a calendar callback');        
 		var calendars = result.feed.entry;
         
 		calendars.map(function(entry){
-			var query = new google.gdata.calendar.CalendarEventQuery(entry.content.src);
-			query.setMaxResults(1000);
-                        
-			CalendarService.getEventsFeed(query, Atomate.auth.gcal.entryCallback, handleError);
-		    });
+			              var query = new google.gdata.calendar.CalendarEventQuery(entry.content.src);
+			              query.setMaxResults(1000);
+                          
+			              CalendarService.getEventsFeed(query, Atomate.auth.gcal.entryCallback, handleError);
+		              });
 		
 	},
-
+    
     // this gets used as the callback for CalendarService.getEventsFeed 
     // it formats and saves each event in that calendar
     entryCallback:  function(result) {        

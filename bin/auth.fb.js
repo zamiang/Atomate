@@ -50,7 +50,7 @@ window.fbAsyncInit = function() {
 			             FB.api('/me/events', function(response) {
 				                    if (response.data !== undefined){
                                         var fb_event_cache = [];
-					                    parent.logProgress('saving ' + response.data.length + ' facebook events');
+					                    parent.logProgress('saving ' + response.data.length + ' Facebook events');
 					                    parent.interval_map_lite(response.data, 
                                                                  function(entry) { parent.Facebook.saveEvent(entry, fb_event_cache); },                                                                               
                                                                  function(){
