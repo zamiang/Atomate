@@ -123,8 +123,13 @@ Atomate.database.notes = {
 				                                             if (note.jid === -1 && !includeOrder) {
 				                                                 continue; // Skip special note
 				                                             }
-				                                             notes.push({"jid":note.jid,
-					                                                     "contents":note.contents});
+				                                             notes.push({
+                                                                            jid:note.jid,
+					                                                        contents:note.contents,
+                                                                            tags: note.tags,
+                                                                            type: note.type || 'note',
+                                                                            reminder: note.reminder
+                                                                        });
 			                                             }
 			                                             debug("DB: Finished grabbing notes.");
 			                                             // Pass notes along

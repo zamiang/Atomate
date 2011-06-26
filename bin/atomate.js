@@ -298,7 +298,12 @@ Atomate = {
         this.database.notes.getAllNotes(false, false, function(notes) {    
                                             this_.notes = notes;
                                             this_.database.person.getAllPeople(false, false, function(people) {    
-                                                                                   this_.people = people;
+                                                                                   this_.people = people.sort(function(a,b) { 
+                                                                                                                  // http://stackoverflow.com/questions/3195941/sorting-an-array-of-objects-in-chrome
+                                                                                                                  if (a.name === b.name) return -1;
+                                                                                                                  if (a.name > b.name) return 1;
+                                                                                                                  return -1;
+                                                                                                              });
 	                                                                               cont();
                                                                                });
                                         });

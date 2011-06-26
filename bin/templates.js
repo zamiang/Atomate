@@ -9,9 +9,9 @@ Atomate.templates = {
     getItemHtml: function(n) {
         if (!n.type) { // is a note -- temporary
             return this.getNoteHtml(n);
-        } else if (n.type == "schemas.Person") {
+        } else if (n.type == "person") {
             return this.getPersonHtml(n);
-        } else if (n.type == "schemas.Event") {
+        } else if (n.type == "event") {
             return this.getEventHtml(n);                                                                 
         } else {
             return this.getNoteHtml(n);
@@ -53,19 +53,19 @@ Atomate.templates = {
     },
     
     getTabHtml: function(tab, startingTab, showRemove) { 
-	if (tab && tab.name !== undefined) {
-        return "<li data-type=\"" + tab.type + "\""
-            + " data-name=\"" + this.getTabName(tab) + "\" class=\"tab_" + this.getTabName(tab)
-            + (startingTab.name.toLowerCase() == tab.name.toLowerCase() ? ' selected' : "")
-            + "\">" 
-            + "<a href=\"#" + tab.name.toLowerCase() + "\">" + tab.name + "</a>"
-            + (showRemove ? "<img class=\"remove\" src=\"../img/remove.png\" />" : "")
-            + "</li>";        
-	}
+	    if (tab && tab.name !== undefined) {
+            return "<li data-type=\"" + tab.type + "\""
+                + " data-name=\"" + this.getTabName(tab) + "\" class=\"tab_" + this.getTabName(tab)
+                + (startingTab.name.toLowerCase() == tab.name.toLowerCase() ? ' selected' : "")
+                + "\">" 
+                + "<a href=\"#" + tab.name.toLowerCase() + "\">" + tab.name + "</a>"
+                + (showRemove ? "<img class=\"remove\" src=\"../img/remove.png\" />" : "")
+                + "</li>";        
+	    }
     },
 
     getItemType: function(type){
-      return type.toLowerCase().replace('schemas.', '');
+        return type.toLowerCase().replace('schemas.', '');
     },
 
     getActionsHtml: function(item) {
@@ -76,9 +76,9 @@ Atomate.templates = {
     getPersonHtml: function(item) {
         return "<li class=\"type_" + this.getItemType(item.type) + "\">"
             + this.getActionsHtml(item)
-            + "<img class=\"profile_photo\" src=\"" + this.getPersonPhotoUrl(item) + "\" />"
+            + "<img class=\"profile_photo\" src=\"" + item.photourl + "\" />"
             + "<div class=\"text\">"
-            + "<a class=\"at_link\" data-id=\"" + item.searchTxt + "\">"  + item['first name'] + " " + item['last name'] + "</a>"
+            + "<a class=\"at_link\" data-id=\"" + item.tag + "\">"  + item.name + "</a>"
             + (item.fbid ? "<br /><a class=\"external\" href=\"http://www.facebook.com/profile.php?id=" + item.fbid + "\" target=\"_blank\">Facebook</a>" : "")
             + "</div>"
             + "</li>";
@@ -103,7 +103,8 @@ Atomate.templates = {
     },
 
     getNoteHtml: function(item) {
-        return "<li class=\"note " + this.getItemType(item.category) + "\">"
+        console.log(item);
+        return "<li class=\"note " + this.getItemType(item.type) + "\">"
             + this.getActionsHtml(item)
             + "<div class=\"text\">"  + this.linkifyNote(item.contents) + "</div>"
             + "<div class=\"context\">"

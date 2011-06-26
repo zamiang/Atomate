@@ -124,16 +124,25 @@ Atomate.database.person = {
 				                                             if (person.jid === -1 && !includeOrder) {
 				                                                 continue; // Skip special person
 				                                             }
-				                                             people.push({"jid":person.jid,
-					                                                      "name":person.name});
+                                                             //[jid, version, created, edited, deleted, modified, name, nickname, email1, email2, email3, photourl, source, fbid, url, priority, tag],
+				                                             people.push({
+                                                                             jid:person.jid,
+					                                                         name:person.name,
+                                                                             photourl:person.photourl,
+                                                                             fbid:person.fbid,
+                                                                             tag:person.tag,
+                                                                             type:'person'
+                                                                         });
 			                                             }
 			                                             debug("DB: Finished grabbing person.");
 			                                             // Pass person along
 			                                             continuation(people);
 			                                         });
 	                               });
+
     },
 
+    // UPDATE
     getAllPersonDict:function(continuation) {
 	    // Passes 'person' to continuation
 	    this.parent.DB.transaction(function(tx) {
@@ -162,6 +171,7 @@ Atomate.database.person = {
 	                               });
     },
 
+    // UPDATE
     getModifiedPerson:function(continuation) {
 	    // Passes 'person' to continuation
 	    this.parent.DB.transaction(function(tx) {
