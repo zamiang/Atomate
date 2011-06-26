@@ -29,35 +29,35 @@ window.fbAsyncInit = function() {
 
 			             FB.api('/me/friends', function(response) {
 				                    if (response.data !== undefined){
-					                    var toSave = response.data.length;
-					                    var saved = 0;
-					                    
-									    parent.logProgress('saving ' + toSave + ' people\'s Facebook profile');
-
-                                        parent.fb_people_cache = [];
-					                    parent.interval_map_lite(response.data, function(entry) { 
+                                        var fb_people_cache = [];
+									    parent.logProgress('saving ' + response.data.length + ' people\'s Facebook profile');
+					                    parent.interval_map_lite(response.data.slice(0, 5), 
+                                                                 function(entry) { 
 							                                         FB.api('/' + entry.id, function(response) {
 								                                                if (response !== undefined){
 									                                                //parent.logProgress('saving ' + response.name + '\'s Facebook profile');
-									                                                Atomate.auth.Facebook.saveFriend(response); 
+									                                                parent.Facebook.saveFriend(response, fb_people_cache); 
 								                                                }
-								                                                saved++;
 								                                            });
 						                                         }, function(){
-                                                                     this.parent.database.person.putAllPeopleInDB(parent.fb_people_cache);
+                                                                     console.log(fb_people_cache)
+                                                                     console.log('about to save fb people');
+                                                                     Atomate.database.person.putAllPeopleInDB(fb_people_cache);
                                                                  });
 				                    }				    
 				                });
 
 			             FB.api('/me/events', function(response) {
 				                    if (response.data !== undefined){
-					                    try {
-                                            parent.fb_event_cache = [];
-					                        parent.logProgress('saving ' + response.data.length + ' facebook events');
-					                        parent.interval_map_lite(response.data, 
-                                                                     function(entry) { Atomate.auth.Facebook.saveEvent(entry); },                                                                               
-                                                                     this.parent.database.note.putAllNotesInDB(parent.fb_event_cache));
-					                    } catch(x) { console.log(x); }
+                                        var fb_event_cache = [];
+					                    parent.logProgress('saving ' + response.data.length + ' facebook events');
+					                    parent.interval_map_lite(response.data, 
+                                                                 function(entry) { parent.Facebook.saveEvent(entry, fb_event_cache); },                                                                               
+                                                                 function(){
+                                                                     console.log(fb_event_cache)
+                                                                     console.log('about to save fb events');                                                                     
+                                                                     Atomate.database.notes.putAllNotesInDB(fb_event_cache);
+                                                                 });
 				                    }
 				                });
 			             
@@ -104,52 +104,52 @@ window.fbAsyncInit = function() {
 
 Atomate.auth.Facebook =  {
     parent: Atomate.auth,
-    saveFriend: function(entry) {
+    saveFriend: function(entry, list) {
         var start = entry.updated_time ? new Date(entry.updated_time.substring(0,entry.updated_time.length - 5)).valueOf() : new Date().valueOf();
-        var id = "@" + (entry['first_name'] + entry['last name']).toLowerCase();
+        var id = (entry['first_name'] + entry['last_name']).toLowerCase();
         id = id.split(' ').join('');
-        this.parent.fb_person_cache.push({
-			                                 jid: id,
-			                                 fbid: entry.id,
-			                                 name: entry.first_name,
-                                             nickname: "",
-			                                 modified: start,
-                                             deleted: 0,
-                                             edited:0,
-                                             version:0,
-			                                 created: new Date().valueOf(),
-                                             url:entry.website,                                             
-                                             priority: "",
-                                             source:'Facebook',
-                                             email1: "",
-                                             email2: "",
-                                             email3: ""
 
-                                             //'relationship status': entry.relationship_status,			 
-			                                 // birthday: entry.birthday // NOTE: this needs to be parsed -- issue: it seems to return inconsistent date formats                                            
-			                                 // TODO: add location, hometown, work, education and relationships
-		                                });
+        list.push({
+			          jid: entry.id, //id,
+			          fbid: entry.id,
+			          name: entry.first_name + " " + entry.last_name,
+                      nickname: "",
+			          modified: start,
+                      version:0,
+			          created: new Date().valueOf(),
+                      url: entry.website || "",                                             
+                      priority: "",
+                      photourl: "http://graph.facebook.com/" + entry.fbid + "/picture?type=square",
+                      source: 'Facebook',
+                      tag: "@" + id,
+                      email1: "",
+                      email2: "",
+                      email3: ""
+                      
+                      //'relationship status': entry.relationship_status,			 
+			          // birthday: entry.birthday // NOTE: this needs to be parsed -- issue: it seems to return inconsistent date formats                                            
+			          // TODO: add location, hometown, work, education and relationships
+		          });
     },
 
-
-    saveEvent: function(entry) {
+    saveEvent: function(entry, list) {
         if (entry && entry.start_time && entry.end_time) {
             var start = new Date(entry.start_time.substring(0,entry.end_time.length - 5)).valueOf();
             var end = new Date(entry.end_time.substring(0,entry.end_time.length - 5)).valueOf();
                         
-            this.parent.fb_event_cache.push({
-			                                    jid: entry.id,                                                
-                                                version:0,
-                                                created: new Date().valueOf(),
-                                                modified: new Date().valueOf(),
-			                                    contents: entry.name + " http://www.facebook.com/event.php?eid=" + entry.id + " #facebook",
-                                                tags: "#facebook",
-                                                type: 'event',
-			                                    source: 'Facebook',
-			                                    reminder: this.parent.makeSpecificDateTime(start)
-			                                    //"end time": this.parent.makeSpecificDateTime(end),
-			                                    //location: entry.location
-		                                    });
+            list.push({
+			              jid: entry.id,                                                
+                          version:0,
+                          created: new Date().valueOf(),
+                          modified: 0, 
+			              contents: entry.name + " http://www.facebook.com/event.php?eid=" + entry.id + " #facebook",
+                          tags: "#facebook",
+                          type: 'event',
+			              source: 'Facebook',
+			              reminder: start
+			              //"end time": this.parent.makeSpecificDateTime(end),
+			              //location: entry.location
+		              });
         }
     }
 

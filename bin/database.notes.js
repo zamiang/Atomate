@@ -226,6 +226,7 @@ Atomate.database.notes = {
                                            n.source
                                        ];
                                    });
+
 	    // MUCH FASTER THIS WAY, ~ 1000 times faster (no seek time for each transaction!)
 	    this.updateBatchNotes(sqlQuery, attributes);
     },

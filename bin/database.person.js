@@ -5,12 +5,11 @@
 
 Atomate.database.person = { 
     parent: Atomate.database,
-    schema: 'jid TEXT PRIMARY KEY, version INT, created INT, edited INT, deleted INT, contents TEXT, modified INT, '
-        + 'name TEXT, nickname TEXT, email1 TEXT, email2 TEXT, email3 TEXT, photourl TEXT, source TEXT, '
-        + 'fbid INT, gender TEXT, facebookurl TEXT, url TEXT, priority TEXT',
-    properties: 'id, version, created, edited, deleted, contents, modified, name, nickname, email1, email2, email3, photourl, source, fbid, gender, facebookurl, url, priority',    
-    values: '(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',  // 19
-    addPerson:function(jid, version, created, edited, deleted, contents, modified, name, nickname, email1, email2, email3, photourl, source, fbid, gender, facebookurl, url, priority) {
+    schema: 'jid INT PRIMARY KEY, version INT, created INT, edited INT, deleted INT, modified INT, name TEXT, '
+            + 'nickname TEXT, email1 TEXT, email2 TEXT, email3 TEXT, photourl TEXT, source TEXT, fbid INT, url TEXT, priority TEXT, tag TEXT',
+    properties: '(jid, version, created, edited, deleted, modified, name, nickname, email1, email2, email3, photourl, source, fbid, url, priority, tag)',    
+    values: '(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',  // 17
+    addPerson:function(jid, version, created, edited, deleted, modified, name, nickname, email1, email2, email3, photourl, source, fbid, url, priority, tag) {
 	    // Adds person (from server) to database
 	    this.parent.DB.transaction(function(tx) {
 	                                   var del = 0;
@@ -19,7 +18,7 @@ Atomate.database.person = {
 	                                   var edited = parseInt(edited, 10);
 	                                   if (deleted === 1 || deleted === true || deleted === "true") { del = 1; }
 	                                   tx.executeSql('INSERT INTO person VALUES' + this_.values + ';',
-                                                     [jid, version, created, edited, del, contents, 0, name, nickname, email1, email2, email3, photourl, source, fbid, gender, facebookurl, url, priority],
+                                                     [jid, version, created, edited, del, 0, name, nickname, email1, email2, email3, photourl, source, fbid, url, priority, tag],
 			                                         function(tx, rs) { debug("PERSON INSERT - person DB"); }
 			                                        );
 	                               });
@@ -36,7 +35,7 @@ Atomate.database.person = {
 	                                  // Insert person into database
 	                                  this_.parent.DB.transaction(function(tx) {
 		                                                              tx.executeSql('INSERT INTO person VALUES' + this_.values + ';',
-                                                                                    [jid, version, created, edited, deleted, contents, modified, name, nickname, email1, email2, email3, photourl, source, fbid, gender, facebookurl, url, priority],
+                                                                                    [jid, version, created, edited, deleted, modified, name, nickname, email1, email2, email3, photourl, source, fbid, url, priority, tag],
 			                                                                        function(tx, rs) { debug("PERSON INSERT - person DB"); }
 			                                                                       );
 	                                                              });
@@ -58,7 +57,7 @@ Atomate.database.person = {
 	    // Adds PRE-EXISTING person to DB, passes unique JID to continuation 
 	    this.parent.DB.transaction(function(tx) {
 	                                   tx.executeSql('INSERT INTO person VALUES' + this_.values + ';',
-                                                     [jid, version, created, edited, deleted, contents, modified, name, nickname, email1, email2, email3, photourl, source, fbid, gender, facebookurl, url, priority],
+                                                     [jid, version, created, edited, deleted, modified, name, nickname, email1, email2, email3, photourl, source, fbid, url, priority, tag],
 			                                         function(tx, rs) { debug("PERSON INSERT - person DB"); }
 			                                        );
 	                               });
@@ -72,7 +71,7 @@ Atomate.database.person = {
 	    this.parent.DB.transaction(function(tx) {
 	                                   tx.executeSql(
 		                                   'INSERT OR REPLACE INTO person ' + this_.properties + ' VALUES' + this_.values + ';', 
-		                                   [jid, version, created, edited, deleted, contents, modified, tags, type, reminder],
+                                           [jid, version, created, edited, deleted, modified, name, nickname, email1, email2, email3, photourl, source, fbid, url, priority, tag],
 		                                   function(tx, rs) { debug("SUCCESSFUL PERSON UPSERT to DB"); }
 	                                   );
 	                               });
@@ -85,7 +84,7 @@ Atomate.database.person = {
 	                         this_.parent.DB.transaction(function(tx) {
 		                                                     tx.executeSql(
 		                                                         'INSERT OR REPLACE INTO person ' + this_.properties + ' VALUES' + this_.values + ';', 
-                                                                 [jid, person.version, person.created, person.edited, 1, person.contents, 1, person.tags, person.type, person.reminder],
+                                                                 [jid, person.version, person.created, person.edited, 1, 1, person.name, person.nickname, person.email1, person.email2, person.email3, person.photourl, person.source, person.fbid, person.url, person.priority, person.tag],
 		                                                         function(tx, rs) { debug("DB: person-delete success"); }
 		                                                     );
 	                                                     }); 
@@ -126,7 +125,7 @@ Atomate.database.person = {
 				                                                 continue; // Skip special person
 				                                             }
 				                                             people.push({"jid":person.jid,
-					                                                      "contents":person.contents});
+					                                                      "name":person.name});
 			                                             }
 			                                             debug("DB: Finished grabbing person.");
 			                                             // Pass person along
@@ -215,16 +214,24 @@ Atomate.database.person = {
 	                                   var del = 0;
 	                                   if (n.deleted === true || n.deleted === 'true' || n.deleted === 1) {del=1;}
 	                                   return  [
+                                           //[jid, version, created, edited, deleted, modified, name, nickname, email1, email2, email3, photourl, source, fbid, url, priority, tag],
 		                                   parseInt(n.jid, 10),
 		                                   parseInt(n.version, 10),
 		                                   parseInt(n.created, 10),
 		                                   parseInt(n.edited, 10),
 		                                   del,
-		                                   n.contents,
-		                                   n.modified,
-                                           n.tags,
-                                           n.type,
-                                           n.reminder
+		                                   parseInt(n.modified, 10),
+                                           n.name,
+                                           n.nickname,
+                                           n.email1,
+                                           n.email2,
+                                           n.email3,
+                                           n.photourl,
+                                           n.source,
+                                           parseInt(n.fbid, 10),
+                                           n.url,
+                                           n.priority,
+                                           n.tag
                                        ];
                                    });
 	    // MUCH FASTER THIS WAY, ~ 1000 times faster (no seek time for each transaction!)
@@ -238,6 +245,7 @@ Atomate.database.person = {
 		                                   tx.executeSql(sqlQuery, personAttributes[i],
 			                                             function(tx, rs) { // Successful row update
 			                                             }, function(tx, error) {
+                                                             debug(error);
 				                                             debug("BAD _updatePerson");
 			                                             });
 	                                   }

@@ -39,40 +39,53 @@ Atomate.auth.gcal = {
     // this gets used as the callback for CalendarService.getEventsFeed 
     // it formats and saves each event in that calendar
     entryCallback:  function(result) {        
-	var parent = Atomate.auth;
+	    var parent = Atomate.auth;
         var calendarName = result.feed.title.$t;
-	var calendarLink = result.feed.getLink().href;
-	var now = new Date().valueOf();
-	showMessage('saving upcomming events from: <a href="' + calendarLink + '" target="_blank">' + calendarName + "</a>");    
+        var calendarNameTag = calendarName.split(' ').join('').toLowerCase();
+	    var calendarLink = result.feed.getLink().href;
+	    var now = new Date().valueOf();
+        var calendarCache = [];
+   	    showMessage('saving upcomming events from: <a href="' + calendarLink + '" target="_blank">' + calendarName + "</a>");    
         
         Atomate.util.interval_map(result.feed.entry, function(entry){
-		                 try {
-			                 if (entry.getTimes()[0]){
-			                     var start = new Date(entry.getTimes()[0].getStartTime().date).valueOf(); // ewwwwwww
-			                     var end = new Date(entry.getTimes()[0].getEndTime().date).valueOf();
-
-					     // remove events in the past
-					     if (end < now) { return; };
-			                     
-			                     Atomate.auth.saveItem({
-						     type:"schemas.Event",
-							 id: entry.id.$t,
-							 name: entry.getTitle().getText(),
-							 link: entry.getHtmlLink() ? entry.getHtmlLink().getHref() : undefined,
-							 calendarName: calendarName,
-							 calendarLink: calendarLink,
-							 "start time": parent.makeSpecificDateTime(start),
-							 "end time": parent.makeSpecificDateTime(end),
-							 authors: entry.getAuthors().map(function(x){ if(x.email) {return " " + x.email.getValue()} }),
-							 participants: entry.getParticipants().map(function(x){ return " " + x.email }) // Feeder will search for people with this email
-                                                         
-							 // TODO: locations
-							 //locations: entry.getLocations().map(JV3.schemas.Location.fromGWhere),
-							 //location: entry.getLocations().map(JV3.schemas.Location.fromGWhere).length > 0 ? entry.getLocations().map(JV3.schemas.Location.fromGWhere)[0] : undefined,
-							 //geoLocation: entry.getGeoLocation()
-							 });
-			                 }
-		                 } catch(e) { handleError(e); }
-	    }, function() {});
+		                              try {
+			                              if (entry.getTimes()[0]){
+			                                  var start = new Date(entry.getTimes()[0].getStartTime().date).valueOf(); // ewwwwwww
+			                                  var end = new Date(entry.getTimes()[0].getEndTime().date).valueOf();
+                                              var link = entry.getHtmlLink() ? entry.getHtmlLink().getHref() : undefined;
+                                              
+					                          // remove events in the past
+					                          if (end < now) { return; };
+			                                  
+			                                  calendarCache.push({
+			                                                         jid: entry.id,                                                
+                                                                     version:0,
+                                                                     created: new Date().valueOf(),
+                                                                     modified: 0, //new Date().valueOf(),
+			                                                         contents: entry.getTitle().getText() + " " + link + " " + " #gcal" + " #" + calendarNameTag,
+                                                                     tags: "#gcal #" + calendarNameTag,
+                                                                     type: 'event',
+			                                                         source: 'Google',
+							                                         reminder: parent.makeSpecificDateTime(start)
+                                                                     
+                                                                     // TODO:
+							                                         //authors: entry.getAuthors().map(function(x){ if(x.email) {return " " + x.email.getValue()} }),
+							                                         //participants: entry.getParticipants().map(function(x){ return " " + x.email }) // Feeder will search for people with this email
+ 							                                         //link: entry.getHtmlLink() ? entry.getHtmlLink().getHref() : undefined,
+							                                         //calendarName: calendarName,
+							                                         //calendarLink: calendarLink,
+							                                         //"end time": parent.makeSpecificDateTime(end),
+                                                                     
+							                                         // TODO: locations
+							                                         //locations: entry.getLocations().map(JV3.schemas.Location.fromGWhere),
+							                                         //location: entry.getLocations().map(JV3.schemas.Location.fromGWhere).length > 0 ? entry.getLocations().map(JV3.schemas.Location.fromGWhere)[0] : undefined,
+							                                         //geoLocation: entry.getGeoLocation()
+							                                        });
+			                              }
+		                              } catch(e) { handleError(e); }
+	                              }, function() {
+                                      console.log('about to save gcal events');                                                                     
+                                      Atomate.database.notes.putAllNotesInDB(calendarCache);
+                                  });
     }
 };

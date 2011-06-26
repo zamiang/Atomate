@@ -293,13 +293,13 @@ Atomate = {
                             });
     },
 
-    getData: function() {
+    getData: function(cont) {
         var this_ = this;
         this.database.notes.getAllNotes(false, false, function(notes) {    
                                             this_.notes = notes;
                                             this_.database.person.getAllPeople(false, false, function(people) {    
                                                                                    this_.people = people;
-	                                                                               continuation();
+	                                                                               cont();
                                                                                });
                                         });
     },
