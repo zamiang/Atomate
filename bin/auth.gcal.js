@@ -10,7 +10,6 @@ Atomate.auth.gcal = {
 
     initialize: function() {
 		try {
-            return;
 			showMessage('logged in and about to start saving from Google Calendar');
             
 			this.getMyFeed();
