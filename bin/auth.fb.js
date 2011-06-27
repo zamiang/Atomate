@@ -43,7 +43,6 @@ Atomate.auth.Facebook =  {
     initialize: function(FB) {
         var parent = this.parent;
         parent.logProgress('logged in and about to start saving Facebook data');
-		//console.log("logged in perms", response.perms);
         
 		FB.api('/me/friends', function(response) {
 				   if (response.data !== undefined){
@@ -57,8 +56,7 @@ Atomate.auth.Facebook =  {
 									                               parent.Facebook.saveFriend(response, fb_people_cache); 
 								                               }
 								                           });
-						                        }, function(){
-                                                    //console.log(fb_people_cache)
+						                        }, function() { 
                                                     console.log('about to save fb people');
                                                     Atomate.database.person.putAllPeopleInDB(fb_people_cache);
                                                 });
@@ -66,58 +64,26 @@ Atomate.auth.Facebook =  {
 			   });
 
 		FB.api('/me/events', function(response) {
-				   if (response.data !== undefined){
+				   if (response.data !== undefined) {
                        var fb_event_cache = [];
 					   parent.logProgress('saving ' + response.data.length + ' Facebook events');
 					   parent.interval_map_lite(response.data, 
                                                 function(entry) { parent.Facebook.saveEvent(entry, fb_event_cache); },                                                                               
-                                                function(){
-                                                    //console.log(fb_event_cache)
+                                                function() {
                                                     console.log('about to save fb events');                                                                     
                                                     Atomate.database.notes.putAllNotesInDB(fb_event_cache);
                                                 });
 				   }
 			   });
-		
-                         /*
-			             FB.api('/me/inbox', function(response) {
-				                    if (response.data !== undefined){
-					                    parent.logProgress('saving ' + response.data.length + ' facebook messages');					                    
-					                    parent.interval_map_lite(response.data, function(entry) { Atomate.auth.Facebook.saveMessage(entry); });
-				                    }
-				                });
-
-			              FB.api('/me/feed', function(response) {
-				          if (response.data !== undefined){
-					      parent.logProgress('saving ' + response.data.length + ' facebook feed items');					                    
-					      parent.interval_map_lite(response.data, function(entry) { Atomate.auth.Facebook.saveFeedEntry(entry); });
-				          }
-				          });
-
-			              FB.api('/me/albums', function(response) {
-                          // not working 
-				          console.log("your albums", response); 
-				          response.data.map(function(album){ 
-				          FB.api('/' + album.id, function(photo_response) {
-				          if (response !== undefined) {
-			              console.log('photo_response');
-			              console.log(photo_response);
-				          parent.logProgress('saving ' + photo_response + ' facebook photos from album ' + album.id);
-				          parent.interval_map_lite(photo_response.data, function(entry) { Atomate.auth.Facebook.savePhoto(entry, album); });
-				          }
-				          });
-				          });
-				          });
-                          */
     },
 
     saveFriend: function(entry, list) {
         var start = entry.updated_time ? new Date(entry.updated_time.substring(0,entry.updated_time.length - 5)).valueOf() : new Date().valueOf();
         var id = (entry['first_name'] + entry['last_name']).toLowerCase().replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"");
         id = id.split(' ').join('');
-
+        
         list.push({
-			          jid: entry.id, //id,
+			          jid: entry.id, 
 			          fbid: entry.id,
 			          name: entry.first_name + " " + entry.last_name,
                       nickname: "",
@@ -140,7 +106,6 @@ Atomate.auth.Facebook =  {
     },
 
     saveEvent: function(entry, list) {
-        return;
         if (entry && entry.start_time && entry.end_time) {
             var start = new Date(entry.start_time.substring(0,entry.end_time.length - 5)).valueOf();
             var end = new Date(entry.end_time.substring(0,entry.end_time.length - 5)).valueOf();
@@ -216,4 +181,37 @@ Atomate.auth.Facebook =  {
         }    
     }
 */
+
+		
+                         /*
+			             FB.api('/me/inbox', function(response) {
+				                    if (response.data !== undefined){
+					                    parent.logProgress('saving ' + response.data.length + ' facebook messages');					                    
+					                    parent.interval_map_lite(response.data, function(entry) { Atomate.auth.Facebook.saveMessage(entry); });
+				                    }
+				                });
+
+			              FB.api('/me/feed', function(response) {
+				          if (response.data !== undefined){
+					      parent.logProgress('saving ' + response.data.length + ' facebook feed items');					                    
+					      parent.interval_map_lite(response.data, function(entry) { Atomate.auth.Facebook.saveFeedEntry(entry); });
+				          }
+				          });
+
+			              FB.api('/me/albums', function(response) {
+                          // not working 
+				          console.log("your albums", response); 
+				          response.data.map(function(album){ 
+				          FB.api('/' + album.id, function(photo_response) {
+				          if (response !== undefined) {
+			              console.log('photo_response');
+			              console.log(photo_response);
+				          parent.logProgress('saving ' + photo_response + ' facebook photos from album ' + album.id);
+				          parent.interval_map_lite(photo_response.data, function(entry) { Atomate.auth.Facebook.savePhoto(entry, album); });
+				          }
+				          });
+				          });
+				          });
+                          */
 };
+
