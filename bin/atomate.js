@@ -218,12 +218,31 @@ Atomate = {
         if (type == 'native') {
             if (name == 'people') {
                 return this.people;
-            } else if (name == 'events') {
-                return this.notes.filter(function(n){
-                                             return n.type == 'event';
-                                         });
-
             } else if (name == 'now') {
+                /*
+                 * needs lots of work
+                 * currently 
+                 * -- notes edited less than a week ago
+                 * -- events happening in the next 3 days
+                 */
+
+                var now = new Date().valueOf();
+                var threeDays = 86400 * 3 * 1000; 
+                var max = now + threeDays;
+                var min = now + (threeDays * 2);
+
+                return this.notes.filter(function(n){
+                                             if (n.reminder) {
+                                                 return n.reminder <= max && n.reminder >= now;
+                                             } else {
+                                                 return n.edited > min;
+                                             }
+                                         }).sort(function(a, b){
+                                                     var ar = a.reminder || a.edited;
+                                                     var br = b.reminder || b.edited;
+                                                     return ar - br;
+                                                 });
+
                 return this.notes;
                 /*
                 return this.notes.filter(function(n){
@@ -238,6 +257,14 @@ Atomate = {
                 return this.notes.filter(function(n) {
                                              return n.category == 'Reference' || n.category == 'Journal';
                                          });
+            } else if (name == 'events') {
+                    return this.notes.filter(function(n){
+                                                 return n.type == 'event';
+                                             }).sort(function(a, b){
+                                                         var ar = a.reminder || a.edited;
+                                                         var br = b.reminder || b.edited;
+                                                         return ar - br;
+                                                     });
             }
 
             // todo

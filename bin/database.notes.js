@@ -128,6 +128,7 @@ Atomate.database.notes = {
 					                                                        contents:note.contents,
                                                                             tags: note.tags,
                                                                             type: note.type || 'note',
+                                                                            edited: note.edited,
                                                                             reminder: note.reminder
                                                                         });
 			                                             }
