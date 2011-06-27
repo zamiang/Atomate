@@ -43,26 +43,6 @@ Atomate.database.person = {
 	                              });
     },
 
-    addExistingPerson:function(person, modified) {
-	    // not called...
-	    var jid = person.jid;
-	    var created = parseInt(person.created, 10);
-	    var edited = parseInt(person.edited, 10);
-	    var deleted = 0;
-	    if (person.deleted === true || person.deleted === "true" || person.deleted === 1) {
-	        deleted = 1;
-	    }
-	    var contents = person.contents;
-	    var version = parseInt(person.version, 10);
-	    // Adds PRE-EXISTING person to DB, passes unique JID to continuation 
-	    this.parent.DB.transaction(function(tx) {
-	                                   tx.executeSql('INSERT INTO person VALUES' + this_.values + ';',
-                                                     [jid, version, created, edited, deleted, modified, name, nickname, email1, email2, email3, photourl, source, fbid, url, priority, tag],
-			                                         function(tx, rs) { debug("PERSON INSERT - person DB"); }
-			                                        );
-	                               });
-    },
-
     editPerson:function(jid, version, created, edited, deleted, contents, modified) {
 	    // Silently updates person's attributes
 	    debug("Updating person in database: "+jid);
@@ -142,7 +122,78 @@ Atomate.database.person = {
 
     },
 
-    // UPDATE
+    putAllPeopleInDB:function(people) { 
+	    // Put/update all person items into database
+	    var sqlQuery = 'INSERT OR REPLACE INTO person ' + this.properties + ' VALUES' + this.values + ';';
+
+        var attributes = people.map(function(n){
+	                                    var del = 0;
+	                                    if (n.deleted === true || n.deleted === 'true' || n.deleted === 1) {del=1;}
+	                                    return  [
+                                           //[jid, version, created, edited, deleted, modified, name, nickname, email1, email2, email3, photourl, source, fbid, url, priority, tag],
+		                                    parseInt(n.jid, 10),
+		                                    parseInt(n.version, 10),
+		                                    parseInt(n.created, 10),
+		                                    parseInt(n.edited, 10),
+		                                    del,
+		                                    parseInt(n.modified, 10),
+                                            n.name,
+                                            n.nickname,
+                                            n.email1,
+                                            n.email2,
+                                            n.email3,
+                                            n.photourl,
+                                            n.source,
+                                            parseInt(n.fbid, 10),
+                                            n.url,
+                                            n.priority,
+                                            n.tag
+                                        ];
+                                    });
+	    // MUCH FASTER THIS WAY, ~ 1000 times faster (no seek time for each transaction!)
+	    this.updateBatchPerson(sqlQuery, attributes);
+    },
+
+    updateBatchPerson:function(sqlQuery, personAttributes) {
+	    //debug("Batch Updating "+personAttributes.length+" person.");
+	    this.parent.DB.transaction(function(tx) {
+	                                   for (var i=0;i<personAttributes.length;i++) {
+		                                   tx.executeSql(sqlQuery, personAttributes[i],
+			                                             function(tx, rs) { // Successful row update
+			                                             }, function(tx, error) {
+                                                             debug(error);
+				                                             debug("BAD _updatePerson");
+			                                             });
+	                                   }
+	                               });
+    }
+};
+
+
+/**
+ * unused: 
+ *    addExistingPerson:function(person, modified) {
+	    // not called...
+	    var jid = person.jid;
+	    var created = parseInt(person.created, 10);
+	    var edited = parseInt(person.edited, 10);
+	    var deleted = 0;
+	    if (person.deleted === true || person.deleted === "true" || person.deleted === 1) {
+	        deleted = 1;
+	    }
+	    var contents = person.contents;
+	    var version = parseInt(person.version, 10);
+	    // Adds PRE-EXISTING person to DB, passes unique JID to continuation 
+	    this.parent.DB.transaction(function(tx) {
+	                                   tx.executeSql('INSERT INTO person VALUES' + this_.values + ';',
+                                                     [jid, version, created, edited, deleted, modified, name, nickname, email1, email2, email3, photourl, source, fbid, url, priority, tag],
+			                                         function(tx, rs) { debug("PERSON INSERT - person DB"); }
+			                                        );
+	                               });
+    },
+
+ 
+   // UPDATE
     getAllPersonDict:function(continuation) {
 	    // Passes 'person' to continuation
 	    this.parent.DB.transaction(function(tx) {
@@ -215,50 +266,4 @@ Atomate.database.person = {
 	                                   );
 	                               });
     },
-
-    putAllPeopleInDB:function(people) { 
-	    // Put/update all person items into database
-	    var sqlQuery = 'INSERT OR REPLACE INTO person ' + this.properties + ' VALUES' + this.values + ';';
-
-        var attributes = people.map(function(n){
-	                                   var del = 0;
-	                                   if (n.deleted === true || n.deleted === 'true' || n.deleted === 1) {del=1;}
-	                                   return  [
-                                           //[jid, version, created, edited, deleted, modified, name, nickname, email1, email2, email3, photourl, source, fbid, url, priority, tag],
-		                                   parseInt(n.jid, 10),
-		                                   parseInt(n.version, 10),
-		                                   parseInt(n.created, 10),
-		                                   parseInt(n.edited, 10),
-		                                   del,
-		                                   parseInt(n.modified, 10),
-                                           n.name,
-                                           n.nickname,
-                                           n.email1,
-                                           n.email2,
-                                           n.email3,
-                                           n.photourl,
-                                           n.source,
-                                           parseInt(n.fbid, 10),
-                                           n.url,
-                                           n.priority,
-                                           n.tag
-                                       ];
-                                   });
-	    // MUCH FASTER THIS WAY, ~ 1000 times faster (no seek time for each transaction!)
-	    this.updateBatchPerson(sqlQuery, attributes);
-    },
-
-    updateBatchPerson:function(sqlQuery, personAttributes) {
-	    //debug("Batch Updating "+personAttributes.length+" person.");
-	    this.parent.DB.transaction(function(tx) {
-	                                   for (var i=0;i<personAttributes.length;i++) {
-		                                   tx.executeSql(sqlQuery, personAttributes[i],
-			                                             function(tx, rs) { // Successful row update
-			                                             }, function(tx, error) {
-                                                             debug(error);
-				                                             debug("BAD _updatePerson");
-			                                             });
-	                                   }
-	                               });
-    }
-};
+ */

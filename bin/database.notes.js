@@ -23,10 +23,11 @@ Atomate.database.notes = {
 	                               });
     },
     
-    addNewNote:function(created, contents, continuation) {
+    addNewNote:function(created, contents, tags, type, reminder, continuation) {
 	    // Adds NEW note to DB, passes unique JID to continuation 
 	    var this_ = this;
 	    this.parent._getUniqueJID('note', function (jid) {
+                                      var source = 'Atomate'; // todo: make more specific
 	                                  var version = 0;
 	                                  var edited = created;
 	                                  var deleted = 0;
@@ -40,26 +41,6 @@ Atomate.database.notes = {
 	                                                              });
 	                                  continuation(jid);
 	                              });
-    },
-
-    addExistingNote:function(note, modified) {
-	    // not called...
-	    var jid = note.jid;
-	    var created = parseInt(note.created, 10);
-	    var edited = parseInt(note.edited, 10);
-	    var deleted = 0;
-	    if (note.deleted === true || note.deleted === "true" || note.deleted === 1) {
-	        deleted = 1;
-	    }
-	    var contents = note.contents;
-	    var version = parseInt(note.version, 10);
-	    // Adds PRE-EXISTING note to DB, passes unique JID to continuation 
-	    this.parent.DB.transaction(function(tx) {
-	                                   tx.executeSql('INSERT INTO note VALUES' + this_.values + ';',
-			                                         [jid, version, created, edited, deleted, contents, modified, tags, type, reminder, source],
-			                                         function(tx, rs) { debug("NOTE INSERT - note DB"); }
-			                                        );
-	                               });
     },
 
     editNote:function(jid, version, created, edited, deleted, contents, modified) {
@@ -83,7 +64,7 @@ Atomate.database.notes = {
 	                         this_.parent.DB.transaction(function(tx) {
 		                                                     tx.executeSql(
 		                                                         'INSERT OR REPLACE INTO note ' + this_.properties + ' VALUES' + this_.values + ';', 
-                                                                 [jid, note.version, note.created, note.edited, 1, note.contents, 1, note.tags, note.type, note.reminder],
+                                                                 [jid, note.version, note.created, note.edited, 1, note.contents, 1, note.tags, note.type, note.reminder, note.source],
 		                                                         function(tx, rs) { debug("DB: note-delete success"); }
 		                                                     );
 	                                                     }); 
@@ -139,35 +120,56 @@ Atomate.database.notes = {
 	                               });
     },
 
-    getAllNotesDict:function(continuation) {
-	    // Passes 'notes' to continuation
-	    this.parent.DB.transaction(function(tx) {
-	                                   tx.executeSql(
-		                                   'SELECT * FROM note',[],
-		                                   function(tx, rs) {
-		                                       var notes = {};
-		                                       for (var i=0;i<rs.rows.length;i++) {
-			                                       var note = rs.rows.item(i);
-			                                       notes[note.jid] = {
-                                                       created:note.created,
-					                                   edited:note.edited,
-					                                   deleted:note.deleted,
-					                                   contents:note.contents,
-					                                   version:note.version,
-					                                   modified:note.modified,
-                                                       tags: note.tags,
-                                                       type: note.type,
-                                                       reminder: note.reminder                                                       
-                                                   };
-		                                       }
-		                                       // Pass notes along
-		                                       continuation(notes);
-		                                   }
-	                                   );
-	                               });
+    putAllNotesInDB:function(notes) { 
+	    // Put/update all note items into database
+	    var sqlQuery = 'INSERT OR REPLACE INTO note ' + this.properties + ' VALUES' + this.values + ';';
+
+        var attributes = notes.map(function(n){
+	                                   var del = 0;
+	                                   if (n.deleted === true || n.deleted === 'true' || n.deleted === 1) {del=1;}
+	                                   return  [
+		                                   n.jid,
+		                                   parseInt(n.version, 10),
+		                                   parseInt(n.created, 10),
+		                                   parseInt(n.edited, 10),
+		                                   del,
+		                                   n.contents,
+		                                   parseInt(n.modified, 10),
+                                           n.tags,
+                                           n.type,
+                                           parseInt(n.reminder, 10),
+                                           n.source
+                                       ];
+                                   });
+
+	    // MUCH FASTER THIS WAY, ~ 1000 times faster (no seek time for each transaction!)
+	    this.updateBatchNotes(sqlQuery, attributes);
     },
 
-    getModifiedNotes:function(continuation) {
+    updateBatchNotes:function(sqlQuery, noteAttributes) {
+	    //debug("Batch Updating "+noteAttributes.length+" notes.");
+	    this.parent.DB.transaction(function(tx) {
+	                                   for (var i=0;i<noteAttributes.length;i++) {
+		                                   tx.executeSql(sqlQuery, noteAttributes[i],
+			                                             function(tx, rs) { // Successful row update
+			                                             }, function(tx, error) {
+				                                             debug("BAD _updateNotes");
+			                                             });
+	                                   }
+	                               });
+    }
+};
+
+
+/*
+ * 
+ * 
+ * 
+ * todo: talk to max about what this is intended to do
+ * onload are all notes 'unmodified' then when edited 'modified' then when saved set to 'unmodified
+ * -- OR --
+ * is this just to get all notes that have been edited?
+getModifiedNotes:function(continuation) {
 	    // Passes 'notes' to continuation
 	    this.parent.DB.transaction(function(tx) {
 	                                   tx.executeSql(
@@ -211,42 +213,31 @@ Atomate.database.notes = {
 	                               });
     },
 
-    putAllNotesInDB:function(notes) { 
-	    // Put/update all note items into database
-	    var sqlQuery = 'INSERT OR REPLACE INTO note ' + this.properties + ' VALUES' + this.values + ';';
-
-        var attributes = notes.map(function(n){
-	                                   var del = 0;
-	                                   if (n.deleted === true || n.deleted === 'true' || n.deleted === 1) {del=1;}
-	                                   return  [
-		                                   n.jid,
-		                                   parseInt(n.version, 10),
-		                                   parseInt(n.created, 10),
-		                                   parseInt(n.edited, 10),
-		                                   del,
-		                                   n.contents,
-		                                   parseInt(n.modified, 10),
-                                           n.tags,
-                                           n.type,
-                                           parseInt(n.reminder, 10),
-                                           n.source
-                                       ];
-                                   });
-
-	    // MUCH FASTER THIS WAY, ~ 1000 times faster (no seek time for each transaction!)
-	    this.updateBatchNotes(sqlQuery, attributes);
-    },
-
-    updateBatchNotes:function(sqlQuery, noteAttributes) {
-	    //debug("Batch Updating "+noteAttributes.length+" notes.");
+ *     getAllNotesDict:function(continuation) {
+	    // Passes 'notes' to continuation
 	    this.parent.DB.transaction(function(tx) {
-	                                   for (var i=0;i<noteAttributes.length;i++) {
-		                                   tx.executeSql(sqlQuery, noteAttributes[i],
-			                                             function(tx, rs) { // Successful row update
-			                                             }, function(tx, error) {
-				                                             debug("BAD _updateNotes");
-			                                             });
-	                                   }
+	                                   tx.executeSql(
+		                                   'SELECT * FROM note',[],
+		                                   function(tx, rs) {
+		                                       var notes = {};
+		                                       for (var i=0;i<rs.rows.length;i++) {
+			                                       var note = rs.rows.item(i);
+			                                       notes[note.jid] = {
+                                                       created:note.created,
+					                                   edited:note.edited,
+					                                   deleted:note.deleted,
+					                                   contents:note.contents,
+					                                   version:note.version,
+					                                   modified:note.modified,
+                                                       tags: note.tags,
+                                                       type: note.type,
+                                                       reminder: note.reminder                                                       
+                                                   };
+		                                       }
+		                                       // Pass notes along
+		                                       continuation(notes);
+		                                   }
+	                                   );
 	                               });
-    }
-};
+    },
+ */

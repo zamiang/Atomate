@@ -352,6 +352,21 @@ Atomate.util = {
         return self;
     },
 
+    /* 
+     * does not reqire js1.8
+     * http://tech.karbassi.com/2009/12/17/pure-javascript-flatten-array/ 
+     * */
+    flatten: function(array){        
+        var flat = [];
+        for (var i = 0, l = array.length; i < l; i++){
+            
+            var type = Object.prototype.toString.call(array[i]).split(' ').pop().split(']').shift().toLowerCase();
+            if (type) {
+                flat = flat.concat(/^(array|collection|arguments|object)$/.test(type) ? flatten(array[i]) : array[i]); }
+        }
+        return flat;
+    },
+
     concat: function (/* lst... */) {
 	    // snarfed from mochikit
         var rval = [];

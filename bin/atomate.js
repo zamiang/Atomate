@@ -114,7 +114,48 @@ Atomate = {
                                                                return false;
                                                            });
 
+        jQuery('.notes_save_btn').live('click',
+                                       function(evt) {
+                                           evt.stopPropagation();
+                                           var noteDiv = jQuery(this).parent().parent();
+                                           var contents = noteDiv.find('textarea').val().trim(); //todo fix html
+                                           var created = new Date().valueOf();
+                                           var reminder = this_.getDateForDateTime(noteDiv.find('input:eq(0)'), noteDiv.find('input:eq(1)'));
+                                           var type = this_.getNoteType(contents);
+                                           
+                                           // it is the main input
+                                           // prepend the note
+                                           this_.database.notes.addNewNote(created, contents, tags, type, reminder,
+                                                                           function(jid){
+                                                                               this_.database.notes.getNoteById(jid, 
+                                                                                                                function(n){
+                                                                                                                    this_.notes.push(note);
+                                                                                                                    if (noteDiv.attr('id') == 'input') {
+                                                                                                                        noteDiv.find('textarea, input').val('');
+                                                                                                                        
+                                                                                                                    } else {
+                                                                                                                        
+                                                                                                                    }
+                                                                                                                });
+                                                                           });
+                                       });        
+        
         jQuery('.popup .remove').live('click', function(item) { this_.hidePopup(); });
+    },
+    // move these
+    getNoteType: function(contents, reminder){
+        // VERYYYYYYYYYY basic
+        var c = cotents.toLowerCase();
+
+        if (c.indexOf('remind me') > -1) {
+            return "reminder";
+        } else if (c.indexOf('http://') > -1) {
+            return 'bookmark';
+        } else if (c.indexOf('todo') > -1) {
+            return 'todo';
+        } else {
+            return 'note';
+        }
     },
 
     resizeIt: function(jObj) {
