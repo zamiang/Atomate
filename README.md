@@ -1,37 +1,16 @@
 # ATOMATE - Your digital personal assistant
 
-Atomate helps you stay organized by giving you one place to find and
-update all the things you need for you day. Our priority is to make it
-easy for you to add stuff and find suff. We do this by infering what
-type of data you enter as you enter it, by alowing you to enter many
-different types of things and by importing your information from the
-apps you use every day. All your information is in one list--
-accessible, filterable and searchable from your phone and your web
-browser.
 
+Atomate is a your personal, extra smart note taking tool. It does two
+key things: It reminds you about things when you tell it to, and it
+gives you one place to keep the info you need for you day. Atomate
+does this by bringing different types of things like reminders,
+contacts, todos and events (that are normall scattared across
+many apps) together in one place. Atomate first imports and syncs
+your data from the apps you already use and then gives you one
+place to search, filter and add new stuff -- accessible on your phone
+and your web browser
 
-## Problem
-
-People spend too much time worrying about silly little dumb things and
-trying to remember silly little dumb things -- and not enough time
-doing silly little dumb things.
-
-This is (partly) because our life management tools suck. These tools
-are poorly integrated, complicated little things based on old
-metaphors that don't make sense in the digital world. SRS SILLYNESS IS
-SLLY SRSLY
-
-You should not have to conform to your computer-- it should conform to you!
-
-
-## Summary
-
-Atomate aims to serve 90% of your information needs for the day - no
-more fragmenting your information across your calendar, todo lists and bookmarks. Atomate contains all
-reference materials, todos, reminders and events in the same list-
-with one 'awesome bar' to search through and add items. The core
-utility is just having 1 place to view, edit or add to that
-information.
 
 ## Demo
 
@@ -40,7 +19,8 @@ Working on it!
 
 ## Goal
 
-Build something that helps people go about their day.
+Our goal is to help you stop worrying about where stuff is or what
+you're supposed to do, and get on with your day.
 
 
 ## More info
