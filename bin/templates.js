@@ -6,6 +6,7 @@
  */
 
 Atomate.templates = {
+    parent: Atomate,
     getItemHtml: function(n) {
         if (!n.type) { // is a note -- temporary
             return this.getNoteHtml(n);
@@ -90,7 +91,7 @@ Atomate.templates = {
             + "<div class=\"text\">"  + this.linkifyNote(item.contents) + "</div>"
             + "<div class=\"context\">"
             + (item.location ? "<span class=\"context_item\"><img src=\"../img/location.png\" />" + item.location + "</span>" : "")
-            + (item.reminder ? "<span class=\"context_item\"><img src=\"../img/calendar.png\" />" + new Date(item.reminder).format('ddd, mmmm dS h:MM TT') + "</span>" : "")
+            + (item.reminder ? "<span class=\"context_item\"><img src=\"../img/calendar.png\" />" + this.parent.util.getNaturalDate(item.reminder) + "</span>" : "")
             + (item.type && item.type !== "note" && item.type !== "event" ? "<span>" + item.type + "</span>" : "")
             + "</div>"
             + "</li>";       

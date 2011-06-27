@@ -9,6 +9,7 @@
  */
 
 window.fbAsyncInit = function() {
+    return false;
     var parent = Atomate.auth;
     FB.init({
 	            appId: 122681067752275, //223573334338274;

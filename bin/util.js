@@ -1169,7 +1169,7 @@ Atomate.util = {
 	    }	    
     },
     getNaturalDate: function(epoch) {
-        return new Date(epoch).format('ddd, mmmm dS, h:MM TT');
+        return new Date(epoch).format('ddd, mmmm dS h:MM TT');
     }
 };
 

@@ -117,11 +117,13 @@ Atomate = {
         jQuery('.notes_save_btn').live('click',
                                        function(evt) {
                                            evt.stopPropagation();
+
                                            var noteDiv = jQuery(this).parent().parent();
-                                           var contents = noteDiv.find('textarea').val().trim(); //todo fix html
+                                           var contents = noteDiv.find('textarea').val().trim(); // todo escape/remove html
                                            var created = new Date().valueOf();
-                                           var reminder = this_.getDateForDateTime(noteDiv.find('input:eq(0)'), noteDiv.find('input:eq(1)'));
+                                           var reminder = this_.getDateForNoteCreationDateTime(noteDiv.find('input:eq(0)'), noteDiv.find('input:eq(1)'));
                                            var type = this_.getNoteType(contents);
+                                           var tags = this_.getTagsForNote(contents);
                                            
                                            // it is the main input
                                            // prepend the note
@@ -129,7 +131,7 @@ Atomate = {
                                                                            function(jid){
                                                                                this_.database.notes.getNoteById(jid, 
                                                                                                                 function(n){
-                                                                                                                    this_.notes.push(note);
+                                                                                                                    this_.notes.push(n);
                                                                                                                     if (noteDiv.attr('id') == 'input') {
                                                                                                                         noteDiv.find('textarea, input').val('');
                                                                                                                         
@@ -142,10 +144,22 @@ Atomate = {
         
         jQuery('.popup .remove').live('click', function(item) { this_.hidePopup(); });
     },
+
+    
+    
     // move these
+    getDateForNoteCreationDateTime: function(date, time) {
+        // todo: this will be annoying -- check old poyozo code
+        return 0;  
+    },
+
+    getTagsForNote: function(contents){
+        var tags =  contents.toLowerCase().match(/[#]+[A-Za-z0-9-_]+/g);
+        return tags ? tags.join(' ') : "";        
+    },    
     getNoteType: function(contents, reminder){
         // VERYYYYYYYYYY basic
-        var c = cotents.toLowerCase();
+        var c = contents.toLowerCase();
 
         if (c.indexOf('remind me') > -1) {
             return "reminder";
@@ -270,7 +284,7 @@ Atomate = {
                 var now = new Date().valueOf();
                 var threeDays = 86400 * 3 * 1000; 
                 var max = now + threeDays;
-                var min = now + (threeDays * 2);
+                var min = now - (threeDays * 2);
 
                 return this.notes.filter(function(n){
                                              if (n.reminder) {

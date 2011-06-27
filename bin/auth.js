@@ -35,9 +35,6 @@ Atomate.auth = {
 		// est_max_time = est_max_num_items / interval; // 600;        
 		return this.parent.util.interval_map(list, fn, cont !== undefined ? cont : function(){ }, function(x) { this_.parent.log(x); }, 600, this.parent);
 	},	
-	makeSpecificDateTime: function(d){ return {id:"specificdatetime-"+d.toString(),type:"schemas.SpecificDateTime",val:d.valueOf()}; },
-	makeSpecificDate: function(d){ return {id:"specificdate-"+d.toString(),type:"schemas.SpecificDate",val:d.valueOf()}; },
-    
     logProgress: function(text){
         if (!this.progressDiv) {
             this.progressDiv = jQuery('#progress');
@@ -53,10 +50,5 @@ Atomate.auth = {
 
         console.log(text);
         this.progressDiv.append("<li><span>ERROR: " + text + "</span><img src=\"../img/remove.png\" class=\"remove\" />");        
-    },
-
-    saveItem: function(item) {
-	if (!this.data) { this.data = []; }
-        this.data.push(item);
-    }  
+    }
 };
