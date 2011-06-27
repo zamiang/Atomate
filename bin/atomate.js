@@ -244,11 +244,6 @@ Atomate = {
                                                  });
 
                 return this.notes;
-                /*
-                return this.notes.filter(function(n){
-                                             return n.contents.indexOf('http') < 0 && n.category != "Journal" && n.category != "Reference";
-                                         });
-                 */
             } else if (name == 'todo') {
                 return this.notes.filter(function(n){
                                              return n.contents.indexOf('todo') > -1;

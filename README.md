@@ -19,7 +19,7 @@ Working on it!
 ## Goal
 
 Our goal is to help you stop worrying about where stuff is or what
-you're supposed to do, and get on with your day.
+you're supposed to do, and to get on with your day.
 
 
 ## More info
