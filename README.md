@@ -1,15 +1,14 @@
 # ATOMATE - Your digital personal assistant
 
-
 Atomate is a your personal, extra smart note taking tool. It does two
 key things: It reminds you about things when you tell it to, and it
 gives you one place to keep the info you need for you day. Atomate
 does this by bringing different types of things like reminders,
-contacts, todos and events (that are normall scattared across
-many apps) together in one place. Atomate first imports and syncs
-your data from the apps you already use and then gives you one
-place to search, filter and add new stuff -- accessible on your phone
-and your web browser
+contacts, todos and events (that are normally scattered across many
+apps) together in one place. Atomate first imports and syncs your data
+from the apps you already use and then gives you one place to search,
+filter and add new stuff -- accessible on your phone and your web
+browser.
 
 
 ## Demo
