@@ -23,7 +23,7 @@ Atomate.noteEdit = {
                                            var jid = noteDiv.attr('data-id');
                                            var contents = noteDiv.find('textarea').val().trim(); // todo escape/remove html
                                            var created = new Date().valueOf();
-                                           var reminder = this_.getDateForNoteCreationDateTime(noteDiv.find('input:eq(0)'), noteDiv.find('input:eq(1)'));
+                                           var reminder = this_.getDateForNoteCreationDateTime(noteDiv.find('.picker_date').val(), noteDiv.find('.picker_time').val());
                                            var type = this_.getNoteType(contents);
                                            var tags = this_.getTagsForNote(contents);
                                            
@@ -39,7 +39,7 @@ Atomate.noteEdit = {
                                                                                                                                   });
                                                                                       });                                
                                            } else {
-                                               // this is a note tha tis being edited
+                                               // this is a note that is being edited
                                                this_.parent.database.notes.getNoteById(jid, 
                                                                                        function(n) {
                                                                                            // jid, version, created, edited, deleted, contents, modified, tags, type, reminder, source
@@ -57,7 +57,7 @@ Atomate.noteEdit = {
     replaceNoteInLocalCache: function(note){
         this.parent.notes = this.parent.notes.map(function(n) { 
                                                       if (note.jid === n.jid) { 
-                                                          n = note 
+                                                          n = note;
                                                       } 
                                                       return n;
                                                   });
@@ -79,8 +79,12 @@ Atomate.noteEdit = {
     },
 
     getDateForNoteCreationDateTime: function(date, time) {
-        // todo: this will be annoying -- check old poyozo code
-        return 0;  
+        try {
+            return Date.parse(date + " " + time);
+        } catch (x) {
+            debug(x);
+            return 0;
+        }
     },  
 
     getTagsForNote: function(contents){
@@ -99,8 +103,8 @@ Atomate.noteEdit = {
         var location = jObj.find('.location').text(); // NOT IMPLEMENTED
         var date = parseInt(jObj.find('.date').attr('data-val'), 10);
         date = date ? new Date(date) : undefined;
-      
-        this.createNoteEditor(jObj,id, text,date,location);  
+
+        this.createNoteEditor(jObj, id, text, date, location);  
     },  
 
     appendNote: function(note, prepend) {

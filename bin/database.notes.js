@@ -56,8 +56,7 @@ Atomate.database.notes = {
 		                                   function(tx, rs) { 
                                                if (continuation !== undefined) {
 				                                   this_.getNoteById(jid, continuation);                                                   
-                                               }
-
+                                               }                                               
                                                debug("SUCCESSFUL NOTE UPSERT to DB");
                                            }
 	                                   );

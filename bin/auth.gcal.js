@@ -62,7 +62,7 @@ Atomate.auth.gcal = {
 					                          if (end < now) { return; };
 			                           
 			                                  calendarCache.push({
-			                                                         jid: Atomate.util.Base64.encode(contents),
+			                                                         jid: Atomate.util.Base64.encode(contents).slice(0,30),
                                                                      version:0,
                                                                      created: now, 
                                                                      modified: 0, 

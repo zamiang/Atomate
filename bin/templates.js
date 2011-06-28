@@ -94,8 +94,8 @@ Atomate.templates = {
             "<option val=\"none\">None</option>" + // TODO: add location
             "</select>" +         
             "<label>Time:</label>" + 
-            "<input type=\"text\" placeholder=\"6/25/2011\" class=\"picker_date\" val=\"" + (date ? date.format("m/dd/yy") : "") +"\" />" + 
-            "<input type=\"text\" placeholder=\"10:30pm\" class=\"picker_time\" val=\"" + (date ? date.format('h:MM TT') : "") +"\" />" +
+            "<input type=\"text\" placeholder=\"6/25/2011\" class=\"picker_date\" value=\"" + (date ? date.format("m/dd/yy") : "") +"\" />" + 
+            "<input type=\"text\" placeholder=\"10:30pm\" class=\"picker_time\" value=\"" + (date ? date.format('h:MM TT') : "") +"\" />" +
             "</div></div></div>";
     },
 
