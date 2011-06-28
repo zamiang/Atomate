@@ -86,12 +86,12 @@ Atomate.templates = {
     },
     
     getNoteHtml: function(item) {
-        return "<li class=\"note " + this.getItemType(item.type) + "\">"
+        return "<li id=\"note_" + item.id + "\" class=\"note type_" + this.getItemType(item.type) + "\">"
             + this.getActionsHtml(item)
             + "<div class=\"text\">"  + this.linkifyNote(item.contents) + "</div>"
             + "<div class=\"context\">"
-            + (item.location ? "<span class=\"context_item\"><img src=\"../img/location.png\" />" + item.location + "</span>" : "")
-            + (item.reminder ? "<span class=\"context_item\"><img src=\"../img/calendar.png\" />" + this.parent.util.getNaturalDate(item.reminder) + "</span>" : "")
+            + (item.location ? "<span class=\"context_item location\"><img src=\"../img/location.png\" />" + item.location + "</span>" : "")
+            + (item.reminder ? "<span class=\"context_item date\" data-val=\"" + item.reminder + "\"><img src=\"../img/calendar.png\" />" + this.parent.util.getNaturalDate(item.reminder) + "</span>" : "")
             + (item.type && item.type !== "note" && item.type !== "event" ? "<span>" + item.type + "</span>" : "")
             + "</div>"
             + "</li>";       

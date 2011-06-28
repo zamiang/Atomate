@@ -8,8 +8,8 @@ Atomate.autocomplete = {
     parent: Atomate,
     initialize: function() { 
 	    var data = this.parent.people.map(function(p){ return p.tag; });
-	    var tags = this.parent.notes.map(function(n){ return n.tags.split(' '); }).reduce(function(a,b) { return a.concat(b); });   
-        //.toLowerCase().match(/[#]+[A-Za-z0-9-_]+/g); // looks for hash tags in text
+        var tags = this.parent.notes.map(function(n){ return n.tags.split(' '); });
+	    tags = tags.length > 0 ? tags.reduce(function(a,b) { return a.concat(b); }) : [];
 	    
 	    this.data = this.parent.util.uniq(data.concat(tags));	
 	    this.autocompleteDiv = this.setupAutocompleteDiv(this.parent.searchDiv, this.setAutocompleteVal);
@@ -67,3 +67,4 @@ Atomate.autocomplete = {
     }
 };
 
+//.toLowerCase().match(/[#]+[A-Za-z0-9-_]+/g); // looks for hash tags in text
