@@ -643,7 +643,7 @@ input[type="submit"] {
 }
 
 
-#id_note_save {
+.notes_save_btn {
     float: right;
     font-size: 14px;
     padding: 7px 12px 7px;
@@ -762,6 +762,10 @@ input[type="submit"] {
 
     padding-bottom:2px;
     margin-bottom: -2px;
+}
+
+#notes textarea {
+    width: 428px;
 }
 
 /*

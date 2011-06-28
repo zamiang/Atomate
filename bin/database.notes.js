@@ -43,7 +43,7 @@ Atomate.database.notes = {
 	                              });
     },
 
-    editNote:function(jid, version, created, edited, deleted, contents, modified) {
+    editNote:function(jid, version, created, edited, deleted, contents, modified, tags, type, reminder, source) {
 	    // Silently updates note's attributes
 	    debug("Updating note in database: "+jid);
 	    debug(created);

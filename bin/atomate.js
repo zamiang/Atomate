@@ -56,12 +56,18 @@ Atomate = {
                          this_.buildTabs(this_.tabs, startingTab);
                          this_.setupSearch(this_.searchDiv, this_.notes);
                          this_.setupMouseEvents();
+                         this_.noteEdit.initialize();
                          this_.updateNotesDisplay(startingTab.name.toLowerCase(), startingTab.type);
                      });
     },
     
     setupMouseEvents: function(){
         var this_ = this;
+        
+        jQuery('textarea').live('keyup', function(evt) {
+                                    this_.resizeIt(jQuery(this));
+                                });
+        
         this.tabsList.find('li').live('click',
                                       function(item) {
                                           var jObj = jQuery(this);
@@ -96,7 +102,7 @@ Atomate = {
         this.notesList.find('li.note').live('dblclick',
                                             function(evt) {
                                                 var jObj = jQuery(this);
-                                                this_.makeNoteEditable(jObj);
+                                                this_.noteEdit.editNote(jObj);
                                             });
 
         this.notesList.find('li .actions .item_remove').live('click',
@@ -113,63 +119,8 @@ Atomate = {
                                                                // todo - intersect w/ data and call delete on those items
                                                                return false;
                                                            });
-
-        jQuery('.notes_save_btn').live('click',
-                                       function(evt) {
-                                           evt.stopPropagation();
-
-                                           var noteDiv = jQuery(this).parent().parent();
-                                           var contents = noteDiv.find('textarea').val().trim(); // todo escape/remove html
-                                           var created = new Date().valueOf();
-                                           var reminder = this_.getDateForNoteCreationDateTime(noteDiv.find('input:eq(0)'), noteDiv.find('input:eq(1)'));
-                                           var type = this_.getNoteType(contents);
-                                           var tags = this_.getTagsForNote(contents);
-                                           
-                                           // it is the main input
-                                           // prepend the note
-                                           this_.database.notes.addNewNote(created, contents, tags, type, reminder,
-                                                                           function(jid){
-                                                                               this_.database.notes.getNoteById(jid, 
-                                                                                                                function(n){
-                                                                                                                    this_.notes.push(n);
-                                                                                                                    if (noteDiv.attr('id') == 'input') {
-                                                                                                                        noteDiv.find('textarea, input').val('');
-                                                                                                                        
-                                                                                                                    } else {
-                                                                                                                        
-                                                                                                                    }
-                                                                                                                });
-                                                                           });
-                                       });        
         
         jQuery('.popup .remove').live('click', function(item) { this_.hidePopup(); });
-    },
-
-    
-    
-    // move these
-    getDateForNoteCreationDateTime: function(date, time) {
-        // todo: this will be annoying -- check old poyozo code
-        return 0;  
-    },
-
-    getTagsForNote: function(contents){
-        var tags =  contents.toLowerCase().match(/[#]+[A-Za-z0-9-_]+/g);
-        return tags ? tags.join(' ') : "";        
-    },    
-    getNoteType: function(contents, reminder){
-        // VERYYYYYYYYYY basic
-        var c = contents.toLowerCase();
-
-        if (c.indexOf('remind me') > -1) {
-            return "reminder";
-        } else if (c.indexOf('http://') > -1) {
-            return 'bookmark';
-        } else if (c.indexOf('todo') > -1) {
-            return 'todo';
-        } else {
-            return 'note';
-        }
     },
 
     resizeIt: function(jObj) {
@@ -338,7 +289,6 @@ Atomate = {
         var this_ = this;
         searchDiv.keyup(function(evt) {
                             try {
-                                this_.resizeIt(searchDiv);
                                 var keycode = evt.which;
                                 var val = jQuery(this).val();
                                 this_.searchString = val ? val.trim() : undefined;
