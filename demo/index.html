@@ -184,7 +184,7 @@
             <div id="fb-root"></div>
         </footer>
 
-<!--        <script type="text/javascript" src="http://www.google.com/jsapi"></script>-->
+        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
         <script src="../lib/jquery.min.js"></script>
         <script src="../lib/jquery.ui.min.js"></script>
         <script src="../lib/underscore.js"></script>
@@ -219,7 +219,6 @@
         <script>
     // Facebook initialize
 
-    /**
     if (window.location.origin != "file://") {
         (function() {
              var e = document.createElement('script');
@@ -229,7 +228,7 @@
              e.async = true;
              document.getElementById('fb-root').appendChild(e);
          }());
-*/
+
         /**
          // MIX PANEL
          var mpq = ["init", "d3950de9980b43abe44956d1511c6af5"];
@@ -264,7 +263,6 @@
                                                       });
                                });
 
-    /**
         function mapsLoaded() {
             var browserSupportFlag
 
@@ -333,9 +331,6 @@
         }
 
         function init() {
-            // TEMPORARY
-            //return;
-
             if (google.accounts && !google.accounts.user.checkLogin(EVENT_FEED_URL + " " + CONTACTS_FEED_URL + " " + EVENT_FEED_URL2 + " " + CONTACTS_FEED_URL2)){
                 login();
             }
@@ -359,7 +354,7 @@
             token = google.accounts.user.login(EVENT_FEED_URL + " " + CONTACTS_FEED_URL + " " + EVENT_FEED_URL2 + " " + CONTACTS_FEED_URL2);
         };
     }
-    */
+
         </script>
     </body>
 </html>
