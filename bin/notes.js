@@ -37,24 +37,32 @@ Atomate.noteEdit = {
                                                                                                                                       noteDiv.find('textarea, input[type="text"]').val('');                                                   
                                                                                                                                       this_.appendNote(n, true);  
                                                                                                                                   });
-                                                                                      });                                                                                                                                      
+                                                                                      });                                
                                            } else {
                                                // this is a note tha tis being edited
                                                this_.parent.database.notes.getNoteById(jid, 
                                                                                        function(n) {
-                                                                                           n.contents = contents;
-                                                                                           n.reminder = reminder;
-                                                                                           n.type = type;
-                                                                                           n.tags = tags;
-
                                                                                            // jid, version, created, edited, deleted, contents, modified, tags, type, reminder, source
-                                                                                           this_.parent.database.notes.editNote(n.id, n.version++, n.created, new Date().valueOf(), n.deleted, n.contents, n.modified++, n.tags, n.type, n.reminder, n.source);
-                                                                                           this_.appendNote(n, false);                                                                                                                           
+                                                                                           this_.parent.database.notes.editNote(
+                                                                                               jid, n.version++, n.created, new Date().valueOf(), 0, contents, n.modified++, tags, type, reminder, n.source, 
+                                                                                               function(newNote) {
+                                                                                                   this_.appendNote(newNote, false);   
+                                                                                                   this_.replaceNoteInLocalCache(newNote);
+                                                                                               });
                                                                                        });
                                            }
                                        });   
     },
 
+    replaceNoteInLocalCache: function(note){
+        this.parent.notes = this.parent.notes.map(function(n) { 
+                                                      if (note.jid === n.jid) { 
+                                                          n = note 
+                                                      } 
+                                                      return n;
+                                                  });
+    },
+    
     getNoteType: function(contents, reminder){
         // VERYYYYYYYYYY basic
         var c = contents.toLowerCase();
@@ -96,12 +104,13 @@ Atomate.noteEdit = {
     },  
 
     appendNote: function(note, prepend) {
-        var html = this.parent.templates.getNoteHtml(note);
         if (prepend) {
+            var html = this.parent.templates.getNoteHtml(note);
             this.parent.notesList.prepend(html);
 
         } else {
-            jQuery('#' + note.id).html(html);
+            var html = this.parent.templates._getNoteHtml(note);
+            jQuery('#note_' + note.jid).html(html);
         }
     }
 };

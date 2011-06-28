@@ -43,16 +43,23 @@ Atomate.database.notes = {
 	                              });
     },
 
-    editNote:function(jid, version, created, edited, deleted, contents, modified, tags, type, reminder, source) {
+    editNote:function(jid, version, created, edited, deleted, contents, modified, tags, type, reminder, source, continuation) {
 	    // Silently updates note's attributes
 	    debug("Updating note in database: "+jid);
 	    debug(created);
 	    debug(edited);
+        var this_ = this;
 	    this.parent.DB.transaction(function(tx) {
 	                                   tx.executeSql(
 		                                   'INSERT OR REPLACE INTO note ' + this_.properties + ' VALUES' + this_.values + ';', 
 		                                   [jid, version, created, edited, deleted, contents, modified, tags, type, reminder, source],
-		                                   function(tx, rs) { debug("SUCCESSFUL NOTE UPSERT to DB"); }
+		                                   function(tx, rs) { 
+                                               if (continuation !== undefined) {
+				                                   this_.getNoteById(jid, continuation);                                                   
+                                               }
+
+                                               debug("SUCCESSFUL NOTE UPSERT to DB");
+                                           }
 	                                   );
 	                               });
     },

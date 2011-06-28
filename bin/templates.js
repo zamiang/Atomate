@@ -87,7 +87,7 @@ Atomate.templates = {
     
     getNoteEditorHtml: function(id, text, date, location) {
         return "<div class=\"note_input\" data-id=\"" + id + "\">" +
-            "<textarea rows=\"1\" cols=\"52\"></textarea><div class=\"controls clearfix\">" +
+            "<textarea rows=\"1\" cols=\"52\">" + text + "</textarea><div class=\"controls clearfix\">" +
             "<input type=\"submit\" value=\"Save\" class=\"notes_save_btn\" />" +
             "<div class=\"location_input\"><label>Location:</label>" +
             "<select>" +
@@ -99,15 +99,17 @@ Atomate.templates = {
             "</div></div></div>";
     },
 
-    getNoteHtml: function(item) {
-        return "<li id=\"note_" + item.id + "\" class=\"note type_" + this.getItemType(item.type) + "\">"
-            + this.getActionsHtml(item)
+    _getNoteHtml: function(item) {
+        return this.getActionsHtml(item)
             + "<div class=\"text\">"  + this.linkifyNote(item.contents) + "</div>"
             + "<div class=\"context\">"
             + (item.location ? "<span class=\"context_item location\"><img src=\"../img/location.png\" />" + item.location + "</span>" : "")
             + (item.reminder ? "<span class=\"context_item date\" data-val=\"" + item.reminder + "\"><img src=\"../img/calendar.png\" />" + this.parent.util.getNaturalDate(item.reminder) + "</span>" : "")
             + (item.type && item.type !== "note" && item.type !== "event" ? "<span>" + item.type + "</span>" : "")
-            + "</div>"
-            + "</li>";       
+            + "</div>";
+    },
+
+    getNoteHtml: function(item) {
+        return "<li id=\"note_" + item.jid + "\" class=\"note type_" + this.getItemType(item.type) + "\">" + this._getNoteHtml(item) + '</li>';
     }
 };
