@@ -85,6 +85,20 @@ Atomate.templates = {
             + "</li>";
     },
     
+    getNoteEditorHtml: function(text, date, location) {
+        return "<div class=\"note_input\">" +
+            "<textarea rows=\"1\" cols=\"52\"></textarea><div class=\"controls clearfix\">" +
+            "<input type=\"submit\" value=\"Save\" class=\"notes_save_btn\" />" +
+            "<div class=\"location_input\"><label>Location:</label>" +
+            "<select>" +
+            "<option val=\"none\">None</option>" + // TODO: add location
+            "</select>" +         
+            "<label>Time:</label>" + 
+            "<input type=\"text\" placeholder=\"6/25/2011\" class=\"picker_date\" val=\"" + date.format("m/dd/yy") +"\" />" + 
+            "<input type=\"text\" placeholder=\"10:30pm\" class=\"picker_time\" val=\"" + date.format('h:MM TT') +"\" />" +
+            "</div></div></div>";
+    },
+
     getNoteHtml: function(item) {
         return "<li id=\"note_" + item.id + "\" class=\"note type_" + this.getItemType(item.type) + "\">"
             + this.getActionsHtml(item)
