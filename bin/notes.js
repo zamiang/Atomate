@@ -36,8 +36,8 @@ Atomate.notes = {
 
                                                                                                                            if (noteDiv.attr('id') == 'input') {
                                                                                                                                // this is a new note
-                                                                                                                               noteDiv.find('textarea, input').val('');
-                                                                                                                               
+                                                                                                                               noteDiv.find('textarea, input[type="text"]').val('');
+                                                                                                                               this_.appendNote(note, true);
                                                                                                                                
                                                                                                                            } else {
                                                                                                                                // this is a note tha tis being edited
@@ -63,6 +63,9 @@ Atomate.notes = {
     },  
 
     appendNote: function(note, prepend) {
+        console.log(note);
+        try {
+            
         var html = this.parent.templates.getNoteHtml(note);
         if (prepend) {
             this.parent.notesList.prepend(html);
@@ -70,5 +73,9 @@ Atomate.notes = {
         } else {
             jQuery('#' + note.id).html(html);
         }
+        } catch (x) {
+            console.log(x);
+        }
+
     }
 };
