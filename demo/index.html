@@ -181,18 +181,13 @@
             <div id="fb-root"></div>
         </footer>
 
-        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+        <script type="text/javascript" src="///www.google.com/jsapi"></script>
         <script src="../lib/jquery.min.js"></script>
         <script src="../lib/jquery.ui.min.js"></script>
         <script src="../lib/underscore.js"></script>
         <script src="../lib/backbone.js"></script>
         <script src="../lib/dateformat.js"></script>
 
-        <!--
-            <script src="js/test_data.js"></script>
-            <script src="js/fb_data.js"></script>
-            <script src="js/redacted_notes.js"></script>
-            -->
         <script src="../bin/atomate.js"></script>
         <script src="../bin/util.js"></script>
         <script src="../bin/detector.js"></script>
@@ -215,8 +210,7 @@
 
         <script>
     // Facebook initialize
-
-    if (window.location.origin != "file://") {
+    if (window.location.protocol != "file:") {
         (function() {
              var e = document.createElement('script');
              e.type = 'text/javascript';
@@ -226,132 +220,132 @@
              document.getElementById('fb-root').appendChild(e);
          }());
 
-        /**
-         // MIX PANEL
-         var mpq = ["init", "d3950de9980b43abe44956d1511c6af5"];
-         mixPanelInit = function() {
-         try {
-         // TODO: email MixPanel about this - to run callbacks they require a global called 'mpmetrics'
-         mpmetrics = new MixpanelLib("d3950de9980b43abe44956d1511c6af5");
-         return mpmetrics
-         } catch(err) {
-         var null_fn = function () {};
-         mpmetrics = {
-         track: null_fn,
-         track_funnel: null_fn,
-         register: null_fn,
-         register_once: null_fn,
-         register_funnel: null_fn,
-         identify: null_fn
-         };
-         return mpmetrics
-         }
-         };
-         var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]]; // Change UA-XXXXX-X to be your site's ID
-         (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-         g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
-         s.parentNode.insertBefore(g,s)}(document,"script"));
-         */
-
-        jQuery(document).ready(function(){
-                                   Atomate.initialize({
-                                                          //trackingmodule: mpq,
-                                                          //mixPanelInit: mixPanelInit,
-                                                      });
-                               });
-
-        function mapsLoaded() {
-            var browserSupportFlag
-
-            // Try W3C Geolocation (Preferred)
-            if (navigator.geolocation) {
-                browserSupportFlag = true;
-                navigator.geolocation.getCurrentPosition(function(position) {
-                                                             var geocoder = new google.maps.Geocoder();
-                                                             var latlng =  new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-
-                                                             geocoder.geocode({'latLng': latlng}, function(results, status) {
-                                                                                  if (status == google.maps.GeocoderStatus.OK) {
-                                                                                      //console.log(results);
-                                                                                      var loc = results[0]; // todo: be smarter about this
-                                                                                      Atomate.setLocationFromGeocode(loc,latlng);
-
-                                                                                  } else {
-                                                                                      handleError("Geocoder failed due to: " + status);
-                                                                                  }
-                                                                              });
-                                                         }, function() {
-                                                             handleNoGeolocation(browserSupportFlag);
-                                                         });
-                // Browser doesn't support Geolocation
-            } else {
-                browserSupportFlag = false;
-                handleNoGeolocation(browserSupportFlag);
-            }
-
-            function handleNoGeolocation(errorFlag) {
-                if (errorFlag == true) {
-                    error("Geolocation service failed.");
-                } else {
-                    showMessage("Your browser doesn't support geolocation.");
-                }
-            }
-        }
-
-
-        // it srsly hurts that all this google crap can't be in an external js file
-        // gdata initialize
-        google.load("gdata", "2.x", {packages: ["contacts, calendar"]}); // nice of them not to put this in the docs
-        google.load("maps", "3.x", {"callback" : mapsLoaded, "other_params" : "sensor=false"});
-
-        // A google.gdata.calendar.CalendarService object that can be used to access
-        // private feed using AuthSub.
-        var CalendarService;
-        var ContactsService;
-        var EVENT_FEED_URL =  "http://www.google.com/calendar/feeds/";
-        var EVENT_FEED_URL2 = "http://www.google.com/calendar/feeds/default/allcalendars/full";
-
-        var CONTACTS_FEED_URL = "https://www.google.com/m8/feeds/";
-        var CONTACTS_FEED_URL2 = "https://www.google.com/m8/feeds/contacts/default/full";
-
-        function showMessage(e) {
-            Atomate.auth.logProgress(e);
-        }
-
-        function error(e) {
-            Atomate.auth.logError(e);
-        }
-
-        function handleError(e) {
-            error(e)
-            console.log(e.cause ? e.cause.statusText : e.message);
-        }
-
-        function init() {
-            if (google.accounts && !google.accounts.user.checkLogin(EVENT_FEED_URL + " " + CONTACTS_FEED_URL + " " + EVENT_FEED_URL2 + " " + CONTACTS_FEED_URL2)){
-                login();
-            }
-
+        // MIX PANEL
+        var mpq = ["init", "d3950de9980b43abe44956d1511c6af5"];
+        mixPanelInit = function() {
             try {
-                if (google.gdata && google.gdata.calendar) {
-                    CalendarService = new google.gdata.calendar.CalendarService('Atomate.0.4');
-                    Atomate.auth.gcal.initialize();
-                }
-                if (google.gdata && google.gdata.contacts) {
-                    ContactsService = new google.gdata.contacts.ContactsService('Atomate.0.4');
-
-                    //Atomate.auth.gcontacts.initialize(); // TEMPORARY REMOVAL
-                }
-            }  catch(x){ alert(x); }
-        }
-
-        google.setOnLoadCallback(init);
-
-        function login() {
-            token = google.accounts.user.login(EVENT_FEED_URL + " " + CONTACTS_FEED_URL + " " + EVENT_FEED_URL2 + " " + CONTACTS_FEED_URL2);
+                // TODO: email MixPanel about this - to run callbacks they require a global called 'mpmetrics'
+                mpmetrics = new MixpanelLib("d3950de9980b43abe44956d1511c6af5");
+                return mpmetrics
+            } catch(err) {
+                var null_fn = function () {};
+                mpmetrics = {
+                    track: null_fn,
+                    track_funnel: null_fn,
+                    register: null_fn,
+                    register_once: null_fn,
+                    register_funnel: null_fn,
+                    identify: null_fn
+                };
+                return mpmetrics
+            }
         };
+        var _gaq=[["_setAccount","UA-11329288-1"],["_trackPageview"]]; // Change UA-XXXXX-X to be your site's ID
+        (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+                       g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
+                       s.parentNode.insertBefore(g,s)}(document,"script"));
     }
 
+    jQuery(document).ready(function(){
+                               Atomate.initialize({
+                                                      //trackingmodule: mpq,
+                                                      //mixPanelInit: mixPanelInit,
+                                                  });
+                           });
+
+    function mapsLoaded() {
+        var browserSupportFlag
+        
+        // Try W3C Geolocation (Preferred)
+        if (navigator.geolocation) {
+            browserSupportFlag = true;
+            navigator.geolocation.getCurrentPosition(function(position) {
+                                                         var geocoder = new google.maps.Geocoder();
+                                                         var latlng =  new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+
+                                                     geocoder.geocode({'latLng': latlng}, function(results, status) {
+                                                                          if (status == google.maps.GeocoderStatus.OK) {
+                                                                              //console.log(results);
+                                                                              var loc = results[0]; // todo: be smarter about this
+                                                                              Atomate.setLocationFromGeocode(loc,latlng);
+
+                                                                          } else {
+                                                                              handleError("Geocoder failed due to: " + status);
+                                                                          }
+                                                                      });
+                                                 }, function() {
+                                                     handleNoGeolocation(browserSupportFlag);
+                                                 });
+            // Browser doesn't support Geolocation
+        } else {
+            browserSupportFlag = false;
+            handleNoGeolocation(browserSupportFlag);
+        }
+        
+        function handleNoGeolocation(errorFlag) {
+            if (errorFlag == true) {
+                error("Geolocation service failed.");
+            } else {
+                showMessage("Your browser doesn't support geolocation.");
+            }
+        }
+    }
+
+    // it srsly hurts that all this google crap can't be in an external js file
+    // gdata initialize
+    if (window.google !== undefined) {           
+        google.load("gdata", "2.x", {packages: ["contacts, calendar"]}); // nice of them not to put this in the docs
+        google.load("maps", "3.x", {"callback" : mapsLoaded, "other_params" : "sensor=false"});
+    }
+
+// A google.gdata.calendar.CalendarService object that can be used to access
+// private feed using AuthSub.
+var CalendarService;
+var ContactsService;
+var EVENT_FEED_URL =  "http://www.google.com/calendar/feeds/";
+var EVENT_FEED_URL2 = "http://www.google.com/calendar/feeds/default/allcalendars/full";
+
+var CONTACTS_FEED_URL = "https://www.google.com/m8/feeds/";
+var CONTACTS_FEED_URL2 = "https://www.google.com/m8/feeds/contacts/default/full";
+
+function showMessage(e) {
+    Atomate.auth.logProgress(e);
+}
+
+function error(e) {
+    Atomate.auth.logError(e);
+}
+
+function handleError(e) {
+    error(e)
+    console.log(e.cause ? e.cause.statusText : e.message);
+}
+
+function init() {
+    if (google && google.accounts && !google.accounts.user.checkLogin(EVENT_FEED_URL + " " + CONTACTS_FEED_URL + " " + EVENT_FEED_URL2 + " " + CONTACTS_FEED_URL2)){
+        login();
+    }
+    
+    try {
+        if (google && google.gdata && google.gdata.calendar) {
+            CalendarService = new google.gdata.calendar.CalendarService('Atomate.0.4');
+            Atomate.auth.gcal.initialize();
+        }
+        if (google && google.gdata && google.gdata.contacts) {
+            ContactsService = new google.gdata.contacts.ContactsService('Atomate.0.4');
+            
+            //Atomate.auth.gcontacts.initialize(); // TEMPORARY REMOVAL
+        }
+    }  catch(x){ alert(x); }
+}
+
+if (window.google !== undefined) {
+    google.setOnLoadCallback(init);
+}
+
+function login() {
+    token = google.accounts.user.login(EVENT_FEED_URL + " " + CONTACTS_FEED_URL + " " + EVENT_FEED_URL2 + " " + CONTACTS_FEED_URL2);
+}
         </script>
     </body>
 </html>

@@ -53,6 +53,30 @@ Atomate.database = {
 
     _createDB:function(createSQL) {
 	    // Open Database + Create Table if needed
+        if (window.Components) {
+            var this_ = this;
+            this.isFirefox = true;
+
+            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+            var file = Components.classes["@mozilla.org/file/directory_service;1"]
+            	                     .getService(Components.interfaces.nsIProperties)
+            	                     .get("ProfD", Components.interfaces.nsIFile);
+
+            file.append("Atomate_001.sqlite");
+
+	        var storageService = Components.classes["@mozilla.org/storage/service;1"]
+                                .getService(Components.interfaces.mozIStorageService);
+
+            this._DB = storageService.openDatabase(file);
+
+            // cant modify the 
+            this.DB = {};
+            this.DB.transaction = function(cont) { return cont(this_.DB); };
+            this.DB.executeSql = function(stmnt, val, cont) { return this_._DB.executeAsync(this_._DB.createStatement(stmnt), cont); };
+
+            console.log(this.DB);
+        }
+
 	    this.DB = this.DB || openDatabase("Atomate","","Atomate", 5000000);
 	    this.DB.transaction(function(tx) {	tx.executeSql(createSQL, []); });
     },
