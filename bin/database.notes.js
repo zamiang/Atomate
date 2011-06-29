@@ -133,7 +133,6 @@ Atomate.database.notes = {
 			                                             }
 			                                             debug("DB: Finished grabbing notes.");
 			                                             // Pass notes along 
-                                                         console.log(continuation);
 			                                             continuation(notes);
 			                                         });
 	                               });
