@@ -34,7 +34,7 @@ Atomate.database.notes = {
 	                                  var modified = 1;
 	                                  // Insert note into database
 	                                  this_.parent.DB.transaction(function(tx) {
-		                                                              tx.executeSql('INSERT INTO note VALUES' + this_.values + ';',
+		                                                              tx.executeSql('INSERT INTO note ' + this_.properties + ' VALUES' + this_.values + ';',
 			                                                                        [jid, version, created, edited, deleted, contents, modified, tags, type, reminder, source],
 			                                                                        function(tx, rs) { debug("NOTE INSERT - note DB"); }
 			                                                                       );
@@ -83,7 +83,13 @@ Atomate.database.notes = {
 	                                   tx.executeSql('SELECT * FROM note WHERE jid=? LIMIT 1',[jid],
 			                                         function(tx, rs) {
 			                                             if (rs.rows.length === 1) {
-				                                             var note = rs.rows.item(0);
+                                                             var isFirefox = jQuery.isArray(rs.rows.item);
+                                                             if (isFirefox) {
+				                                                 var note = rs.rows.item[0];
+                                                             } else {
+				                                                 var note = rs.rows.item(0);    
+                                                             }
+
 				                                             continuation(note);
 			                                             } else { // No note
 				                                             continuation(null);
@@ -104,9 +110,15 @@ Atomate.database.notes = {
 			                                         [(isDeleted) ? 1 : 0],
 			                                         function(tx, rs) {
 			                                             debug("DB: Starting to grab notes");
-			                                             var notes = [];
+			                                             var notes = [];                     
+                                                         var isFirefox = jQuery.isArray(rs.rows.item);
 			                                             for (var i=0;i<rs.rows.length;i++) {
-				                                             var note = rs.rows.item(i);
+                                                             if (isFirefox) {
+                                                                 var note = rs.rows.item[i];                         
+                                                             } else {
+				                                                 var note = rs.rows.item(i);                                                                 
+                                                             }
+                                                             
 				                                             if (note.jid === -1 && !includeOrder) {
 				                                                 continue; // Skip special note
 				                                             }
@@ -120,7 +132,8 @@ Atomate.database.notes = {
                                                                         });
 			                                             }
 			                                             debug("DB: Finished grabbing notes.");
-			                                             // Pass notes along
+			                                             // Pass notes along 
+                                                         console.log(continuation);
 			                                             continuation(notes);
 			                                         });
 	                               });

@@ -1169,6 +1169,9 @@ Atomate.util = {
 	    }	    
     },
     getNaturalDate: function(epoch) {
+        if (isNaN(epoch)) {
+            return "";
+        } 
         return new Date(epoch).format('ddd, mmmm dS h:MM TT');
     }
 };

@@ -51,13 +51,13 @@ Atomate = {
         
         var startingTab = this.getStartingTab();
         
-        this.getData(function() {                             
+        this.getData(function() {          
                          this_.autocomplete.initialize();            
                          this_.buildTabs(this_.tabs, startingTab);
                          this_.setupSearch(this_.searchDiv, this_.notes);
                          this_.setupMouseEvents();
                          this_.noteEdit.initialize();
-                         this_.updateNotesDisplay(startingTab.name.toLowerCase(), startingTab.type);
+                         this_.updateNotesDisplay(startingTab.name.toLowerCase(), startingTab.type);                             
                      });
     },
     
@@ -192,10 +192,12 @@ Atomate = {
 
         if (this.searchString) {
             // search only current tab
+            debug('searching');
             notes = this.getNotesForType(name, type);
             notes = this.searchNotesSimple(this.searchString, notes, notes);
 
         } else {
+            debug('notsearching');
             notes = this.getNotesForType(name, type);
         }
 
@@ -203,7 +205,6 @@ Atomate = {
         if (hashAtSearch && this.searchString) {
             this.addCustomSearchDisplay(this.searchString);
         }
-
         this.addNotes(notes);
         this.notesList.scrollTop(0);
     },
@@ -238,7 +239,7 @@ Atomate = {
                 var min = now - (threeDays * 2);
 
                 return this.notes.filter(function(n){
-                                             if (n.reminder) {
+                                             if (n.reminder && !isNaN(n.reminder)) {
                                                  return n.reminder <= max && n.reminder >= now;
                                              } else {
                                                  return n.edited > min;
