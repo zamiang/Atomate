@@ -5,9 +5,9 @@
 
 Atomate.database.notes = { 
     parent: Atomate.database,
-    schema: 'jid INT PRIMARY KEY, version INT, created INT, edited INT, deleted INT, contents TEXT, modified INT, tags TEXT, type TEXT, reminder INT, source TEXT',
-    properties: '(jid, version, created, edited, deleted, contents, modified, tags, type, reminder, source)',
-    values: '(?,?,?,?,?,?,?,?,?,?,?)',
+    schema: 'jid INT PRIMARY KEY, version INT, created INT, edited INT, deleted INT, contents TEXT, tags TEXT, type TEXT, reminder INT, source TEXT',
+    properties: '(jid, version, created, edited, deleted, contents, tags, type, reminder, source)',
+    values: '(?,?,?,?,?,?,?,?,?,?)',
     addNote:function(jid, version, created, edited, deleted, contents) {
 	    // Adds note (from server) to database
 	    this.parent.DB.transaction(function(tx) {
@@ -31,11 +31,10 @@ Atomate.database.notes = {
 	                                  var version = 0;
 	                                  var edited = created;
 	                                  var deleted = 0;
-	                                  var modified = 1;
 	                                  // Insert note into database
 	                                  this_.parent.DB.transaction(function(tx) {
 		                                                              tx.executeSql('INSERT INTO note ' + this_.properties + ' VALUES' + this_.values + ';',
-			                                                                        [jid, version, created, edited, deleted, contents, modified, tags, type, reminder, source],
+			                                                                        [jid, version, created, edited, deleted, contents, tags, type, reminder, source],
 			                                                                        function(tx, rs) { debug("NOTE INSERT - note DB"); }
 			                                                                       );
 	                                                              });
@@ -43,7 +42,7 @@ Atomate.database.notes = {
 	                              });
     },
 
-    editNote:function(jid, version, created, edited, deleted, contents, modified, tags, type, reminder, source, continuation) {
+    editNote:function(jid, version, created, edited, deleted, contents, tags, type, reminder, source, continuation) {
 	    // Silently updates note's attributes
 	    debug("Updating note in database: "+jid);
 	    debug(created);
@@ -52,7 +51,7 @@ Atomate.database.notes = {
 	    this.parent.DB.transaction(function(tx) {
 	                                   tx.executeSql(
 		                                   'INSERT OR REPLACE INTO note ' + this_.properties + ' VALUES' + this_.values + ';', 
-		                                   [jid, version, created, edited, deleted, contents, modified, tags, type, reminder, source],
+		                                   [jid, version, created, edited, deleted, contents, tags, type, reminder, source],
 		                                   function(tx, rs) { 
                                                if (continuation !== undefined) {
 				                                   this_.getNoteById(jid, continuation);                                                   
@@ -152,7 +151,6 @@ Atomate.database.notes = {
 		                                   parseInt(n.edited, 10),
 		                                   del,
 		                                   n.contents,
-		                                   parseInt(n.modified, 10),
                                            n.tags,
                                            n.type,
                                            parseInt(n.reminder, 10),
