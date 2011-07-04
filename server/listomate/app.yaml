@@ -8,18 +8,18 @@ builtins:
 - appstats: on
 
 handlers:
+- url: /css
+  static_dir: css
+
+- url: /img
+  static_dir: img
+
+- url: /js
+  static_dir: js
+
+- url: /lib
+  static_dir: lib
+
 - url: .*
   script: main.py
   secure: always
-
-- url: /css
-  static_dir: stylesheets
-
-- url: /img
-  static_dir: static/images
-
-- url: /js
-  static_dir: static_files
-
-- url: /lib
-  static_dir: static_files

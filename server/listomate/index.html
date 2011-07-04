@@ -24,13 +24,13 @@
 
         <header>
             <h1>Atomate</h1>
-            <img class="logo" src="../img/atomate_bot.png" />
+            <img class="logo" src="img/atomate_bot.png" />
             <h2>Your digital personal assistant</h2>
         </header>
         <div id="container">
             <!--
                 <ul id="instructions">
-                    <img class="remove" src="../img/remove.png">
+                    <img class="remove" src="img/remove.png">
                     <li>Double-click to edit.</li>
                     <li>Search or enter to add notes</li>
                 </ul>
@@ -178,32 +178,30 @@
         </footer>
 
         <script type="text/javascript" src="///www.google.com/jsapi"></script>
-        <script src="../lib/jquery.min.js"></script>
-        <script src="../lib/jquery.ui.min.js"></script>
-        <script src="../lib/underscore.js"></script>
-        <script src="../lib/backbone.js"></script>
-        <script src="../lib/dateformat.js"></script>
+        <script src="lib/jquery.min.js"></script>
+        <script src="lib/jquery.ui.min.js"></script>
+        <script src="lib/dateformat.js"></script>
 
-        <script src="../bin/atomate.js"></script>
-        <script src="../bin/util.js"></script>
-        <script src="../bin/detector.js"></script>
-        <script src="../bin/validator.js"></script>
-        <script src="../bin/trie.js"></script>
-        <script src="../bin/tracking.js"></script>
-        <script src="../bin/templates.js"></script>
-        <script src="../bin/autocomplete.js"></script>
-        <script src="../bin/notes.js"></script>
+        <script src="js/atomate.js"></script>
+        <script src="js/util.js"></script>
+        <script src="js/detector.js"></script>
+        <script src="js/validator.js"></script>
+        <script src="js/tracking.js"></script>
+        <script src="js/templates.js"></script>
+        <script src="js/autocomplete.js"></script>
+        <script src="js/notes.js"></script>
 
-        <script src="../bin/database.js"></script>
-        <script src="../bin/database.notes.js"></script>
-        <script src="../bin/database.person.js"></script>
+        <script src="js/database.js"></script>
+        <script src="js/database.notes.js"></script>
+        <script src="js/database.person.js"></script>
 
-        <script src="../bin/auth.js"></script>
-        <script src="../bin/auth.flickr.js"></script>
-        <script src="../bin/auth.fb.js"></script>
-        <script src="../bin/auth.gcal.js"></script>
-        <script src="../bin/auth.gcontacts.js"></script>
-
+        <script src="js/auth.js"></script>
+        <script src="js/auth.flickr.js"></script>
+        <script src="js/auth.fb.js"></script>
+        <!--
+        <script src="js/auth.gcal.js"></script>
+        <script src="js/auth.gcontacts.js"></script>
+        -->
         <script>
     // Facebook initialize
     if (window.location.protocol != "file:") {
@@ -251,7 +249,7 @@
 
     function mapsLoaded() {
         var browserSupportFlag
-        
+
         // Try W3C Geolocation (Preferred)
         if (navigator.geolocation) {
             browserSupportFlag = true;
@@ -277,7 +275,7 @@
             browserSupportFlag = false;
             handleNoGeolocation(browserSupportFlag);
         }
-        
+
         function handleNoGeolocation(errorFlag) {
             if (errorFlag == true) {
                 error("Geolocation service failed.");
@@ -286,62 +284,6 @@
             }
         }
     }
-
-    // it srsly hurts that all this google crap can't be in an external js file
-    // gdata initialize
-    if (window.google !== undefined) {           
-        google.load("gdata", "2.x", {packages: ["contacts, calendar"]}); // nice of them not to put this in the docs
-        google.load("maps", "3.x", {"callback" : mapsLoaded, "other_params" : "sensor=false"});
-    }
-
-// A google.gdata.calendar.CalendarService object that can be used to access
-// private feed using AuthSub.
-var CalendarService;
-var ContactsService;
-var EVENT_FEED_URL =  "http://www.google.com/calendar/feeds/";
-var EVENT_FEED_URL2 = "http://www.google.com/calendar/feeds/default/allcalendars/full";
-
-var CONTACTS_FEED_URL = "https://www.google.com/m8/feeds/";
-var CONTACTS_FEED_URL2 = "https://www.google.com/m8/feeds/contacts/default/full";
-
-function showMessage(e) {
-    Atomate.auth.logProgress(e);
-}
-
-function error(e) {
-    Atomate.auth.logError(e);
-}
-
-function handleError(e) {
-    error(e)
-    console.log(e.cause ? e.cause.statusText : e.message);
-}
-
-function init() {
-    if (google && google.accounts && !google.accounts.user.checkLogin(EVENT_FEED_URL + " " + CONTACTS_FEED_URL + " " + EVENT_FEED_URL2 + " " + CONTACTS_FEED_URL2)){
-        login();
-    }
-    
-    try {
-        if (google && google.gdata && google.gdata.calendar) {
-            CalendarService = new google.gdata.calendar.CalendarService('Atomate.0.4');
-            Atomate.auth.gcal.initialize();
-        }
-        if (google && google.gdata && google.gdata.contacts) {
-            ContactsService = new google.gdata.contacts.ContactsService('Atomate.0.4');
-            
-            //Atomate.auth.gcontacts.initialize(); // TEMPORARY REMOVAL
-        }
-    }  catch(x){ alert(x); }
-}
-
-if (window.google !== undefined) {
-    google.setOnLoadCallback(init);
-}
-
-function login() {
-    token = google.accounts.user.login(EVENT_FEED_URL + " " + CONTACTS_FEED_URL + " " + EVENT_FEED_URL2 + " " + CONTACTS_FEED_URL2);
-}
         </script>
     </body>
 </html>

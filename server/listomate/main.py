@@ -25,16 +25,12 @@ _DEBUG = True
 class MainPage(webapp.RequestHandler):
     @login_required
     def get(self):
-        user = users.getCurrengUser()
+        user = users.GetCurrentUser()
         if not user:
             self.redirect(users.CreateLoginURL(self.request.uri))
             return
 
-        template_values = {
-            'greetings': greetings,
-            'url': url,
-            'url_linktext': url_linktext,
-        }
+        template_values = {}
 
         path = os.path.join(os.path.dirname(__file__), 'index.html')
         self.response.out.write(template.render(path, template_values))
@@ -50,7 +46,7 @@ class AtomateDatastore(webapp.RequestHandler):
 
     @login_required
     def get(self):
-        user = users.getCurrengUser()
+        user = users.GetCurrentUser()
         if not user:
             self.redirect(users.CreateLoginURL(self.request.uri))
             return
