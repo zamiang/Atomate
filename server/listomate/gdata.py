@@ -3,14 +3,11 @@ import datetime
 import os
 import re
 import sys
-import urllib
-import urlparse
-import wsgiref.handlers
 import logging
 from django.utils import simplejson
-from google.appengine.api import datastore
+from google.appengine.api import db
 from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app, login_required
+from google.appengine.ext.webapp.util import login_required
 from google.appengine.api import users
 import gdata.gauth
 import gdata.docs.client
