@@ -20,7 +20,7 @@ Atomate.noteEdit = {
                                            evt.stopPropagation();
                                           
                                            var noteDiv = jQuery(this).parent().parent();
-                                           var jid = noteDiv.attr('data-id');
+                                           var id = noteDiv.attr('data-id');
                                            var contents = noteDiv.find('textarea').val().trim(); // todo escape/remove html
                                            var created = new Date().valueOf();
                                            var reminder = this_.getDateForNoteCreationDateTime(noteDiv.find('.picker_date').val(), noteDiv.find('.picker_time').val());
@@ -30,8 +30,8 @@ Atomate.noteEdit = {
                                            // it is a new note
                                            if (noteDiv.attr('id') == 'input') {                                               
                                                this_.parent.database.notes.addNewNote(created, contents, tags, type, reminder,
-                                                                                      function(jid){
-                                                                                          this_.parent.database.notes.getNoteById(jid, 
+                                                                                      function(id){
+                                                                                          this_.parent.database.notes.getNoteById(id, 
                                                                                                                                   function(n) {
                                                                                                                                       this_.parent.notes.push(n);
                                                                                                                                       noteDiv.find('textarea, input[type="text"]').val('');                                                   
@@ -40,27 +40,18 @@ Atomate.noteEdit = {
                                                                                       });                                
                                            } else {
                                                // this is a note that is being edited
-                                               this_.parent.database.notes.getNoteById(jid, 
+                                               this_.parent.database.notes.getNoteById(id, 
                                                                                        function(n) {
-                                                                                           // jid, version, created, edited, deleted, contents, modified, tags, type, reminder, source
+                                                                                           // id, version, created, edited, deleted, contents, modified, tags, type, reminder, source
                                                                                            this_.parent.database.notes.editNote(
-                                                                                               jid, n.version++, n.created, new Date().valueOf(), 0, contents, n.modified++, tags, type, reminder, n.source, 
+                                                                                               id, n.version++, n.created, new Date().valueOf(), 0, contents, n.modified++, tags, type, reminder, n.source, 
                                                                                                function(newNote) {
                                                                                                    this_.appendNote(newNote, false);   
-                                                                                                   this_.replaceNoteInLocalCache(newNote);
+                                                                                                   this_.parent.database.replaceNoteInLocalCache(newNote);
                                                                                                });
                                                                                        });
                                            }
                                        });   
-    },
-
-    replaceNoteInLocalCache: function(note){
-        this.parent.notes = this.parent.notes.map(function(n) { 
-                                                      if (note.jid === n.jid) { 
-                                                          n = note;
-                                                      } 
-                                                      return n;
-                                                  });
     },
     
     getNoteType: function(contents, reminder){
@@ -114,7 +105,7 @@ Atomate.noteEdit = {
 
         } else {
             var html = this.parent.templates._getNoteHtml(note);
-            jQuery('#note_' + note.jid).html(html);
+            jQuery('#note_' + note.id).html(html);
         }
     }
 };

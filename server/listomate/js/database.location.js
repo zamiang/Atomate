@@ -100,10 +100,6 @@ Atomate.database.location = {
 				                                                 var location = rs.rows.item(i);                                                                 
                                                              }
                                                              
-				                                             if (location.id === -1 && !includeOrder) {
-				                                                 continue; // Skip special location
-				                                             }
-
 				                                             locations.push({
                                                                                 id:location.id,
                                                                                 version: location.version,
@@ -135,7 +131,7 @@ Atomate.database.location = {
 		                                   del,
 		                                   n.nickname,
                                            n.address,
-                                           parseIng(n.lat, 10),
+                                           parseInt(n.lat, 10),
                                            parseInt(n.lon, 10)
                                        ];
                                    });
