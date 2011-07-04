@@ -3,11 +3,23 @@ version: 1
 runtime: python
 api_version: 1
 
+builtins:
+- datastore_admin: on
+- appstats: on
+
 handlers:
 - url: .*
   script: main.py
-
-- url: /data/.*
-  script: data.py
-  login: required
   secure: always
+
+- url: /css
+  static_dir: stylesheets
+
+- url: /img
+  static_dir: static/images
+
+- url: /js
+  static_dir: static_files
+
+- url: /lib
+  static_dir: static_files

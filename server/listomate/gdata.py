@@ -15,39 +15,109 @@ from google.appengine.api import users
 import gdata.gauth
 import gdata.docs.client
 
-
-# Constants included for ease of understanding. It is a more common
-# and reliable practice to create a helper for reading a Consumer Key
-# and Secret from a config file. You may have different consumer keys
-# and secrets for different environments, and you also may not want to
-# check these values into your source code repository.
 SETTINGS = {
     'APP_NAME': 'Atomate-server',
-    'CONSUMER_KEY': 'INSERT_CONSUMER_KEY_HERE',
-    'CONSUMER_SECRET': 'INSERT_CONSUMER_SECRET_HERE',
+    'CONSUMER_KEY': 'atomate.me',
+    'CONSUMER_SECRET': 'RlNMW1U0oyK79k6IrD4gBjxI',
     'SCOPES': ["http://www.google.com/calendar/feeds/",
                "http://www.google.com/calendar/feeds/default/allcalendars/full",
                "https://www.google.com/m8/feeds/",
                "https://www.google.com/m8/feeds/contacts/default/full"]
     }
 
+gd_client = gdata.docs.client.DocsClient(source = SETTINGS['APP_NAME'])
+calendar_client = gdata.calendar.client.CalendarClient(source = SETTINGS['APP_NAME'])
+gcontacts = gdata.contacts.client.ContactsClient(source = SETTINGS['APP_NAME'])
 
-# Create an instance of the DocsService to make API calls
-gdocs = gdata.docs.client.DocsClient(source = SETTINGS['APP_NAME'])
-gcals = gdata.cal.client.DocsClient(source = SETTINGS['APP_NAME'])
+
+class GdataInterface(webapp.RequestHandler):
+    def _get_contact(entry):
+        email1, email2, email3 = ""
+
+        for email in entry.email:
+            if email.primary and email.primary == 'true':
+                email1 = email.address
+            elif not email2:
+                email2 = email.address
+            else:
+                email3 = email.address
+
+        return {
+            name: entry.name.full_name.text,
+            content: entry.content,
+            email1: email1,
+            email2: email2,
+            email3: email3,
+            }
+
+    def _get_doc(entry):
+        author = "@%s" % entry.author.name.split(' ').join('')
+        content = "%s #%s #%s %s" % (entry.title.text.encode('UTF-8'), entry.GetDocumentType(), entry.resource_id.text, author)
+        return {
+            id: entry.id,
+            content: content,
+            modified: entry.updated,
+            created: entry.published,
+            tags: "#%s, #%s, %s" % (entry.GetDocumentType(), entry.resource_id.text, author)
+            }
+
+    def _get_event(event, calendar_name, calendar_name_tag, calendar_link):
+        if entry.getTimes()[0]:
+            start = new Date(entry.getTimes()[0].getStartTime().date).valueOf();
+            end = new Date(entry.getTimes()[0].getEndTime().date).valueOf();
+
+            link = entry.getHtmlLink() if entry.getHtmlLink().getHref() else ""
+            contents = "%s #gcal #%s" % (entry.getTitle().getText(), calendarNameTag)
+
+            return {
+                id: entry.id,
+                version:0,
+                created: now,
+                modified: 0,
+                contents: contents,
+                tags: "#gcal #%s" % calendarNameTag,
+                type: 'event',
+                source: 'Google',
+                reminder: start,
+                }
+        else:
+            return None
 
 
-class GdataFetcher(webapp.RequestHandler):
     def getCal(self):
-        return foo
+        feed = calendar_client.GetAllCalendarsFeed()
+        start_date='2007-01-01'
+        end_date='2007-07-01'
+        results = []
 
-    def getBookmarks(self):
-        return foo
+        for i, calendar in enumerate(feed.entry):
+            print '\t%s. %s' % (i, calendar.title.text,)
+            calendar_name = calendar.title.text;
+            calendar_name_tag = calendar_name.split(' ').join('').toLowerCase().replace("/[\.,-\/#!$%\^&\*;:{}=\-_@`'~()]/g","");
+            calendar_link = calendar.getLink().href;
+
+            query = gdata.calendar.client.CalendarEventQuery(calendar.content.src)
+            query.start_min = start_date
+            query.start_max = end_date
+            feed = calendar_client.GetCalendarEventFeed(q=query)
+
+            for i, event in enumerate(feed.entry):
+                results.push(self._get_event(event, calendar_name, calendar_name_tag, calendar_link))
+
+        return reults
+
+
+    def getDocs(self):
+        feed = gd_client.GetDocumentListFeed()
+        return [self._get_doc(contact) for contact in feed]
+
 
     def getContacts(self):
-        return
+        feed = self.gd_client.GetContacts()
+        return [self._get_contact(contact) for contact in feed]
 
 
+class RequestGoogleAuthToken(webapp.RequestHandler):
     @login_required
     def get(self):
         """This handler is responsible for fetching an initial OAuth
@@ -64,10 +134,6 @@ class GdataFetcher(webapp.RequestHandler):
         # based on the environment. You want to set this value to
         # "http://localhost:8080/step2" if you are running the
         # development server locally.
-        #
-        # We also provide the data scope(s). In general, we want
-        # to limit the scope as much as possible. For this
-        # example, we just ask for access to all feeds.
         scopes = SETTINGS['SCOPES']
         oauth_callback = 'http://%s/step2' % self.request.host
         consumer_key = SETTINGS['CONSUMER_KEY']
@@ -81,14 +147,11 @@ class GdataFetcher(webapp.RequestHandler):
 
         # Generate the authorization URL.
         approval_page_url = request_token.generate_authorization_url()
-
-        message = """<a href="%s">Request token for the Google Documents Scope</a>"""
-        self.response.out.write(message % approval_page_url)
+        self.response.out.write(approval_page_url)
 
 
 
 class RequestTokenCallback(webapp.RequestHandler):
-
     @login_required
     def get(self):
         """When the user grants access, they are redirected back to this
@@ -96,6 +159,9 @@ class RequestTokenCallback(webapp.RequestHandler):
         long-lived access token."""
 
         current_user = users.get_current_user()
+        if not current_user:
+            self.redirect(users.CreateLoginURL(self.request.uri))
+            return
 
         # Remember the token that we stashed? Let's get it back from
         # datastore now and adds information to allow it to become an
@@ -107,7 +173,10 @@ class RequestTokenCallback(webapp.RequestHandler):
         # We can now upgrade our authorized token to a long-lived
         # access token by associating it with gdocs client, and
         # calling the get_access_token method.
-        gdocs.auth_token = gdocs.get_access_token(request_token)
+        gd_client.auth_token = gd_client.get_access_token(request_token)
+        calendar_client.auth_token = calendar_client.get_access_token(request_token)
+        gcontacts.auth_token = gcontacts.get_access_token(request_token)
+
 
         # Note that we want to keep the access token around, as it
         # will be valid for all API calls in the future until a user
@@ -117,9 +186,11 @@ class RequestTokenCallback(webapp.RequestHandler):
         access_token_key = 'access_token_%s' % current_user.user_id()
         gdata.gauth.ae_save(request_token, access_token_key)
 
-        # Finally fetch the document list and print document title in
-        # the response
-        feed = gdocs.GetDocList()
-        for entry in feed.entry:
-            template = '<div>%s</div>'
-            self.response.out.write(template % entry.title.text)
+
+        #def bulk_save_play_count(updated):
+        #    db.put(updated)
+        #   db.run_in_transaction(bulk_save_play_count,updated)
+
+        db.put_async(GdataInterface.getCal())
+        db.put_async(GdataInterface.getDocs())
+        db.put_async(GdataInterface.getContacts())

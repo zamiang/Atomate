@@ -31,7 +31,9 @@ from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template, util
 from google.appengine.ext.webapp.util import run_wsgi_app, login_required
-from google.appengine.api import memcache
+
+#local
+from gdata import GdataFetcher,RequestTokenCallback
 
 _DEBUG = True
 
@@ -58,6 +60,7 @@ class Person(db.Model):
     photourl = db.LinkProperty()
     priority = db.StringProperty()
     tag = db.StringProperty()
+    location = db.ReferenceProperty(Location)
 
 
 class Location(db.Model):
@@ -93,7 +96,6 @@ class MainPage(webapp.RequestHandler):
             self.redirect(users.CreateLoginURL(self.request.uri))
             return
 
-        people =
 
 
 
@@ -107,6 +109,8 @@ class AtomateDatastore(webapp.RequestHandler):
                     code:code,
                     text:text
                     }))
+
+
     @login_required
     def get(self):
         user = users.getCurrengUser()
@@ -130,6 +134,7 @@ class AtomateDatastore(webapp.RequestHandler):
         result = query.filter('author = ', user).('deleted', False).('edited >', modified).edited('-edited').ancestor(key)
 
         self.response.out.write(simplejson.dumps(result.fetch(limit=2000)))
+
 
     @login_required
     def post(self):
@@ -221,15 +226,15 @@ class NoteInterface(object):
 
 
 
+application = webapp.WSGIApplication([
+          ('/', MainPage),
+          ('/data', AtomateDatastore),
+          ('/requestGoogleAuthToken', RequestGoogleAuthToken),
+          ('/requestTokenCallback', RequestTokenCallback),
+          ], debug=_DEBUG)
 
 def main():
-    application = webapp.WSGIApplication([
-            ('/', MainPage),
-            ('/data', AtomateDatastore),
-            ], debug=_DEBUG)
-    #wsgiref.handlers.CGIHandler().run(application)
-    util.run_wsgi_app(application)
-
+    run_wsgi_app(application)
 
 if __name__ == '__main__':
     main()
