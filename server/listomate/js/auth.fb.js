@@ -60,6 +60,7 @@ Atomate.auth.Facebook =  {
 						                        }, function() { 
                                                     console.log('about to save fb people');
                                                     Atomate.database.person.putAllPeopleInDB(fb_people_cache);
+                                                    delete fb_people_cache;
                                                 });
 				   }				    
 			   });
@@ -71,8 +72,9 @@ Atomate.auth.Facebook =  {
 					   parent.interval_map_lite(response.data, 
                                                 function(entry) { parent.Facebook.saveEvent(entry, fb_event_cache); },                                                                               
                                                 function() {
-                                                    console.log('about to save fb events');                                                                     
+                                                    console.log('about to save fb events');                       
                                                     Atomate.database.notes.putAllNotesInDB(fb_event_cache);
+                                                    delete fb_event_cache;
                                                 });
 				   }
 			   });

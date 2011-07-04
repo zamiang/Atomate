@@ -5,28 +5,28 @@
 
 Atomate.database.notes = { 
     parent: Atomate.database,
-    schema: 'jid INT PRIMARY KEY, version INT, created INT, edited INT, deleted INT, contents TEXT, tags TEXT, type TEXT, reminder INT, source TEXT',
-    properties: '(jid, version, created, edited, deleted, contents, tags, type, reminder, source)',
-    values: '(?,?,?,?,?,?,?,?,?,?)',
-    addNote:function(jid, version, created, edited, deleted, contents) {
+    schema: 'id INT PRIMARY KEY, version INT, created INT, edited INT, deleted INT, contents TEXT, tags TEXT, type TEXT, reminder INT, source TEXT, locationid INT',
+    properties: '(id, version, created, edited, deleted, contents, tags, type, reminder, source, locationid)',
+    values: '(?,?,?,?,?,?,?,?,?,?,?)', // 11
+    addNote:function(id, version, created, edited, deleted, contents, tags, type, reminder, source, locationid) {
 	    // Adds note (from server) to database
 	    this.parent.DB.transaction(function(tx) {
-	                                   var del = 0;
-	                                   var jid = jid; //, 10);
 	                                   var created = parseInt(created, 10);
 	                                   var edited = parseInt(edited, 10);
-	                                   if (deleted === 1 || deleted === true || deleted === "true") { del = 1; }
+	                                   var del = (deleted === 1 || deleted === true || deleted === "true") ? 1 : 0;
+                                       var version = parseInt(version, 10) || 0;
+
 	                                   tx.executeSql('INSERT INTO note VALUES' + this_.values + ';',
-			                                         [jid, version, created, edited, del, contents, 0, tags, type, reminder, source],
+			                                         [id, version, created, edited, del, contents, tags, type, reminder, source, locationid],
 			                                         function(tx, rs) { debug("NOTE INSERT - note DB"); }
 			                                        );
 	                               });
     },
     
     addNewNote:function(created, contents, tags, type, reminder, continuation) {
-	    // Adds NEW note to DB, passes unique JID to continuation 
+	    // Adds NEW note to DB, passes unique ID to continuation 
 	    var this_ = this;
-	    this.parent._getUniqueJID('note', function (jid) {
+	    this.parent._getUniqueID('note', function (id) {
                                       var source = 'Atomate'; // todo: make more specific
 	                                  var version = 0;
 	                                  var edited = created;
@@ -34,27 +34,27 @@ Atomate.database.notes = {
 	                                  // Insert note into database
 	                                  this_.parent.DB.transaction(function(tx) {
 		                                                              tx.executeSql('INSERT INTO note ' + this_.properties + ' VALUES' + this_.values + ';',
-			                                                                        [jid, version, created, edited, deleted, contents, tags, type, reminder, source],
+			                                                                        [id, version, created, edited, deleted, contents, tags, type, reminder, source],
 			                                                                        function(tx, rs) { debug("NOTE INSERT - note DB"); }
 			                                                                       );
 	                                                              });
-	                                  continuation(jid);
+	                                  continuation(id);
 	                              });
     },
 
-    editNote:function(jid, version, created, edited, deleted, contents, tags, type, reminder, source, continuation) {
+    editNote:function(id, version, created, edited, deleted, contents, tags, type, reminder, source, continuation) {
 	    // Silently updates note's attributes
-	    debug("Updating note in database: "+jid);
+	    debug("Updating note in database: "+id);
 	    debug(created);
 	    debug(edited);
         var this_ = this;
 	    this.parent.DB.transaction(function(tx) {
 	                                   tx.executeSql(
 		                                   'INSERT OR REPLACE INTO note ' + this_.properties + ' VALUES' + this_.values + ';', 
-		                                   [jid, version, created, edited, deleted, contents, tags, type, reminder, source],
+		                                   [id, version, created, edited, deleted, contents, tags, type, reminder, source],
 		                                   function(tx, rs) { 
                                                if (continuation !== undefined) {
-				                                   this_.getNoteById(jid, continuation);                                                   
+				                                   this_.getNoteById(id, continuation);                                                   
                                                }                                               
                                                debug("SUCCESSFUL NOTE UPSERT to DB");
                                            }
@@ -62,24 +62,24 @@ Atomate.database.notes = {
 	                               });
     },
 
-    deleteNote:function(jid) {
+    deleteNote:function(id) {
 	    var this_ = this;
-	    this.getNoteById(jid, function (note) {
+	    this.getNoteById(id, function (note) {
 	                         if (note === null) { return; }
 	                         this_.parent.DB.transaction(function(tx) {
 		                                                     tx.executeSql(
 		                                                         'INSERT OR REPLACE INTO note ' + this_.properties + ' VALUES' + this_.values + ';', 
-                                                                 [jid, note.version, note.created, note.edited, 1, note.contents, 1, note.tags, note.type, note.reminder, note.source],
+                                                                 [id, note.version, note.created, note.edited, 1, note.contents, 1, note.tags, note.type, note.reminder, note.source],
 		                                                         function(tx, rs) { debug("DB: note-delete success"); }
 		                                                     );
 	                                                     }); 
 	                     });	
     },
 
-    getNoteById:function(jid, continuation) {
+    getNoteById:function(id, continuation) {
 	    // Passes note to continuation function if exists.
 	    this.parent.DB.transaction(function(tx) {
-	                                   tx.executeSql('SELECT * FROM note WHERE jid=? LIMIT 1',[jid],
+	                                   tx.executeSql('SELECT * FROM note WHERE id=? LIMIT 1',[id],
 			                                         function(tx, rs) {
 			                                             if (rs.rows.length === 1) {
                                                              var isFirefox = jQuery.isArray(rs.rows.item);
@@ -118,11 +118,11 @@ Atomate.database.notes = {
 				                                                 var note = rs.rows.item(i);                                                                 
                                                              }
                                                              
-				                                             if (note.jid === -1 && !includeOrder) {
+				                                             if (note.id === -1 && !includeOrder) {
 				                                                 continue; // Skip special note
 				                                             }
 				                                             notes.push({
-                                                                            jid:note.jid,
+                                                                            id:note.id,
 					                                                        contents:note.contents,
                                                                             tags: note.tags,
                                                                             type: note.type || 'note',
@@ -145,7 +145,7 @@ Atomate.database.notes = {
 	                                   var del = 0;
 	                                   if (n.deleted === true || n.deleted === 'true' || n.deleted === 1) {del=1;}
 	                                   return  [
-		                                   n.jid,
+		                                   n.id,
 		                                   parseInt(n.version, 10),
 		                                   parseInt(n.created, 10),
 		                                   parseInt(n.edited, 10),
@@ -194,7 +194,7 @@ getModifiedNotes:function(continuation) {
 		                                       var notes = [];
 		                                       for (var i=0;i<rs.rows.length;i++) {
 			                                       var note = rs.rows.item(i);
-			                                       notes.push({jid:note.jid,
+			                                       notes.push({id:note.id,
 				                                               created:note.created,
 				                                               edited:note.edited,
 				                                               deleted:note.deleted,
@@ -221,7 +221,7 @@ getModifiedNotes:function(continuation) {
 		                                       var notes = {};
 		                                       for (var i=0;i<rs.rows.length;i++) {
 			                                       var note = rs.rows.item(i);
-			                                       notes[note.jid] = note.version;
+			                                       notes[note.id] = note.version;
 		                                       } // Then pass notes along
 		                                       continuation(notes);
 		                                   }
@@ -238,7 +238,7 @@ getModifiedNotes:function(continuation) {
 		                                       var notes = {};
 		                                       for (var i=0;i<rs.rows.length;i++) {
 			                                       var note = rs.rows.item(i);
-			                                       notes[note.jid] = {
+			                                       notes[note.idq] = {
                                                        created:note.created,
 					                                   edited:note.edited,
 					                                   deleted:note.deleted,

@@ -192,12 +192,12 @@ Atomate = {
 
         if (this.searchString) {
             // search only current tab
-            debug('searching');
+            debug('searching - updatenotesdisplay');
             notes = this.getNotesForType(name, type);
             notes = this.searchNotesSimple(this.searchString, notes, notes);
 
         } else {
-            debug('notsearching');
+            debug('not searching - updatenotesdisplay');
             notes = this.getNotesForType(name, type);
         }
 

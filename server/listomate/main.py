@@ -38,10 +38,17 @@ class MainPage(webapp.RequestHandler):
 class AtomateDatastore(webapp.RequestHandler):
     def error_response(code, text):
         return self.response.out.write(simplejson.dumps({
-                    success:False,
-                    code:code,
-                    text:text
+                    "success":False,
+                    "code":code,
+                    "text":text
                     }))
+
+    def success_response(data):
+        return self.response.out.write(simplejson.dumps({
+                    "data": data,
+                    "success": True,
+                    }))
+
 
     @login_required
     def get(self):
@@ -51,7 +58,6 @@ class AtomateDatastore(webapp.RequestHandler):
             return
 
         try:
-            type = self.request.get('type')
             edited = datetime.datetime.fromtimestamp(int(self.request.get('edited'))/1000)
 
         except (TypeError, ValueError):
@@ -60,13 +66,10 @@ class AtomateDatastore(webapp.RequestHandler):
         if not edited:
             return self.error_response(100, "edited is required - epoch time min")
 
+        note = db.Query(Notes).filter('author =', user).filter('deleted', False).filter('edited >', modified).order('-edited')
+        people = db.Query(People).filter('author =', user).filter('deleted', False).filter('edited >', modified).order('-edited')
 
-        query = db.Query(People) if type == "people" else db.Query(Notes)
-
-        result = query.filter('author =', user).filter('deleted', False).filter('edited >', modified).order('-edited')
-
-        self.response.out.write(simplejson.dumps(result.fetch(limit=2000)))
-
+        return self.success_response({"notes": notes.fetch(limit=2000), "people": people.fetch(limit=2000)})
 
     @login_required
     def post(self):

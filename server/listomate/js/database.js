@@ -13,21 +13,76 @@ Atomate.database = {
         try {
             this.createPersonDB();
             this.createNoteDB();
-
-            //this.createLocationDB();            
+            this.createLocationDB();
         } catch (e) {
             console.log(e);
         }
-
+        
     },
+    
+    updateLocalNote: function(entity) {
+        
+    },
+
+    updateLocalPerson: function(entity) {
+        //
+    },
+
+    pushModified: function(lastPushed) {
+        var this_ = this;
+        var modified = lastPushed || 0;
+        var people = this.parent.people.filter(function(d){ return d.modified >= modified; });
+        var notes = this.parent.notes.filter(function(d){ return d.modified >= modified; });
+
+        jQuery.postJSON('/data', {                            
+                            people: people,
+                            notes: notes
+                        }, function(response) {
+                            debug(response);
+                        });
+    },    
+
+    pullModified: function(lastUpdated) {
+        var this_ = this;
+        var modified = lastUpdated || 0;
+        jQuery.getJSON('/data', {
+                           modified: modified
+                       }, function(response) {
+                           if (response.success && response.data) {                               
+                               var people_cache = [];
+                               var note_cache = [];
+
+					           this_.parent.auth.interval_map_lite(response.data, 
+                                                                   function(entry) { 
+									                                   this_.updateLocalPerson(response, people_cache); 
+						                                           }, function() { 
+                                                                       console.log('about to save people from server');
+                                                                       Atomate.database.person.putAllPeopleInDB(fb_people_cache);
+                                                                       delete people_cache;
+                                                                   });
+                               
+					           this_.parent.auth.interval_map_lite(response.data, 
+                                                                   function(entry) { 
+                                                                       this_.updateLocalNote(entry, note_cache); },                                                                               
+                                                                   function() {
+                                                                       console.log('about to save notes from server');                                                                     
+                                                                       Atomate.database.notes.putAllNotesInDB(note_cache);
+                                                                       delete note_cache;
+                                                                   });
+                           } else {
+                               debug(response.code);
+                           }
+                       });
+    },    
+
     
     clearDB: function(){
         this.clearNoteDB();        
         this.clearPersonDB();        
-        //this.clearLocationDB(); 
+        this.clearLocationDB(); 
     },
 
-    // TODO: fix repition of note
+    // TODO: fix repition of create statements
     clearNoteDB:function() {
         this._clearDB('note', 'CREATE TABLE note (' + this.notes.schema + ')');
     },
@@ -42,6 +97,14 @@ Atomate.database = {
 
     createPersonDB:function() {
         this._createDB('CREATE TABLE IF NOT EXISTS person ('+ this.person.schema + ')');
+    },
+
+    clearLocationDB:function() {
+        this._clearDB('location', 'CREATE TABLE location (' + this.location.schema + ')');
+    },
+
+    createLocationDB:function() {
+        this._createDB('CREATE TABLE IF NOT EXISTS location ('+ this.location.schema + ')');
     },
 
     _clearDB: function(name,createSQL) {
@@ -62,25 +125,25 @@ Atomate.database = {
 	    this.DB.transaction(function(tx) {	tx.executeSql(createSQL, []); });
     },
 
-    _getUniqueJID:function(name, continuation) {
+    _getUniqueID:function(name, continuation) {
         var this_ = this;
-	    // Passes unique JID to continuation.
-	    var jid = Math.floor(Math.random()*1000000);
+	    // Passes unique ID to continuation.
+	    var id = Math.floor(Math.random()*1000000);
 	    this.DB.transaction(function(tx) {
-	                            tx.executeSql('SELECT * FROM ' + name +' WHERE jid=? LIMIT 1',[jid],
+	                            tx.executeSql('SELECT * FROM ' + name +' WHERE id=? LIMIT 1',[id],
 			                                  function(tx, rs) {
 			                                      if (rs.rows.length === 1) {
-				                                      // Chose existing jid, repeat...
-				                                      this_.getUniqueJID(continuation);
+				                                      // Chose existing id, repeat...
+				                                      this_.getUniqueID(continuation);
 			                                      } else { // No note
-				                                      // Success - new jid unique!
-				                                      continuation(jid);
+				                                      // Success - new id unique!
+				                                      continuation(id);
 			                                      }
 			                                  },
 			                                  function(tx, error) {
 			                                      console.log("Unsuccessful get");
 			                                      console.log(error);
-			                                      continuation(jid);
+			                                      continuation(id);
 			                                  });
 	                        });
     },
