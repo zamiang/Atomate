@@ -23,12 +23,11 @@ _DEBUG = True
 
 
 class MainPage(webapp.RequestHandler):
-    @login_required
     def get(self):
-        user = users.GetCurrentUser()
-        if not user:
-            self.redirect(users.CreateLoginURL(self.request.uri))
-            return
+        #user = users.GetCurrentUser()
+        #if not user:
+        #    self.redirect(users.CreateLoginURL(self.request.uri))
+        #    return
 
         template_values = {}
 

@@ -15,9 +15,14 @@ import gdata.calendar.client
 import gdata.contacts.client
 
 SETTINGS = {
+    #    'APP_NAME': 'Atomate-server',
+    #    'CONSUMER_KEY': 'atomate.me',
+    #    'CONSUMER_SECRET': 'RlNMW1U0oyK79k6IrD4gBjxI',
+
     'APP_NAME': 'Atomate-server',
-    'CONSUMER_KEY': 'atomate.me',
-    'CONSUMER_SECRET': 'RlNMW1U0oyK79k6IrD4gBjxI',
+    'CONSUMER_KEY': 'listomate.appspot.com',
+    'CONSUMER_SECRET': 'ZFl4A2x7pzrO7nebG1dLTGMj',
+
     'SCOPES': ["http://www.google.com/calendar/feeds/",
                "http://www.google.com/calendar/feeds/default/allcalendars/full",
                "https://www.google.com/m8/feeds/",

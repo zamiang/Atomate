@@ -12,7 +12,7 @@ window.fbAsyncInit = function() {
     //return false;
     var parent = Atomate.auth;
     FB.init({
-	            appId: 122681067752275, //223573334338274;
+	            appId: 223573334338274,
 		        status: true, 
 		        cookie: true, 
 		        xfbml: true, 
@@ -84,7 +84,7 @@ Atomate.auth.Facebook =  {
         id = id.split(' ').join('');
         
         list.push({
-			          jid: entry.id, 
+			          id: entry.id, 
 			          fbid: entry.id,
 			          name: entry.first_name + " " + entry.last_name,
                       nickname: "",
@@ -112,7 +112,7 @@ Atomate.auth.Facebook =  {
             var end = new Date(entry.end_time.substring(0,entry.end_time.length - 5)).valueOf();
                         
             list.push({
-			              jid: entry.id,                                                
+			              id: entry.id,                                                
                           version:0,
                           created: new Date().valueOf(),
                           modified: 0, 

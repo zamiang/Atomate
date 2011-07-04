@@ -24,7 +24,7 @@ Atomate = {
     defaultTabs: [{
                       name:'Now',
                       type:'native',
-                  default: true
+                      def: true
                   }, {
                       name:'Notes',
                       type:'native'
@@ -250,7 +250,6 @@ Atomate = {
                                                      return ar - br;
                                                  });
 
-                return this.notes;
             } else if (name == 'todo') {
                 return this.notes.filter(function(n){
                                              return n.contents.indexOf('todo') > -1;

@@ -698,11 +698,10 @@ Atomate.util = {
 	    var hash = ch.finish(false);
 
 	    // return the two-digit hexadecimal code for a byte
-	    function toHexString(charCode)
-	    {
+	    function toHexString(charCode) {
 	        return ("0" + charCode.toString(16)).slice(-2);
 	    }
-
+        
 	    // convert the binary hash data to a hex string.
 	    var results = [];
 	    for (var i in hash) {
@@ -868,8 +867,7 @@ Atomate.util = {
 	        // causes arrays to unfortunately end in commas: ,] which trips
 	        // up my parser :(			
 	        return encoded.replace(/,\]/g,"\]");
-	    } else { this.FAILBOMB = object; throw new Error("FAILURE trying to json-encode : " + object); /*console.log(object);*/ }
-	    return undefined;
+	    } else { this.FAILBOMB = object; throw new Error("FAILURE trying to json-encode : " + object); }
     },
     fromJSON : function(string) {
 	    // try built-in
@@ -1093,80 +1091,6 @@ Atomate.util = {
 	        }
 	    }
 	    return r[m][n];
-    },
-    open_new_window:function(url,width,height) {
-	    try {
-	        if (!width) { width = 300; }
-	        if (!height) { height = 600; }
-	        var ww = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
-	        var win = ww.openWindow(null,url,this.guid(),"width="+width+",resizable=yes,height="+height+"", null);
-	        return win;
-	    } catch(e) {
-	        log(e);
-	    }	
-    },
-    get_active_page:function() {
-	    try {
-	        try { netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");	} catch(e) { }
-	        var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
-	        var w = wm.getMostRecentWindow(null); //wm.getEnumerator(null);
-	        if (w && w.getBrowser && w.getBrowser() !== null) {
-		        var tabBrowser = w.getBrowser();
-		        var tab = tabBrowser.mTabBox.selectedTab;
-		        var browser = tabBrowser.getBrowserForTab(tab);
-		        var htmlWindow = browser.contentWindow;
-		        var location = htmlWindow.document.location.href;
-		        //var host = htmlWindow.document.location.host;
-		        //var title = htmlWindow.document.title;
-		        //return { location: location, host: host, title: title };
-		        return location;
-	        }
-	    } catch(e) {
-	        this.log(e + " " + e.lineNumber + " " + e.fileName);
-	    }
-    },
-    ajax : function(url, type, data, callback, error_callback) {
-	    try {
-	        var this_ = this;
-	        var serialized = data;
-	        if (data && typeof(data) !== 'string') {
-		        serialized = this.toJSON(data);
-	        }
-	        // Send      
-	        var req = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);  
-	        req.open(type, url,  true); /* asynchronous! */  
-	        req.setRequestHeader('Content-Type', "text/json-comment-filtered");
-	        req.onreadystatechange = function(event) {
-		        if (req.readyState == 4) {
-		            if (req.status == 200) {
-			            return callback(req.responseText,req.status);
-		            }
-		            /* error!! */
-		            try {
-			            req.abort();
-			            if (req.status == 401) {
-			                if (error_callback) { return error_callback(req,401,"Username or password incorrect."); }
-			                return;
-			            }
-			            if (req.status >= 500) {
-			                if (error_callback) { return error_callback(req,500,"Server is down. Please try later."); }
-			                return;
-			            }
-			            if (error_callback) { return error_callback(req,req.status,req.responseText);}
-			            return;					
-		            } catch(E) {
-			            this_.log(E);
-			            if (error_callback) { return error_callback(req,0,"Unable to contact server - Check your connection."); }
-			            return;
-		            }
-		            if (error_callback) { error_callback({status:0}, 0, "Unable to contact server - Check your connection.");  }
-		            return;
-		        }
-	        };
-	        req.send(serialized !== undefined ? serialized : null);
-	    } catch(e) {
-	        this.log("synchronize.ajaxJSON " + e + " " + e.lineNumber + " " + e.fileName);
-	    }	    
     },
     getNaturalDate: function(epoch) {
         if (isNaN(epoch)) {
