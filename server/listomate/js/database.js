@@ -10,14 +10,9 @@ Atomate.database = {
     parent: Atomate,
     DB: null,
     initialize: function() {
-        try {
             this.createPersonDB();
             this.createNoteDB();
             this.createLocationDB();
-        } catch (e) {
-            console.log(e);
-        }
-        
     },
 
     _replaceLocalCacheItem: function(item, type) {        

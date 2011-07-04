@@ -2,24 +2,26 @@ from google.appengine.ext import db
 from google.appengine.api import users
 
 class Location(db.Model):
-    id = db.IntegerProperty()
+    id = db.IntegerProperty(required=True)
     author = db.UserProperty(required=True)
     version = db.IntegerProperty()
-    created = db.DateTimeProperty(auto_now_add=True)
-    edited = db.DateTimeProperty(auto_now_add=True)
+    created = db.IntegerProperty(required=True)
+    edited = db.IntegerProperty(required=True)
     deleted = db.BooleanProperty()
 
     nickname = db.StringProperty()
-    address = db.PostalAddress("1600 Ampitheater Pkwy., Mountain View, CA")
+    address = db.PostalAddressProperty(required=True) ## "1600 Ampitheater Pkwy., Mountain View, CA")
     geo_pt = db.GeoPtProperty() ## looks like: "47.150300000000001,-55.299500000000002"
+    lat = db.FloatProperty()
+    lon = db.FloatProperty()
 
 
 class Person(db.Model):
     id = db.StringProperty(required=True)
     author = db.UserProperty(required=True)
     version = db.IntegerProperty()
-    created = db.DateTimeProperty(auto_now_add=True)
-    edited = db.DateTimeProperty(auto_now_add=True)
+    created = db.IntegerProperty(required=True)
+    edited = db.IntegerProperty(required=True)
     deleted = db.BooleanProperty()
 
     name = db.StringProperty(required=True)
@@ -38,14 +40,13 @@ class Note(db.Model):
     author = db.UserProperty(required=True)
     version = db.IntegerProperty()
 
-    created = db.DateTimeProperty(auto_now_add=True)
-    edited = db.DateTimeProperty(auto_now_add=True)
+    created = db.IntegerProperty(required=True)
+    edited = db.IntegerProperty(required=True)
     deleted = db.BooleanProperty()
 
     contents = db.TextProperty(required=True)
     tags = db.StringProperty()
     type = db.StringProperty(choices=set(["note", "bookmark", "todo", "reminder"]))
-    reminder = db.DateTimeProperty(auto_now_add=False)
-    source = db.StringProperty()
+    reminder = db.IntegerProperty()
 
     location = db.ReferenceProperty(Location)
