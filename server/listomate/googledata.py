@@ -5,12 +5,14 @@ import re
 import sys
 import logging
 from django.utils import simplejson
-from google.appengine.api import db
+from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import login_required
 from google.appengine.api import users
 import gdata.gauth
 import gdata.docs.client
+import gdata.calendar.client
+import gdata.contacts.client
 
 SETTINGS = {
     'APP_NAME': 'Atomate-server',
@@ -60,8 +62,8 @@ class GdataInterface(webapp.RequestHandler):
 
     def _get_event(event, calendar_name, calendar_name_tag, calendar_link):
         if entry.getTimes()[0]:
-            start = new Date(entry.getTimes()[0].getStartTime().date).valueOf();
-            end = new Date(entry.getTimes()[0].getEndTime().date).valueOf();
+            start = datetime.datetime.fromtimestamp(entry.getTimes()[0].getStartTime().date)
+            end = datetime.datetime.fromtimestamp(entry.getTimes()[0].getEndTime().date);
 
             link = entry.getHtmlLink() if entry.getHtmlLink().getHref() else ""
             contents = "%s #gcal #%s" % (entry.getTitle().getText(), calendarNameTag)

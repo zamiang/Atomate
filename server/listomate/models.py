@@ -8,8 +8,8 @@ class Location(db.Model):
     geo_pt = db.GeoPtProperty() ## looks like: "47.150300000000001,-55.299500000000002"
 
 class Person(db.Model):
-    id = db.StringProperty(requred=True)
-    user = db.UserProperty(requred=True)
+    id = db.StringProperty(required=True)
+    user = db.UserProperty(required=True)
     version = db.IntegerProperty()
 
     name = db.StringProperty(required=True)
@@ -32,7 +32,7 @@ class Person(db.Model):
     location = db.ReferenceProperty(Location)
 
 class Note(db.Model):
-    id = db.StringPropert(required=True)
+    id = db.StringProperty(required=True)
     author = db.UserProperty(required=True)
     version = db.IntegerProperty()
 
@@ -40,7 +40,7 @@ class Note(db.Model):
     edited = db.DateTimeProperty(auto_now_add=True)
     deleted = db.BooleanProperty()
 
-    contents = db.TextProperty(multiline=True, required=True)
+    contents = db.TextProperty(required=True)
     tags = db.StringProperty()
     type = db.StringProperty(choices=set(["note", "bookmark", "todo", "reminder"]))
     reminder = db.DateTimeProperty(auto_now_add=False)

@@ -7,7 +7,6 @@ import urlparse
 import wsgiref.handlers
 import logging
 from django.utils import simplejson
-from util.sessions import Session
 from google.appengine.ext import db
 from google.appengine.api import users
 from google.appengine.api import datastore
@@ -17,7 +16,7 @@ from google.appengine.ext.webapp import template, util
 from google.appengine.ext.webapp.util import run_wsgi_app, login_required
 
 #local
-from gdata import GdataFetcher,RequestTokenCallback
+from googledata import GdataInterface, RequestGoogleAuthToken,RequestTokenCallback
 from models import Person, Location, Note
 
 _DEBUG = True
@@ -69,7 +68,7 @@ class AtomateDatastore(webapp.RequestHandler):
 
         query = db.Query(People) if type == "people" else db.Query(Notes)
 
-        result = query.filter('author = ', user).('deleted', False).('edited >', modified).edited('-edited').ancestor(key)
+        result = query.filter('author =', user).filter('deleted', False).filter('edited >', modified).order('-edited')
 
         self.response.out.write(simplejson.dumps(result.fetch(limit=2000)))
 
@@ -120,27 +119,26 @@ class NoteInterface(object):
 
         datastore.Put(entity)
 
-  @staticmethod
-  def load(name):
-    """Loads the page with the given name.
+    @staticmethod
+    def load(name):
+        """Loads the page with the given name.
 
-    We always return a Note instance, even if the given name isn't yet in
-    the database. In that case, the Note object will be created when save()
-    is called.
-    """
-    query = datastore.Query('Note')
-    query['name ='] = name
-    entities = query.Get(1)
-    if len(entities) < 1:
-      return Note(name)
-    else:
-      return Note(name, entities[0])
+        We always return a Note instance, even if the given name isn't yet in
+        the database. In that case, the Note object will be created when save()
+        is called.
+        """
+        query = datastore.Query('Note')
+        query['name ='] = name
+        entities = query.Get(1)
+        if len(entities) < 1:
+            return Note(name)
+        else:
+            return Note(name, entities[0])
 
-  @staticmethod
-  def exists(id):
-    """Returns true if the page with the given name exists in the datastore."""
-    return Note.load(id).entity
-
+    @staticmethod
+    def exists(id):
+        """Returns true if the page with the given name exists in the datastore."""
+        return Note.load(id).entity
 
 
 
