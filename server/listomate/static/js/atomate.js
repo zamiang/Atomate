@@ -167,7 +167,7 @@ Atomate = {
                                                                   return this_.templates.getTabHtml(tab, startingTab, true);
                                                               }));
 
-        tabs.push({name:'+', type:'add'});
+        tabs.push({name:'+ add a tab', type:'add'});
 
         jQuery.fn.append.apply(this.tabsList, tabs.map(function(tab){
                                                            return this_.templates.getTabHtml(tab, startingTab, false);
