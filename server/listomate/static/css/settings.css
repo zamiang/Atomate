@@ -1,0 +1,55 @@
+/*
+  settings
+  */
+
+#settings {
+    margin:2px;
+    background:#fff;
+    padding:20px;
+    display:none;
+}
+
+#settings h1 {
+    font-size:22px;
+    display:block;
+}
+
+#settings .services {
+    margin:0px;
+    padding:0px;
+    margin-top:10px;
+    margin-bottom:20px;
+
+}
+
+#settings .services li {
+    display:inline-block;
+    height:80px;
+    width:80px;
+    border:1px solid #bbb;
+    padding:12px;
+    margin-left:0px;
+    margin-right:12px;
+    cursor:pointer;
+    text-align:center;
+    vertical-align:top;
+}
+
+#settings .services li:hover {
+    background:#f3f3f3;
+}
+
+#settings .form {
+    padding:0px;
+    margin:0px;
+    list-style:none;
+}
+
+#settings .form li, .form .form_container {
+    padding:0px;
+    margin:0px;
+    list-style:none;
+    margin-bottom:12px;
+    margin-top:12px;
+
+}

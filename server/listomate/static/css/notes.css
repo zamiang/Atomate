@@ -1,0 +1,113 @@
+#notes {
+    margin:0px;
+    height:340px;
+    background:#fbfbfb;
+    overflow-y:auto;
+}
+
+#notes li {
+    border-bottom: 1px solid #EBEBEB;
+    border-top: 1px solid transparent;
+    min-height: 38px;
+    clear: both;
+    display: block;
+    outline: none;
+
+    padding: 10px;
+    font-size: 13px;
+    position: relative;
+    zoom: 1;
+    line-height: 148%;
+    word-wrap: break-word;
+    cursor:pointer;
+    background:#fbfbfb;
+}
+
+#notes li.selected {
+    background: -webkit-gradient(linear, 0 0, 0 18%, from(#E6E6E6), to(#f5f5f5));
+    background: -moz-gradient(linear, 0 0, 0 18%, from(#E6E6E6), to(#f5f5f5));
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #aaa;
+}
+
+#notes li.custom_search {
+    min-height:1px;
+    background:lightyellow;
+}
+
+#notes li.custom_search.selected {
+    background:lightyellow;
+    border-bottom: 1px solid #EBEBEB;
+    border-top: 1px solid transparent;
+}
+
+#notes li .actions {
+    position:absolute;
+    display:none;
+    right:10px;
+    top:10px;
+}
+
+#notes li:hover .actions {
+    display:block;
+}
+
+#notes li .actions img {
+    padding: 2px;
+    border: 1px solid transparent;
+    height: 8px;
+    width: 8px;
+    vertical-align: middle;
+    float:right;
+    background:#f3f3f3;
+    cursor:pointer;
+    margin-left:4px;
+}
+
+#notes li .actions img:hover {
+    border: 1px solid #DDD;
+    background: white;
+}
+
+#notes li .context {
+    font-size: 11px;
+    color: #666;
+    margin-top: 3px;
+    margin-left: -2px;
+}
+
+#notes li.type_person .text {
+    display:inline-block;
+    vertical-align:top;
+    padding-left:12px;
+}
+
+#notes li.type_person .text .at_link {
+    font-size:14px;
+    font-weight:bold;
+}
+
+#notes li.type_person .text .external {
+    color:#666;
+    text-decoration:underline;
+    font-size:11px;
+}
+
+#notes li .context a {
+    text-decoration:underline;
+    color: #666;
+}
+
+#notes li .context img {
+    vertical-align: top;
+    margin-right: 4px;
+    margin-top: 3px;
+}
+
+#notes li .context .context_item {
+    margin-right:20px;
+}
+
+#notes textarea {
+    width: 428px;
+}

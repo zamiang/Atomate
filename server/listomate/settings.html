@@ -1,0 +1,63 @@
+<div id="settings">
+    <h1>Atomate Settings</h1>
+    <h2>Synced Services</h2>
+    <ul class="services">
+        <li data-id="gcal">
+            <img src="../img/gcal.png" />
+            <b>Google Calendar</b>
+        </li>
+        <li data-id="gcontacts">
+            <img src="../img/gcontacts.png" />
+            <b>Google Contacts</b>
+        </li>
+        <li data-id="listit">
+            <img src="../img/listit.png" />
+            <b>List-it</b>
+        </li>
+    </ul>
+    <h2>Add Services</h2>
+    <ul class="services">
+        <li>
+            <img src="../img/facebook.png" />
+            <b>Facebook</b>
+        </li>
+        <li>
+            <img src="../img/twitter.png" />
+            <b>Twitter</b>
+        </li>
+    </ul>
+    <h2>Account Settings</h2>
+    <ul class="form">
+        <li class="form_container">
+            <label><b>Email</b></label>
+            <input id="id_email" type="text" />
+        </li>
+        <li class="form_container">
+            <label><b>Password</b></label>
+            <input id="id_old_password" type="text" />
+        </li>
+        <li class="form_container">
+            <label><b>Font Size</b></label><br />
+            <select>
+                <option val="8">8</option>
+                <option val="10">10</option>
+                <option val="12" selected>12</option>
+                <option val="14">14</option>
+                <option val="16">16</option>
+                <option val="18">18</option>
+                <option val="events">Events</option>
+            </select>
+        </li>
+        <li class="form_container">
+            <input id="id_notifications" type="checkbox" checked />
+            <label>Email me with updates from Atomate</label>
+        </li>
+        <li class="form_container">
+            <input id="id_errors" type="checkbox" checked />
+            <label>Email me when Atomate encounters an error</label>
+        </li>
+        <li class="form_spacer">
+            <input id="id_submit" type="submit" value="Save" />
+        </li>
+    </ul>
+</div>
