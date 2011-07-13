@@ -201,14 +201,14 @@ h3 {
 
 h4 {
     text-decoration: none;
-    display:inline-block;
+    display: inline-block;
     font-weight: bold;
-    color: #120007;;
-    font-size: 18px;
+    color: #120007;
+    font-size: 16px;
     border: none;
     margin: 0px;
     padding: 0px;
-    margin-bottom:8px;
+    margin-bottom: 25px;
 }
 
 
@@ -228,7 +228,8 @@ form {
     border-bottom: 1px solid #DDD;
     margin-bottom: 13px;
     padding-bottom: 23px;
-    text-align:center;
+    text-align:left;
+    padding-left:22px;
 }
 
 #bg {
@@ -325,32 +326,24 @@ ul {
 }
 
 input[type="text"] {
-    height: 31px;
-    padding-left: 8px;
+    height: 32px;
+    padding-left: 9px;
     border: 1px solid #C2C2C2;
-    box-shadow: 0 1px 1px #E1E3E7;
-    -webkit-box-shadow: 0 1px 1px #E1E3E7;
-    -moz-box-shadow: 0 1px 1px #E1E3E7;
-    font-size: 14px;
-    margin-left:4px;
+    font-size: 12px;
+    margin-left: 9px;
+    width:202px;
 }
 
 input[type="submit"] {
     -moz-border-radius: 3px 3px 3px 3px;
     -webkit-border-radius: 3px 3px 3px 3px;
     border-radius: 3px 3px 3px 3px;
-    -moz-box-shadow: 1px 1px 1px #777;
-    -webkit-box-shadow: 1px 1px 1px #777;
-    box-shadow: 1px 1px 1px #777;
-    -moz-text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.35);
-    -webkit-text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.35);
-    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.35);
 
     border: 1px solid #3B5615;
     color: white;
     cursor: pointer;
     display: inline-block;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 148%;
     font-weight: bold;
     margin: 0px;
@@ -358,8 +351,45 @@ input[type="submit"] {
     text-align: center;
     text-decoration: none;
     padding: 8px 24px 7px;
-    background: #6AAA0B;
+
+    border: 1px solid gainsboro;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: #2CADD8;
+    background-image: -moz-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background-image: -ms-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background-image: -o-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background-image: linear-gradient(top,#f5f5f5,#f1f1f1);
+    color: #fff;
 }
+
+input[type="submit"]:hover {
+    border: 1px solid gainsboro;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+
+    background-color: whiteSmoke;
+    background-image: -webkit-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background-image: -moz-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background-image: -ms-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background-image: -o-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background-image: linear-gradient(top,#f5f5f5,#f1f1f1);
+
+    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    -ms-box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    -o-box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    color: #222;
+    text-decoration:none;
+}
+
+input[type="submit"]:active {
+    -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+    -ms-box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+    -o-box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+    -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+}
+
 
 ul li {
     color: #333;
