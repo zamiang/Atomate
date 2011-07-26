@@ -2,7 +2,6 @@
  * Store items in SqlLite HTML5 Database
  * For storing notes/stuff locally!
  * 
- * @Author Wolfe Styke 
  * @Author Brennan Moore - modiefied this for Atomate adding person and location
  */
 
@@ -10,16 +9,16 @@ Atomate.database = {
     parent: Atomate,
     DB: null,
     initialize: function() {
-            this.createPersonDB();
-            this.createNoteDB();
-            this.createLocationDB();
+        this.createPersonDB();
+        this.createNoteDB();
+        this.createLocationDB();
     },
 
     _replaceLocalCacheItem: function(item, type) {        
         this.parent[type] = this.parent[type].map(function(n) { 
                                                       return item.id === n.id ? item : n;
                                                   });
-        return note;
+        return item;
     },    
     replaceNoteInLocalCache: function(note) { return this._replaceLocalCacheItem(note, 'notes');  },    
     replacePersonInLocalCache: function(person) { return this._replaceLocalCacheItem(person, 'people');  },
@@ -28,9 +27,9 @@ Atomate.database = {
     pushModified: function(lastPushed) {
         var this_ = this;
         var modified = lastPushed || 0;
-        var people = this.parent.people.filter(function(d){ return d.modified >= modified; });
-        var notes = this.parent.notes.filter(function(d){ return d.modified >= modified; });
-        var locations = this.parent.locations.filter(function(d){ return d.modified >= modified; });
+        var people = this.parent.people.filter(function(d){ return d.modified && d.modified >= modified; });
+        var notes = this.parent.notes.filter(function(d){ return d.modified && d.modified >= modified; });
+        var locations = this.parent.locations.filter(function(d){ return d.modified && d.modified >= modified; });
 
         jQuery.postJSON('/data', {                            
                             people: people,
@@ -40,6 +39,29 @@ Atomate.database = {
                             debug(response);
                         });
     },    
+    
+    bulkSave: function(items, type, cacheList) {
+        this.parent.auth.interval_map_lite(response.data.people, 
+                                           function(entry) { 
+                                               // todo: do some normalization
+									           this_.replacePersonInLocalCache(entry);
+                                               cacheList.push(entry);
+                                               
+						                   }, function() { 
+                                               debug('about to save from server -- ' + type);
+                                               debug(cacheList);
+                                               
+                                               if (type == "person") {
+                                                   Atomate.database.person.putAllPeopleInDB(cacheList);                                                   
+                                               } else if (type == "notes") {
+                                                   Atomate.database.notes.putAllNotesInDB(cacheList);
+                                               } else {
+                                                   Atomate.database.location.putAllLocationsInDB(cacheList);
+                                               }
+
+                                               delete cacheList;
+                                           });
+    },
 
     pullModified: function(lastUpdated) {
         var this_ = this;
@@ -52,63 +74,9 @@ Atomate.database = {
                                var location_cache = [];
                                var note_cache = [];
 
-                               // refactor this
-					           this_.parent.auth.interval_map_lite(response.data.people, 
-                                                                   function(entry) { 
-                                                                       // todo: do some normalization
-                                                                       var e = entry;
-
-									                                   this_.replacePersonInLocalCache(e);
-                                                                       people_cache.push(e);
-
-						                                           }, function() { 
-                                                                       console.log('about to save people from server');
-                                                                       Atomate.database.person.putAllPeopleInDB(fb_people_cache);
-                                                                       delete people_cache;
-                                                                   });
-                               
-					           this_.parent.auth.interval_map_lite(response.data.notes, 
-                                                                   function(entry) { 
-                                                                       // todo: do some normalization
-                                                                       var e = entry;
-
-									                                   this_.replacePersonInLocalCache(e);
-                                                                       note_cache.push(e); 
-
-                                                                   }, function() {
-                                                                       console.log('about to save notes from server');                                                                     
-                                                                       Atomate.database.notes.putAllNotesInDB(note_cache);
-                                                                       delete note_cache;
-                                                                   });
-
-					           this_.parent.auth.interval_map_lite(response.data.people, 
-                                                                   function(entry) { 
-                                                                       // todo: do some normalization
-                                                                       var e = entry;
-
-									                                   this_.replacePersonInLocalCache(e);
-                                                                       people_cache.push(e);
-
-						                                           }, function() { 
-                                                                       console.log('about to save people from server');
-                                                                       Atomate.database.person.putAllPeopleInDB(fb_people_cache);
-                                                                       delete people_cache;
-                                                                   });
-                               
-					           this_.parent.auth.interval_map_lite(response.data.locations, 
-                                                                   function(entry) { 
-                                                                       // todo: do some normalization
-                                                                       var e = entry;
-
-									                                   this_.replaceLocationInLocalCache(e);
-                                                                       location_cache.push(e); 
-
-                                                                   }, function() {
-                                                                       console.log('about to save notes from server');                                                                     
-                                                                       Atomate.database.notes.putAllNotesInDB(location_cache);
-                                                                       delete location_cache;
-                                                                   });
-
+                               this_.bulkSaveFromServer(response.data.people, 'people', people_cache);
+                               this_.bulkSaveFromServer(response.data.notes, 'notes', note_cache);
+                               this_.bulkSaveFromServer(response.data.locations, 'locations', location_cache);
                            } else {
                                debug(response.code);
                            }

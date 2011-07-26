@@ -23,30 +23,32 @@ Atomate.database.notes = {
 	                               });
     },
     
-    addNewNote:function(created, contents, tags, type, reminder, continuation) {
+    addNewNote:function(created, contents, tags, type, reminder, locationid, cont) {
 	    // Adds NEW note to DB, passes unique ID to continuation 
 	    var this_ = this;
 	    this.parent._getUniqueID('note', function (id) {
-                                      var source = 'Atomate'; // todo: make more specific
-	                                  var version = 0;
-	                                  var edited = created;
-	                                  var deleted = 0;
-	                                  // Insert note into database
-	                                  this_.parent.DB.transaction(function(tx) {
-		                                                              tx.executeSql('INSERT INTO note ' + this_.properties + ' VALUES' + this_.values + ';',
-			                                                                        [id, version, created, edited, deleted, contents, tags, type, reminder, source],
-			                                                                        function(tx, rs) { debug("NOTE INSERT - note DB"); }
-			                                                                       );
-	                                                              });
-	                                  continuation(id);
-	                              });
+                                     var source = 'Atomate'; // todo: make more specific
+	                                 var version = 0;
+	                                 var edited = created;
+	                                 var deleted = 0;
+                                     reminder = isNaN(reminder) ? 0 : reminder;
+                                     var locationid = (isNaN(reminder) || !locationid) ? 0 : locationid; // so confusing! -- basically sets reminder to 0 if it isnan or doesnt exist
+
+	                                 // Insert note into database
+	                                 this_.parent.DB.transaction(function(tx) {
+		                                                             tx.executeSql('INSERT INTO note ' + this_.properties + ' VALUES' + this_.values + ';',
+			                                                                       [id, version, created, edited, deleted, contents, tags, type, reminder, source, locationid],
+			                                                                       function(tx, rs) { 
+                                                                                       debug("NOTE INSERT - note DB");
+	                                                                                   cont(id);
+                                                                                   }
+			                                                                      );
+	                                                             });
+	                             });
     },
 
-    editNote:function(id, version, created, edited, deleted, contents, tags, type, reminder, source, continuation) {
+    editNote:function(id, version, created, edited, deleted, contents, tags, type, reminder, source, locationid, continuation) {
 	    // Silently updates note's attributes
-	    debug("Updating note in database: "+id);
-	    debug(created);
-	    debug(edited);
         var this_ = this;
 	    this.parent.DB.transaction(function(tx) {
 	                                   tx.executeSql(
@@ -62,15 +64,15 @@ Atomate.database.notes = {
 	                               });
     },
 
-    deleteNote:function(id) {
+    deleteNote:function(id, cont) {
 	    var this_ = this;
 	    this.getNoteById(id, function (note) {
 	                         if (note === null) { return; }
 	                         this_.parent.DB.transaction(function(tx) {
 		                                                     tx.executeSql(
 		                                                         'INSERT OR REPLACE INTO note ' + this_.properties + ' VALUES' + this_.values + ';', 
-                                                                 [id, note.version, note.created, note.edited, 1, note.contents, 1, note.tags, note.type, note.reminder, note.source],
-		                                                         function(tx, rs) { debug("DB: note-delete success"); }
+                                                                 [id, note.version, note.created, new Date().valueOf(), 1, note.contents, note.tags, note.type, note.reminder, note.source, note.locationid],
+		                                                         function(tx, rs) { debug("DB: note-delete success"); cont(); }
 		                                                     );
 	                                                     }); 
 	                     });	
@@ -82,13 +84,13 @@ Atomate.database.notes = {
 	                                   tx.executeSql('SELECT * FROM note WHERE id=? LIMIT 1',[id],
 			                                         function(tx, rs) {
 			                                             if (rs.rows.length === 1) {
+
                                                              var isFirefox = jQuery.isArray(rs.rows.item);
                                                              if (isFirefox) {
 				                                                 var note = rs.rows.item[0];
                                                              } else {
 				                                                 var note = rs.rows.item(0);    
                                                              }
-
 				                                             continuation(note);
 			                                             } else { // No note
 				                                             continuation(null);
@@ -154,7 +156,8 @@ Atomate.database.notes = {
                                            n.tags,
                                            n.type,
                                            parseInt(n.reminder, 10),
-                                           n.source
+                                           n.source,
+                                           n.locationid
                                        ];
                                    });
 

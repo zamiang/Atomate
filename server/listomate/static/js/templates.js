@@ -9,6 +9,7 @@ Atomate.templates = {
     parent: Atomate,
     getItemHtml: function(n) {
         if (!n.type) { // is a note -- temporary
+            debug('no type');
             return this.getNoteHtml(n);
         } else if (n.type == "person") {
             return this.getPersonHtml(n);
@@ -110,6 +111,7 @@ Atomate.templates = {
     },
 
     getNoteHtml: function(item) {
-        return "<li id=\"note_" + item.jid + "\" class=\"note type_" + this.getItemType(item.type) + "\">" + this._getNoteHtml(item) + '</li>';
+        debug(item);
+        return "<li id=\"note_" + item.id + "\" data-id=\"" + item.id + "\" class=\"note type_" + this.getItemType(item.type) + "\">" + this._getNoteHtml(item) + '</li>';
     }
 };

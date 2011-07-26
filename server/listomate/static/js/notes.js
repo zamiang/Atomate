@@ -20,38 +20,75 @@ Atomate.noteEdit = {
                                            evt.stopPropagation();
                                           
                                            var noteDiv = jQuery(this).parent().parent();
-                                           var id = noteDiv.attr('data-id');
-                                           var contents = noteDiv.find('textarea').val().trim(); // todo escape/remove html
-                                           var created = new Date().valueOf();
-                                           var reminder = this_.getDateForNoteCreationDateTime(noteDiv.find('.picker_date').val(), noteDiv.find('.picker_time').val());
-                                           var type = this_.getNoteType(contents);
-                                           var tags = this_.getTagsForNote(contents);
-                                           
-                                           // it is a new note
-                                           if (noteDiv.attr('id') == 'input') {                                               
-                                               this_.parent.database.notes.addNewNote(created, contents, tags, type, reminder,
-                                                                                      function(id){
-                                                                                          this_.parent.database.notes.getNoteById(id, 
-                                                                                                                                  function(n) {
-                                                                                                                                      this_.parent.notes.push(n);
-                                                                                                                                      noteDiv.find('textarea, input[type="text"]').val('');                                                   
-                                                                                                                                      this_.appendNote(n, true);  
-                                                                                                                                  });
-                                                                                      });                                
-                                           } else {
-                                               // this is a note that is being edited
-                                               this_.parent.database.notes.getNoteById(id, 
-                                                                                       function(n) {
-                                                                                           // id, version, created, edited, deleted, contents, modified, tags, type, reminder, source
-                                                                                           this_.parent.database.notes.editNote(
-                                                                                               id, n.version++, n.created, new Date().valueOf(), 0, contents, n.modified++, tags, type, reminder, n.source, 
-                                                                                               function(newNote) {
-                                                                                                   this_.appendNote(newNote, false);   
-                                                                                                   this_.parent.database.replaceNoteInLocalCache(newNote);
-                                                                                               });
-                                                                                       });
-                                           }
+                                           this_.editOrCreateNoteForDiv(noteDiv);
                                        });   
+
+        // setup edit
+        this.parent.notesList.find('li.note').live('dblclick',
+                                            function(evt) {
+                                                var jObj = jQuery(this);
+                                                this_.editNote(jObj);
+                                            });
+
+        // setup remove
+        this.parent.notesList.find('li .actions .item_remove').live('click',
+                                                             function(evt){
+                                                                 evt.stopPropagation();
+                                                                 var jObj = jQuery(this).parent().parent();
+                                                                 this_.parent.database.notes.deleteNote(jObj.attr('data-id'), function() {
+                                                                                                            jObj.slideUp();
+                                                                                                        });
+                                                             });
+
+        // edit pt 2
+        this.parent.notesList.find('li .actions .item_edit').live('click',
+                                                           function(evt){
+                                                               evt.stopPropagation();
+                                                               var jObj = jQuery(this).parent().parent();
+                                                               this_.editNote(jObj);
+                                                           });
+
+        //jQuery('.)
+    },
+
+    editOrCreateNoteForDiv: function(noteDiv) {
+        var this_ = this;
+        var id = noteDiv.attr('data-id');
+        var contents = noteDiv.find('textarea').val().trim(); // todo escape/remove html
+        var created = new Date().valueOf();
+        var reminder = this.getDateForNoteCreationDateTime(noteDiv.find('.picker_date').val(), noteDiv.find('.picker_time').val());
+        var type = this.getNoteType(contents);
+        var tags = this.getTagsForNote(contents);
+        var locationid = this.getLocationIdForNote(noteDiv); // TODO: when i add locations
+        
+        // it is a new note
+        if (noteDiv.attr('id') == 'input') {                       
+            debug('adding a new note');
+            this.parent.database.notes.addNewNote(created, contents, tags, type, reminder, locationid,
+                                                   function(id) {  
+                                                       debug('adding a new note');
+                                                       this_.parent.database.notes.getNoteById(id, 
+                                                                                               function(n) {
+                                                                                                   debug(n + ' foo')
+                                                                                                   this_.parent.notes.push(n);
+                                                                                                   debug(n + ' boo')
+                                                                                                   noteDiv.find('textarea, input[type="text"]').val('');                                                   
+                                                                                                   debug(n + ' doo')
+                                                                                                   this_.appendNote(n, true);  
+                                                                                               });
+                                                   });                                
+        } else {
+            // this is a note that is being edited
+            this.parent.database.notes.getNoteById(id, 
+                                                    function(n) {
+                                                        this_.parent.database.notes.editNote(
+                                                            id, n.version++, n.created, new Date().valueOf(), 0, contents, n.modified++, tags, type, reminder, n.source, n.locationid, 
+                                                            function(newNote) {
+                                                                this_.appendNote(newNote, false);   
+                                                                this_.parent.database.replaceNoteInLocalCache(newNote);
+                                                            });
+                                                    });
+        }        
     },
     
     getNoteType: function(contents, reminder){
@@ -67,6 +104,11 @@ Atomate.noteEdit = {
         } else {
             return 'note';
         }
+    },
+
+    getLocationIdForNote: function(jObj) {
+        // todo -handle adding new locations
+        return jObj.find('.location').attr('data-id') || 0;  
     },
 
     getDateForNoteCreationDateTime: function(date, time) {
@@ -98,7 +140,7 @@ Atomate.noteEdit = {
         this.createNoteEditor(jObj, id, text, date, location);  
     },  
 
-    appendNote: function(note, prepend) {
+    appendNote: function(note, prepend) {        
         if (prepend) {
             var html = this.parent.templates.getNoteHtml(note);
             this.parent.notesList.prepend(html);

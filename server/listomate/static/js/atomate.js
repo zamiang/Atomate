@@ -98,27 +98,6 @@ Atomate = {
                                                                  this_.removeCustomSearch();
                                                                  return false;
                                                              });
-
-        this.notesList.find('li.note').live('dblclick',
-                                            function(evt) {
-                                                var jObj = jQuery(this);
-                                                this_.noteEdit.editNote(jObj);
-                                            });
-
-        this.notesList.find('li .actions .item_remove').live('click',
-                                                             function(evt){
-                                                                 evt.stopPropagation();
-                                                                 jQuery(this).parent().parent().slideUp();
-                                                                 // todo - intersect w/ data and call delete on those items
-                                                                 return false;
-                                                             });
-
-        this.notesList.find('li .actions .item_edit').live('click',
-                                                           function(evt){
-                                                               evt.stopPropagation();
-                                                               // todo - intersect w/ data and call delete on those items
-                                                               return false;
-                                                           });
         
         jQuery('.popup .remove').live('click', function(item) { this_.hidePopup(); });
     },
