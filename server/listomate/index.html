@@ -5,7 +5,7 @@
 <!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
     <head>
         <meta name="google-site-verification" content="mip2rw9r2ei7TFIBvcoPNHmmsu2B-mtLFg-9XKdcT8A" />
-        <title>Atomate - demo</title>
+        <title>Atomate | Your Digital Personal Assistant</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta property="og:title" content="Atomate - Your digital personal assistant">
@@ -18,165 +18,55 @@
         <meta name="google-site-verification" content="aD7Wc1l-F7TrLmts5a_HZVTY6l4LErExVFyB_O0ADwc" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="img/favicon.ico">
-        <link rel="stylesheet" href="css/styles.css?v=2">
+        <link rel="stylesheet" href="css/base.css?v=3">
+        <link rel="stylesheet" href="css/autocomplete.css?v=3">
+        <link rel="stylesheet" href="css/popup.css?v=3">
+        <link rel="stylesheet" href="css/notes.css?v=3">
+        <link rel="stylesheet" href="css/settings.css?v=3">
+        <link rel="stylesheet" href="css/tabs.css?v=3">
+        <link rel="stylesheet" href="css/input.css?v=3">
     </head>
     <body>
-        <p style="position:absolute; top:10px; right:10px;"><fb:login-button autologoutlink="true"></fb:login-button></p>
-
-        <header>
-            <h1>Atomate</h1>
-            <img class="logo" src="img/atomate_bot.png" />
-            <h2>Your digital personal assistant</h2>
-        </header>
         <div id="container">
-            <!--
-                <ul id="instructions">
-                    <img class="remove" src="img/remove.png">
-                    <li>Double-click to edit.</li>
-                    <li>Search or enter to add notes</li>
-                </ul>
-                -->
-            <div id="input">
-                <textarea id="main_input" rows="1" cols="52"></textarea>
-                <div class="controls clearfix">
-                    <input id="id_note_save" type="submit" value="Save" class="notes_save_btn" />
-                    <div class="location_input">
-                        <label>Location:</label>
-                        <select>
-                            <option val="none">None</option>
-                        </select>
+            <div class="ts">
+                <div class="logo">
+                    <img src="img/atomate_bot.png" />
+                    Atomate
+                </div>
+                <fb:login-button autologoutlink="true"></fb:login-button>
+                <a href="print.html">Print</a>
+                <a href="trashbin.html">Trash</a>
+                <a href="settings.html">Settings</a>
+                <fb-root></fb-root>
+            </div>
+            <div class="ls">
+                <ul id="tabs"></ul>
+            </div>
+            <div class="rs">
+                <div id="input">
+                    <textarea id="main_input" rows="1" cols="52"></textarea>
+                    <div class="controls clearfix">
+                        <input id="id_note_save" type="submit" value="Save" class="notes_save_btn" />
+                        <div class="location_input">
+                            <label>Location:</label>
+                            <select>
+                                <option val="none">None</option>
+                            </select>
 
-                        <label>Time:</label>
-                        <input type="text" placeholder="6/25/2011" class="picker_date"/>
-                        <input type="text" placeholder="10:30pm" class="picker_time" />
+                            <label>Time:</label>
+                            <input type="text" placeholder="6/25/2011" class="picker_date"/>
+                            <input type="text" placeholder="10:30pm" class="picker_time" />
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <ul id="tabs">
-                <div class="selected settings">
-                    <div class="settings_img"><img src="../img/settings_16.png" /></div>
-                    <ul class="settings_list">
-                        <li>
-                            <a href="print.html">Print View</a>
-                        </li>
-                        <li>
-                            <a href="trashbin.html">Trash Bin</a>
-                        </li>
-                        <li data-type="settings" data-name="settings" class="tab_settings">
-                            <a href="#settings">Account Settings</a>
-                        </li>
-                    </ul>
-                </div>
-            </ul>
-
-            <div id="main" role="main">
                 <ul id="notes"></ul>
-
-                <div id="settings">
-                    <h1>Atomate Settings</h1>
-                    <h2>Synced Services</h2>
-                    <ul class="services">
-                        <li data-id="gcal">
-                            <img src="../img/gcal.png" />
-                            <b>Google Calendar</b>
-                        </li>
-                        <li data-id="gcontacts">
-                            <img src="../img/gcontacts.png" />
-                            <b>Google Contacts</b>
-                        </li>
-                        <li data-id="listit">
-                            <img src="../img/listit.png" />
-                            <b>List-it</b>
-                        </li>
-                    </ul>
-                    <h2>Add Services</h2>
-                    <ul class="services">
-                        <li>
-                            <img src="../img/facebook.png" />
-                            <b>Facebook</b>
-                        </li>
-                        <li>
-                            <img src="../img/twitter.png" />
-                            <b>Twitter</b>
-                        </li>
-                    </ul>
-                    <h2>Account Settings</h2>
-                    <ul class="form">
-                        <li class="form_container">
-                            <label><b>Email</b></label>
-                            <input id="id_email" type="text" />
-                        </li>
-                        <li class="form_container">
-                            <label><b>Password</b></label>
-                            <input id="id_old_password" type="text" />
-                        </li>
-                        <li class="form_container">
-                            <label><b>Font Size</b></label><br />
-                            <select>
-                                <option val="8">8</option>
-                                <option val="10">10</option>
-                                <option val="12" selected>12</option>
-                                <option val="14">14</option>
-                                <option val="16">16</option>
-                                <option val="18">18</option>
-                                <option val="events">Events</option>
-                            </select>
-                        </li>
-                        <li class="form_container">
-                            <input id="id_notifications" type="checkbox" checked />
-                            <label>Email me with updates from Atomate</label>
-                        </li>
-                        <li class="form_container">
-                            <input id="id_errors" type="checkbox" checked />
-                            <label>Email me when Atomate encounters an error</label>
-                        </li>
-                        <li class="form_spacer">
-                            <input id="id_submit" type="submit" value="Save" />
-                        </li>
-                    </ul>
-                </div>
+                {% comment %}
+                {% include "settings.html" %}
+                {% endcomment %}
             </div>
         </div>
+        {% include "add_tab.html" %}
 
-        <ul id="add_tab" class="popup form">
-            <img class="remove top_remove" src="../img/remove.png">
-            <h1>Edit your tabs</h1>
-            <ul id="sort_tabs"></ul>
-
-            <div class="add_tab form_container">
-                <h1>Add a tab</h1><br />
-                <label>Use an Atomate tab:</label>
-
-                <select>
-                    <option val="none">none</option>
-                    <option val="now">Now</option>
-                    <option val="notes">Notes</option>
-                    <option val="todo">Todo</option>
-                    <option val="events">Events</option>
-                </select>
-            </div>
-            <div class="form_container">
-                <label>Save a search:</label>
-                <input id="id_tab_search" type="text" />
-                <input id="id_tab_add_submit" type="submit" value="Add a tab" />
-            </div>
-
-            <div class="form_spacer">
-                <input id="id_tab_add_submit" type="submit" value="Save" />
-            </div>
-        </ul>
-
-        <ul id="progress"></ul>
-
-        <footer>
-            <a href="http://atomate.me">About</a> &#8226;
-            <a href="https://listomate.appspot.com/">Demo</a> &#8226;
-            <a href="https://github.com/Zamiang/Atomate">Source</a> &#8226;
-            <div id="fb-root"></div>
-        </footer>
-
-        <!--<script type="text/javascript" src="///www.google.com/jsapi"></script>-->
         <script src="lib/jquery.min.js"></script>
         <script src="lib/jquery.ui.min.js"></script>
         <script src="lib/dateformat.js"></script>
@@ -192,98 +82,61 @@
 
         <script src="js/database.js"></script>
         <script src="js/database.notes.js"></script>
-        <script src="js/database.person.js"></script>
+        <Script Src="js/database.person.js"></script>
         <script src="js/database.location.js"></script>
 
         <script src="js/auth.js"></script>
         <script src="js/auth.fb.js"></script>
-        <!--
-            <script src="js/auth.flickr.js"></script>
-            <script src="js/auth.gcal.js"></script>
-            <script src="js/auth.gcontacts.js"></script>
-        -->
         <script>
-    // Facebook initialize
-    if (window.location.protocol !== "file:") {
-        (function() {
-             var e = document.createElement('script');
-             e.type = 'text/javascript';
-             e.src = document.location.protocol +
-	             '//connect.facebook.net/en_GB/all.js';
-             e.async = true;
-             document.getElementById('fb-root').appendChild(e);
-         }());
+            /*
+            * NOTE: DO NOT LOAD AS AN EXTERNAL FILE
+            *
+            * must be in document root. :/
+            */
 
-        // MIX PANEL
-        var mpq = ["init", "d3950de9980b43abe44956d1511c6af5"];
-        mixPanelInit = function() {
-            try {
-                // TODO: email MixPanel about this - to run callbacks they require a global called 'mpmetrics'
-                mpmetrics = new MixpanelLib("d3950de9980b43abe44956d1511c6af5");
-                return mpmetrics
-            } catch(err) {
-                var null_fn = function () {};
-                mpmetrics = {
-                    track: null_fn,
-                    track_funnel: null_fn,
-                    register: null_fn,
-                    register_once: null_fn,
-                    register_funnel: null_fn,
-                    identify: null_fn
-                };
-                return mpmetrics
-            }
-        };
-        var _gaq=[["_setAccount","UA-11329288-1"],["_trackPageview"]]; // Change UA-XXXXX-X to be your site's ID
-        (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-                       g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
-                       s.parentNode.insertBefore(g,s)}(document,"script"));
-    }
+// Facebook & Mixpanel initialize
+{% comment %}
+(function() {
+         var e = document.createElement('script');
+         e.type = 'text/javascript';
+         e.src = document.location.protocol +
+	         '//connect.facebook.net/en_GB/all.js';
+         e.async = true;
+         document.getElementById('fb-root').appendChild(e);
+     }());
 
-    jQuery(document).ready(function(){
-                               Atomate.initialize({
-                                                      //trackingmodule: mpq,
-                                                      //mixPanelInit: mixPanelInit,
-                                                  });
-                           });
-
-    function mapsLoaded() {
-        var browserSupportFlag
-
-        // Try W3C Geolocation (Preferred)
-        if (navigator.geolocation) {
-            browserSupportFlag = true;
-            navigator.geolocation.getCurrentPosition(function(position) {
-                                                         var geocoder = new google.maps.Geocoder();
-                                                         var latlng =  new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-
-                                                     geocoder.geocode({'latLng': latlng}, function(results, status) {
-                                                                          if (status == google.maps.GeocoderStatus.OK) {
-                                                                              //console.log(results);
-                                                                              var loc = results[0]; // todo: be smarter about this
-                                                                              Atomate.setLocationFromGeocode(loc,latlng);
-
-                                                                          } else {
-                                                                              handleError("Geocoder failed due to: " + status);
-                                                                          }
-                                                                      });
-                                                 }, function() {
-                                                     handleNoGeolocation(browserSupportFlag);
-                                                 });
-            // Browser doesn't support Geolocation
-        } else {
-            browserSupportFlag = false;
-            handleNoGeolocation(browserSupportFlag);
+    // MIX PANEL
+    var mpq = ["init", "d3950de9980b43abe44956d1511c6af5"];
+    mixPanelInit = function() {
+        try {
+            // TODO: email MixPanel about this - to run callbacks they require a global called 'mpmetrics'
+            mpmetrics = new MixpanelLib("d3950de9980b43abe44956d1511c6af5");
+            return mpmetrics;
+        } catch(err) {
+            var null_fn = function () {};
+            mpmetrics = {
+                track: null_fn,
+                track_funnel: null_fn,
+                register: null_fn,
+                register_once: null_fn,
+                register_funnel: null_fn,
+                identify: null_fn
+            };
+            return mpmetrics;
         }
+    };
+    var _gaq=[["_setAccount","UA-11329288-1"],["_trackPageview"]]; // Change UA-XXXXX-X to be your site's ID
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+                   g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
+                   s.parentNode.insertBefore(g,s)}(document,"script"));
+{% endcomment %}
 
-        function handleNoGeolocation(errorFlag) {
-            if (errorFlag == true) {
-                error("Geolocation service failed.");
-            } else {
-                showMessage("Your browser doesn't support geolocation.");
-            }
-        }
-    }
+jQuery(document).ready(function(){
+                           Atomate.initialize({
+                                                  //trackingmodule: mpq,
+                                                  //mixPanelInit: mixPanelInit,
+                                              });
+                       });
         </script>
     </body>
 </html>

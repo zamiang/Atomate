@@ -1,0 +1,85 @@
+#main_input {
+    width: 94.5%;
+}
+
+#input {
+    margin: 0px;
+    padding:12px;
+    background: whiteSmoke;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#f5f5f5),to(#f1f1f1));
+    background-image: -webkit-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background-image: -moz-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background-image: -ms-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background-image: -o-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background-image: linear-gradient(top,#f5f5f5,#f1f1f1);
+
+    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    -ms-box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    -o-box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+
+#input .controls {
+/*    display:none;*/
+    width: 98.5%;
+/*    padding-bottom: 7px;*/
+    margin-top: -4px;
+    padding-left: 11px;
+    margin-left: 0px;
+}
+
+
+.notes_save_btn {
+    float: right;
+    font-size: 14px;
+    padding: 7px 12px 7px;
+    height: auto;
+    margin:11px 7px 0px 0px;
+}
+
+.location_input {
+    float: left;
+    font-size: 11px;
+    color: #666;
+    margin: 9px 0px 0px 0px;
+}
+
+.location_input input[type="text"] {
+    width:50px;
+}
+
+.location_input select {
+    vertical-align:middle;
+    margin-top:-2px;
+    margin-right:8px;
+    width:70px;
+}
+
+.location_input .remove {
+    padding: 2px;
+    border: 1px solid transparent;
+    height: 8px;
+    width: 8px;
+    margin-top:-2px;
+    vertical-align: middle;
+    cursor:pointer;
+}
+
+.location_input .remove:hover {
+    border: 1px solid #DDD;
+    background: white;
+}
+
+.form input[type="text"] {
+    display:block;
+    width:180px;
+    padding:2px;
+    font-size:12px;
+}
+
+.form .form_spacer {
+    border-top:1px solid #ddd;
+    padding-bottom:2px;
+    margin-bottom: -2px;
+}

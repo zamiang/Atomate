@@ -21,7 +21,6 @@ from dbinterface import DBInterface
 
 _DEBUG = True
 
-
 class MainPage(webapp.RequestHandler):
     def get(self):
         #user = users.GetCurrentUser()
@@ -39,10 +38,10 @@ class MainPage(webapp.RequestHandler):
 
 application = webapp.WSGIApplication([
         ('/', MainPage),
-          ('/data', DBInterface),
-          ('/requestGoogleAuthToken', RequestGoogleAuthToken),
-          ('/requestTokenCallback', RequestTokenCallback),
-          ], debug=_DEBUG)
+        ('/data', DBInterface),
+        ('/requestGoogleAuthToken', RequestGoogleAuthToken),
+        ('/requestTokenCallback', RequestTokenCallback),
+        ], debug=_DEBUG)
 
 def main():
     run_wsgi_app(application)

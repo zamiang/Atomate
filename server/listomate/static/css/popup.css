@@ -1,0 +1,49 @@
+/*
+  popup
+  */
+.popup {
+    position:absolute;
+    top:120px;
+    background:#f3f3f3;
+    padding:20px;
+    border: 5px solid #BBCEE9;
+    left:36%;
+    display:none;
+}
+
+.popup .top_remove {
+    position:absolute;
+    right:20px;
+    top:20px;
+    cursor:pointer;
+}
+
+.popup .remove:hover {
+    opacity:0.6;
+}
+
+.popup #sort_tabs {
+    background:#fff;
+    border:1px solid #ddd;
+    list-style:none;
+    margin:0px;
+    margin-top:6px;
+    margin-bottom:6px;
+}
+
+.popup #sort_tabs li:last-child {
+    border-bottom:0px solid #ddd;
+}
+
+.popup #sort_tabs li {
+    padding:6px;
+    list-style:none;
+    margin:0px;
+    border-bottom:1px solid #ddd;
+    cursor:pointer;
+}
+
+.popup #sort_tabs li .remove {
+    float:right;
+    cursor:pointer;
+}
