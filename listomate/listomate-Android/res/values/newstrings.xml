@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="description_logo">Tasks</string>
-	<string name="description_add">Add Tasks</string>
+	<string name="description_logo">Notes</string>
+	<string name="description_add">Add Notes</string>
 
-	<string name="task_title">Task Title</string>
-	<string name="task_title_hint">Enter the task title</string>
+	<string name="task_title">Note Title</string>
+	<string name="task_title_hint">Enter the note title</string>
 	<string name="task_date">Task Date</string>
 	<string name="dateButton">...</string>
 	<string name="cancel">Cancel</string>
 	<string name="save">Save</string>
+
+	<string name="notes">Notes</string>
+	<string name="events">Events</string>
+	<string name="contacts">Contacts</string>
+
 	<string name="app_name_setup">Cloud Task Setup</string>
 </resources>

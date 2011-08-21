@@ -106,8 +106,9 @@ public final class R {
         public static final int disconnect=0x7f030003;
         public static final int hello_world=0x7f030004;
         public static final int listitem=0x7f030005;
-        public static final int tasklist=0x7f030006;
-        public static final int viewtask=0x7f030007;
+        public static final int listitemlayout=0x7f030006;
+        public static final int tasklist=0x7f030007;
+        public static final int viewtask=0x7f030008;
     }
     public static final class menu {
         public static final int main_menu=0x7f090000;
@@ -115,83 +116,86 @@ public final class R {
     public static final class string {
         /**  Menu item text [CHAR LIMIT=NONE] 
          */
-        public static final int accounts=0x7f070009;
+        public static final int accounts=0x7f07000c;
         /**  Dialog button [CHAR LIMIT=NONE] 
          */
-        public static final int add_account=0x7f07000a;
-        public static final int app_description=0x7f07000c;
-        public static final int app_name=0x7f07000b;
-        public static final int app_name_setup=0x7f070008;
+        public static final int add_account=0x7f07000d;
+        public static final int app_description=0x7f07000f;
+        public static final int app_name=0x7f07000e;
+        public static final int app_name_setup=0x7f07000b;
         /**  Dialog title text [CHAR LIMIT=NONE] 
          */
-        public static final int attention=0x7f07000d;
+        public static final int attention=0x7f070010;
         public static final int cancel=0x7f070006;
         /**  Button text [CHAR LIMIT=NONE] 
          */
-        public static final int connect=0x7f07000e;
+        public static final int connect=0x7f070011;
         /**  Message text for "Connect" screen [CHAR LIMIT=NONE] 
          */
-        public static final int connect_text=0x7f07000f;
+        public static final int connect_text=0x7f070012;
         /**  Header text for "Connect" screen [CHAR LIMIT=NONE] 
          */
-        public static final int connect_to_the_cloud=0x7f070010;
+        public static final int connect_to_the_cloud=0x7f070013;
         /**  Header text for "Connected" screen [CHAR LIMIT=NONE] 
          */
-        public static final int connected_to_the_cloud=0x7f070011;
+        public static final int connected_to_the_cloud=0x7f070014;
         /**  Message text [CHAR LIMIT=NONE] 
          */
-        public static final int contacting_server=0x7f070012;
+        public static final int contacting_server=0x7f070015;
+        public static final int contacts=0x7f07000a;
         public static final int dateButton=0x7f070005;
         public static final int description_add=0x7f070001;
         public static final int description_logo=0x7f070000;
         /**  Button text [CHAR LIMIT=NONE] 
          */
-        public static final int disconnect=0x7f070013;
+        public static final int disconnect=0x7f070016;
         /**  Informational text for "Connected" screen with placeholder for account 
 		name [CHAR LIMIT=NONE] 
          */
-        public static final int disconnect_text=0x7f070014;
+        public static final int disconnect_text=0x7f070017;
         /**  Footer text for "Connect" screen [CHAR LIMIT=NONE] 
          */
-        public static final int do_you_want_to_connect=0x7f070015;
+        public static final int do_you_want_to_connect=0x7f070018;
         /**  Do you want to disconnect textt [CHAR LIMIT=NONE] 
          */
-        public static final int do_you_want_to_disconnect=0x7f07001d;
-        public static final int exit=0x7f070020;
+        public static final int do_you_want_to_disconnect=0x7f070020;
+        public static final int events=0x7f070009;
+        public static final int exit=0x7f070023;
         /**  Button text [CHAR LIMIT=NONE] 
          */
-        public static final int exit_text=0x7f07001f;
+        public static final int exit_text=0x7f070022;
         /**  Initial "hello, world" informational message [CHAR LIMIT=NONE] 
          */
-        public static final int hello_world_info_text=0x7f070016;
+        public static final int hello_world_info_text=0x7f070019;
         /**  Initial "hello, world" response message [CHAR LIMIT=NONE] 
          */
-        public static final int hello_world_text=0x7f070017;
+        public static final int hello_world_text=0x7f07001a;
         /**  Dialog message text [CHAR LIMIT=NONE] 
          */
-        public static final int needs_account=0x7f070018;
+        public static final int needs_account=0x7f07001b;
+        public static final int notes=0x7f070008;
         /**  Notification message [CHAR LIMIT=NONE] 
          */
-        public static final int registration_error=0x7f070019;
+        public static final int registration_error=0x7f07001c;
         /**  Notification message [CHAR LIMIT=NONE] 
          */
-        public static final int registration_succeeded=0x7f07001a;
+        public static final int registration_succeeded=0x7f07001d;
         public static final int save=0x7f070007;
         /**  Button text [CHAR LIMIT=NONE] 
          */
-        public static final int say_hello=0x7f07001b;
+        public static final int say_hello=0x7f07001e;
         /**  List view header text [CHAR LIMIT=NONE] 
          */
-        public static final int select_account=0x7f07001c;
+        public static final int select_account=0x7f07001f;
         /**  Dialog button text [CHAR LIMIT=NONE] 
          */
-        public static final int skip=0x7f07001e;
+        public static final int skip=0x7f070021;
         public static final int task_date=0x7f070004;
         public static final int task_title=0x7f070002;
         public static final int task_title_hint=0x7f070003;
         /**  Notification message [CHAR LIMIT=NONE] 
          */
-        public static final int unregistration_succeeded=0x7f070021;
+        public static final int unregistration_succeeded=0x7f070024;
     }
     public static final class style {
         public static final int ListItem=0x7f08000e;

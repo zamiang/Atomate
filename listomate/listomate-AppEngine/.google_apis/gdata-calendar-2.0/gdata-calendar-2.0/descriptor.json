@@ -1,0 +1,18 @@
+{
+  "kind": "discovery#directoryItem",
+  "id": "gdata-calendar:2.0",
+  "name": "gdata-calendar",
+  "version": "2.0",
+  "title": "Calendar",
+  "publisher": "Google",
+  "description": "Google Calendar allows client applications to view and update calendar events in the form of Google Data API feeds. Your client application can use the Google Calendar Data API to create new events, edit or delete existing events, and query for events that match particular criteria.",
+  "downloadLink": "static/gdata-calendar-2.0.zip",
+  "icons": {
+    "x16": "icons/google_calendar_data_lb16.png"
+  },
+  "tosLink": "http://code.google.com/terms.html",
+  "releaseDate": "2009-11-05",
+  "documentationLink": "http://code.google.com/apis/calendar/data/2.0/developers_guide.html",
+  "releaseNotesLink": "http://code.google.com/apis/calendar/changelog.html",
+  "preferred": true
+}

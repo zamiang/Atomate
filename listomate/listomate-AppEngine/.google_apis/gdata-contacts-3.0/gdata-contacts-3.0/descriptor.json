@@ -1,0 +1,17 @@
+{
+  "kind": "discovery#directoryItem",
+  "id": "gdata-contacts:3.0",
+  "name": "gdata-contacts",
+  "version": "3.0",
+  "title": "Contacts",
+  "publisher": "Google",
+  "description": "The Contacts Data API allows client applications to view and update a user's contacts. Contacts are stored in the user's Google Account; most Google services have access to the contact list.",
+  "downloadLink": "static/gdata-contacts-3.0.zip",
+  "icons": {
+    "x16": "icons/gdata-contacts-16.png"
+  },
+  "tosLink": "http://code.google.com/terms.html",
+  "releaseDate": "2009-11-05",
+  "documentationLink": "http://code.google.com/apis/contacts/docs/3.0/developers_guide.html",
+  "preferred": true
+}
