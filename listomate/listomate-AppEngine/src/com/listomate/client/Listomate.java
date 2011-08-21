@@ -23,11 +23,7 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public class Listomate implements EntryPoint {
 
-  /**
-   * This is the entry point method.
-   */
   public void onModuleLoad() {
-    ListomateWidget widget = new ListomateWidget();
-    RootPanel.get().add(widget);
+    RootPanel.get().add(new ListomateWidget());
   }
 }

@@ -5,7 +5,7 @@ import java.util.Date;
 import com.google.web.bindery.requestfactory.shared.ProxyForName;
 import com.google.web.bindery.requestfactory.shared.ValueProxy;
 
-@ProxyForName(value = "com.cloudtasks.server.Task", locator = "com.cloudtasks.server.TaskLocator")
+@ProxyForName(value = "com.listomate.server.Task", locator = "com.listomate.server.TaskLocator")
 public interface TaskProxy extends ValueProxy {
 
 	Date getDueDate();

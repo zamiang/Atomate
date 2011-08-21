@@ -76,9 +76,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
      */
     @Override
     public void onMessage(Context context, Intent intent) {
-        /*
-         * Replace this with your application-specific code
-         */
-        MessageDisplay.displayMessage(context, intent);
+    	TaskApplication app = (TaskApplication) getApplication();
+    	app.notifyListener(intent);
     }
 }

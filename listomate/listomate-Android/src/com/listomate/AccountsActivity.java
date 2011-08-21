@@ -13,24 +13,25 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
 package com.listomate;
 
 import com.google.android.c2dm.C2DMessaging;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.params.ClientPNames;
+import org.apache.http.client.params.HttpClientParams;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-
-import android.content.SharedPreferences.Editor;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -44,9 +45,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -58,7 +61,6 @@ import android.widget.TextView;
  * Account selections activity - handles device registration and unregistration.
  */
 public class AccountsActivity extends Activity {
-
     /**
      * Tag for logging.
      */
@@ -100,6 +102,18 @@ public class AccountsActivity extends Activity {
             // Show the 'disconnect' screen if we are connected
             setScreenContent(R.layout.disconnect);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        SharedPreferences prefs = Util.getSharedPreferences(mContext);
+        String deviceRegistrationID = prefs.getString(Util.DEVICE_REGISTRATION_ID, null);
+        if (deviceRegistrationID == null) {
+            setScreenContent(R.layout.connect);
+        } else {
+            setScreenContent(R.layout.disconnect);
+        }
+        return true;
     }
 
     /**
@@ -152,14 +166,17 @@ public class AccountsActivity extends Activity {
             final Button connectButton = (Button) findViewById(R.id.connect);
             connectButton.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
-                    // Set "connecting" status
-                    SharedPreferences prefs = Util.getSharedPreferences(mContext);
-                    prefs.edit().putString(Util.CONNECTION_STATUS, Util.CONNECTING).commit();
-                    // Get account name
+                    // Register in the background and terminate the activity
                     mAccountSelectedPosition = listView.getCheckedItemPosition();
                     TextView account = (TextView) listView.getChildAt(mAccountSelectedPosition);
-                    // Register
                     register((String) account.getText());
+                    finish();
+                }
+            });
+
+            final Button exitButton = (Button) findViewById(R.id.exit);
+            exitButton.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
                     finish();
                 }
             });
@@ -171,7 +188,7 @@ public class AccountsActivity extends Activity {
      */
     private void setDisconnectScreenContent() {
         final SharedPreferences prefs = Util.getSharedPreferences(mContext);
-        String accountName = prefs.getString(Util.ACCOUNT_NAME, "Unknown");
+        String accountName = prefs.getString(Util.ACCOUNT_NAME, "error");
 
         // Format the disconnect message with the currently connected account
         // name
@@ -180,11 +197,24 @@ public class AccountsActivity extends Activity {
         String formatted = String.format(message, accountName);
         disconnectText.setText(formatted);
 
-        final Button disconnectButton = (Button) findViewById(R.id.disconnect);
+        Button disconnectButton = (Button) findViewById(R.id.disconnect);
         disconnectButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                // Unregister
+                // Delete the current account from shared preferences
+                Editor editor = prefs.edit();
+                editor.putString(Util.AUTH_COOKIE, null);
+                editor.putString(Util.DEVICE_REGISTRATION_ID, null);
+                editor.commit();
+
+                // Unregister in the background and terminate the activity
                 C2DMessaging.unregister(mContext);
+                finish();
+            }
+        });
+
+        Button exitButton = (Button) findViewById(R.id.exit);
+        exitButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
                 finish();
             }
         });
@@ -217,20 +247,18 @@ public class AccountsActivity extends Activity {
         final SharedPreferences prefs = Util.getSharedPreferences(mContext);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(Util.ACCOUNT_NAME, accountName);
-        editor.remove(Util.AUTH_COOKIE);
-        editor.remove(Util.DEVICE_REGISTRATION_ID);
+        editor.putString(Util.AUTH_COOKIE, null);
         editor.commit();
 
         // Obtain an auth token and register
-        final AccountManager mgr = AccountManager.get(mContext);
+        AccountManager mgr = AccountManager.get(mContext);
         Account[] accts = mgr.getAccountsByType("com.google");
         for (Account acct : accts) {
-            final Account account = acct;
-            if (account.name.equals(accountName)) {
+            if (acct.name.equals(accountName)) {
                 if (Util.isDebug(mContext)) {
                     // Use a fake cookie for the dev mode app engine server
                     // The cookie has the form email:isAdmin:userId
-                    // We set the userId to be the same as the email
+                    // We set the userId to be the same as the account name
                     String authCookie = "dev_appserver_login=" + accountName + ":false:"
                             + accountName;
                     prefs.edit().putString(Util.AUTH_COOKIE, authCookie).commit();
@@ -238,40 +266,31 @@ public class AccountsActivity extends Activity {
                 } else {
                     // Get the auth token from the AccountManager and convert
                     // it into a cookie for the appengine server
-                    final Activity activity = this;
-                    mgr.getAuthToken(account, "ah", null, activity, new AccountManagerCallback<Bundle>() {
+                    mgr.getAuthToken(acct, "ah", null, this, new AccountManagerCallback<Bundle>() {
                         public void run(AccountManagerFuture<Bundle> future) {
-                            String authToken = getAuthToken(future);
-                            // Ensure the token is not expired by invalidating it and
-                            // obtaining a new one
-                            mgr.invalidateAuthToken(account.type, authToken);
-                            mgr.getAuthToken(account, "ah", null, activity, new AccountManagerCallback<Bundle>() {
-                                public void run(AccountManagerFuture<Bundle> future) {
-                                    String authToken = getAuthToken(future);
-                                    // Convert the token into a cookie for future use
-                                    String authCookie = getAuthCookie(authToken);
-                                    Editor editor = prefs.edit();
-                                    editor.putString(Util.AUTH_COOKIE, authCookie);
-                                    editor.commit();
-                                    C2DMessaging.register(mContext, Setup.SENDER_ID);
-                                }
-                            }, null);
+                            try {
+                                Bundle authTokenBundle = future.getResult();
+                                String authToken = authTokenBundle
+                                        .get(AccountManager.KEY_AUTHTOKEN).toString();
+                                String authCookie = getAuthCookie(authToken);
+                                prefs.edit().putString(Util.AUTH_COOKIE, authCookie).commit();
+
+                                C2DMessaging.register(mContext, Setup.SENDER_ID);
+                            } catch (AuthenticatorException e) {
+                                Log.w(TAG, "Got AuthenticatorException " + e);
+                                Log.w(TAG, Log.getStackTraceString(e));
+                            } catch (IOException e) {
+                                Log.w(TAG, "Got IOException " + Log.getStackTraceString(e));
+                                Log.w(TAG, Log.getStackTraceString(e));
+                            } catch (OperationCanceledException e) {
+                                Log.w(TAG, "Got OperationCanceledException " + e);
+                                Log.w(TAG, Log.getStackTraceString(e));
+                            }
                         }
                     }, null);
                 }
                 break;
             }
-        }
-    }
-
-    private String getAuthToken(AccountManagerFuture<Bundle> future) {
-        try {
-            Bundle authTokenBundle = future.getResult();
-            String authToken = authTokenBundle.get(AccountManager.KEY_AUTHTOKEN).toString();
-            return authToken;
-        } catch (Exception e) {
-            Log.w(TAG, "Got Exception " + e);
-            return null;
         }
     }
 
@@ -283,22 +302,24 @@ public class AccountsActivity extends Activity {
      * backend (as opposed to a dev mode server).
      */
     private String getAuthCookie(String authToken) {
-        DefaultHttpClient httpClient = new DefaultHttpClient();
         try {
             // Get SACSID cookie
-            httpClient.getParams().setBooleanParameter(ClientPNames.HANDLE_REDIRECTS, false);
-            String uri = Setup.PROD_URL + "/_ah/login?continue=http://localhost/&auth=" + authToken;
+            DefaultHttpClient client = new DefaultHttpClient();
+            String continueURL = Setup.PROD_URL;
+            URI uri = new URI(Setup.PROD_URL + "/_ah/login?continue="
+                    + URLEncoder.encode(continueURL, "UTF-8") + "&auth=" + authToken);
             HttpGet method = new HttpGet(uri);
+            final HttpParams getParams = new BasicHttpParams();
+            HttpClientParams.setRedirecting(getParams, false);
+            method.setParams(getParams);
 
-            HttpResponse res = httpClient.execute(method);
-            StatusLine statusLine = res.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
+            HttpResponse res = client.execute(method);
             Header[] headers = res.getHeaders("Set-Cookie");
-            if (statusCode != 302 || headers.length == 0) {
+            if (res.getStatusLine().getStatusCode() != 302 || headers.length == 0) {
                 return null;
             }
 
-            for (Cookie cookie : httpClient.getCookieStore().getCookies()) {
+            for (Cookie cookie : client.getCookieStore().getCookies()) {
                 if (AUTH_COOKIE_NAME.equals(cookie.getName())) {
                     return AUTH_COOKIE_NAME + "=" + cookie.getValue();
                 }
@@ -306,8 +327,9 @@ public class AccountsActivity extends Activity {
         } catch (IOException e) {
             Log.w(TAG, "Got IOException " + e);
             Log.w(TAG, Log.getStackTraceString(e));
-        } finally {
-            httpClient.getParams().setBooleanParameter(ClientPNames.HANDLE_REDIRECTS, true);
+        } catch (URISyntaxException e) {
+            Log.w(TAG, "Got URISyntaxException " + e);
+            Log.w(TAG, Log.getStackTraceString(e));
         }
 
         return null;

@@ -25,7 +25,7 @@ public class Setup {
      * The AppEngine app name, used to construct the production service URL
      * below.
      */
-    private static final String APP_NAME = "listomate";
+    private static final String APP_NAME = "listomatec2dm";
 
     /**
      * The URL of the production service.

@@ -19,13 +19,20 @@ import com.google.web.bindery.requestfactory.shared.ProxyForName;
 import com.google.web.bindery.requestfactory.shared.ValueProxy;
 
 /**
- * A proxy object containing device registration information:
- * email account name, device id, and device registration id.
+ * A proxy object containing device registration information: email account
+ * name, device id, and device registration id.
  */
 @ProxyForName("com.listomate.server.RegistrationInfo")
 public interface RegistrationInfoProxy extends ValueProxy {
-  String getDeviceId();
-  String getDeviceRegistrationId();
-  void setDeviceId(String deviceId);
-  void setDeviceRegistrationId(String deviceRegistrationId);
+	String getAccountName();
+
+	String getDeviceId();
+
+	String getDeviceRegistrationId();
+
+	void setAccountName(String accountName);
+
+	void setDeviceId(String deviceId);
+
+	void setDeviceRegistrationId(String deviceRegistrationId);
 }

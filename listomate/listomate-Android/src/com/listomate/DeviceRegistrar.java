@@ -34,9 +34,8 @@ import android.util.Log;
  * RequestFactory.
  */
 public class DeviceRegistrar {
-    public static final String ACCOUNT_NAME_EXTRA = "AccountName";
-
     public static final String STATUS_EXTRA = "Status";
+    public static String ACCOUNT_NAME_EXTRA = "Account Name Extra";
 
     public static final int REGISTERED_STATUS = 1;
 
@@ -48,13 +47,15 @@ public class DeviceRegistrar {
 
     public static void registerOrUnregister(final Context context,
             final String deviceRegistrationId, final boolean register) {
-        final SharedPreferences settings = Util.getSharedPreferences(context);
-        final String accountName = settings.getString(Util.ACCOUNT_NAME, "Unknown");
         final Intent updateUIIntent = new Intent(Util.UPDATE_UI_INTENT);
+
+        SharedPreferences prefs = Util.getSharedPreferences(context);
+        String accountName = prefs.getString(Util.ACCOUNT_NAME, null);
 
         RegistrationInfoRequest request = getRequest(context);
         RegistrationInfoProxy proxy = request.create(RegistrationInfoProxy.class);
         proxy.setDeviceRegistrationId(deviceRegistrationId);
+        proxy.setAccountName(accountName);
 
         String deviceId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
         proxy.setDeviceId(deviceId);
@@ -67,21 +68,9 @@ public class DeviceRegistrar {
         }
 
         req.fire(new Receiver<Void>() {
-            private void clearPreferences(SharedPreferences.Editor editor) {
-                editor.remove(Util.ACCOUNT_NAME);
-                editor.remove(Util.AUTH_COOKIE);
-                editor.remove(Util.DEVICE_REGISTRATION_ID);
-            }
-
             @Override
             public void onFailure(ServerFailure failure) {
                 Log.w(TAG, "Failure, got :" + failure.getMessage());
-                // Clean up application state
-                SharedPreferences.Editor editor = settings.edit();
-                clearPreferences(editor);
-                editor.commit();
-
-                updateUIIntent.putExtra(ACCOUNT_NAME_EXTRA, accountName);
                 updateUIIntent.putExtra(STATUS_EXTRA, ERROR_STATUS);
                 context.sendBroadcast(updateUIIntent);
             }
@@ -93,10 +82,9 @@ public class DeviceRegistrar {
                 if (register) {
                     editor.putString(Util.DEVICE_REGISTRATION_ID, deviceRegistrationId);
                 } else {
-                    clearPreferences(editor);
+                    editor.remove(Util.DEVICE_REGISTRATION_ID);
                 }
                 editor.commit();
-                updateUIIntent.putExtra(ACCOUNT_NAME_EXTRA, accountName);
                 updateUIIntent.putExtra(STATUS_EXTRA, register ? REGISTERED_STATUS
                         : UNREGISTERED_STATUS);
                 context.sendBroadcast(updateUIIntent);

@@ -43,6 +43,13 @@ import android.util.Log;
  * retrieving shared preferences.
  */
 public class Util {
+	/** 
+	 * WTF not sure why i need this 
+	 */
+    public static final String DISCONNECTED = "disconnected";
+    public static final String CONNECTION_STATUS = "disconnected";
+    public static final String CONNECTED = "disconnected";
+    public static final String ACCOUNT_NAME_EXTRA = "disconnected";
 
     /**
      * Tag for logging.
@@ -60,26 +67,6 @@ public class Util {
      * Key for auth cookie name in shared preferences.
      */
     public static final String AUTH_COOKIE = "authCookie";
-
-    /**
-     * Key for connection status in shared preferences.
-     */
-    public static final String CONNECTION_STATUS = "connectionStatus";
-
-    /**
-     * Value for {@link #CONNECTION_STATUS} key.
-     */
-    public static final String CONNECTED = "connected";
-
-    /**
-     * Value for {@link #CONNECTION_STATUS} key.
-     */
-    public static final String CONNECTING = "connecting";
-
-    /**
-     * Value for {@link #CONNECTION_STATUS} key.
-     */
-    public static final String DISCONNECTED = "disconnected";
 
     /**
      * Key for device registration id in shared preferences.

@@ -73,35 +73,31 @@ public final class R {
     public static final class id {
         public static final int cancelButton=0x7f0a0007;
         public static final int connect=0x7f0a000f;
-        public static final int connect_footer=0x7f0a000e;
         public static final int connect_text=0x7f0a000a;
         public static final int datePicker=0x7f0a0004;
-        public static final int dateText=0x7f0a001e;
+        public static final int dateText=0x7f0a001a;
         public static final int detailsText=0x7f0a0005;
         public static final int disconnect=0x7f0a0012;
-        public static final int disconnect_footer=0x7f0a0011;
-        public static final int disconnect_text=0x7f0a0010;
+        public static final int disconnect_text=0x7f0a0011;
         public static final int divider=0x7f0a000c;
+        public static final int exit=0x7f0a0010;
+        public static final int footer=0x7f0a000e;
         public static final int header=0x7f0a0009;
         public static final int hello_world=0x7f0a0015;
         public static final int hello_world_info=0x7f0a0013;
-        public static final int home_button=0x7f0a0019;
         public static final int imageView1=0x7f0a0000;
         public static final int linearLayout1=0x7f0a0006;
         public static final int linearLayout2=0x7f0a0001;
-        public static final int list=0x7f0a001d;
-        public static final int note=0x7f0a0018;
+        public static final int list=0x7f0a0019;
         public static final int saveButton=0x7f0a0008;
         public static final int say_hello=0x7f0a0014;
         public static final int select_account=0x7f0a000d;
         public static final int select_text=0x7f0a000b;
-        public static final int subtitle=0x7f0a001b;
-        public static final int sync_indicator=0x7f0a001a;
         public static final int taskDate=0x7f0a0017;
         public static final int taskTitle=0x7f0a0016;
         public static final int textView1=0x7f0a0002;
         public static final int titleText=0x7f0a0003;
-        public static final int title_refresh_progress=0x7f0a001c;
+        public static final int title_refresh_progress=0x7f0a0018;
     }
     public static final class layout {
         public static final int account=0x7f030000;
@@ -110,13 +106,8 @@ public final class R {
         public static final int disconnect=0x7f030003;
         public static final int hello_world=0x7f030004;
         public static final int listitem=0x7f030005;
-        public static final int main=0x7f030006;
-        public static final int note_editor=0x7f030007;
-        public static final int notes_list=0x7f030008;
-        public static final int notes_list_item=0x7f030009;
-        public static final int notes_list_title=0x7f03000a;
-        public static final int tasklist=0x7f03000b;
-        public static final int viewtask=0x7f03000c;
+        public static final int tasklist=0x7f030006;
+        public static final int viewtask=0x7f030007;
     }
     public static final class menu {
         public static final int main_menu=0x7f090000;
@@ -163,31 +154,35 @@ public final class R {
         /**  Footer text for "Connect" screen [CHAR LIMIT=NONE] 
          */
         public static final int do_you_want_to_connect=0x7f070015;
-        /**  Footer text for "Disconnect" screen [CHAR LIMIT=NONE] 
+        /**  Do you want to disconnect textt [CHAR LIMIT=NONE] 
          */
-        public static final int do_you_want_to_disconnect=0x7f070016;
+        public static final int do_you_want_to_disconnect=0x7f07001d;
+        public static final int exit=0x7f070020;
+        /**  Button text [CHAR LIMIT=NONE] 
+         */
+        public static final int exit_text=0x7f07001f;
         /**  Initial "hello, world" informational message [CHAR LIMIT=NONE] 
          */
-        public static final int hello_world_info_text=0x7f070017;
+        public static final int hello_world_info_text=0x7f070016;
         /**  Initial "hello, world" response message [CHAR LIMIT=NONE] 
          */
-        public static final int hello_world_text=0x7f070018;
+        public static final int hello_world_text=0x7f070017;
         /**  Dialog message text [CHAR LIMIT=NONE] 
          */
-        public static final int needs_account=0x7f070019;
+        public static final int needs_account=0x7f070018;
         /**  Notification message [CHAR LIMIT=NONE] 
          */
-        public static final int registration_error=0x7f07001a;
+        public static final int registration_error=0x7f070019;
         /**  Notification message [CHAR LIMIT=NONE] 
          */
-        public static final int registration_succeeded=0x7f07001b;
+        public static final int registration_succeeded=0x7f07001a;
         public static final int save=0x7f070007;
         /**  Button text [CHAR LIMIT=NONE] 
          */
-        public static final int say_hello=0x7f07001c;
+        public static final int say_hello=0x7f07001b;
         /**  List view header text [CHAR LIMIT=NONE] 
          */
-        public static final int select_account=0x7f07001d;
+        public static final int select_account=0x7f07001c;
         /**  Dialog button text [CHAR LIMIT=NONE] 
          */
         public static final int skip=0x7f07001e;
@@ -196,7 +191,7 @@ public final class R {
         public static final int task_title_hint=0x7f070003;
         /**  Notification message [CHAR LIMIT=NONE] 
          */
-        public static final int unregistration_succeeded=0x7f07001f;
+        public static final int unregistration_succeeded=0x7f070021;
     }
     public static final class style {
         public static final int ListItem=0x7f08000e;

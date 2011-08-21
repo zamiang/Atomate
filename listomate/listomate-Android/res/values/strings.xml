@@ -37,13 +37,11 @@
 	<!-- Informational text for "Connected" screen with placeholder for account 
 		name [CHAR LIMIT=NONE] -->
 	<string name="disconnect_text">This device is currently connected to the cloud as
-		%1$s.</string>
+		%1$s. To disconnect, press the button below.</string>
 
 	<!-- Footer text for "Connect" screen [CHAR LIMIT=NONE] -->
 	<string name="do_you_want_to_connect">Do you want to connect?</string>
 
-	<!-- Footer text for "Disconnect" screen [CHAR LIMIT=NONE] -->
-	<string name="do_you_want_to_disconnect">Do you want to disconnect?</string>
 
 	<!-- Initial "hello, world" informational message [CHAR LIMIT=NONE] -->
 	<string name="hello_world_info_text">Press the \"Say Hello\" button to receive a message
@@ -51,7 +49,7 @@
 	</string>
 
 	<!-- Initial "hello, world" response message [CHAR LIMIT=NONE] -->
-	<string name="hello_world_text"></string>
+	<string name="hello_world_text">Hello World</string>
 
 	<!-- Dialog message text [CHAR LIMIT=NONE] -->
 	<string name="needs_account">To receive notifications from this app, you must
@@ -70,9 +68,17 @@
 	<!-- List view header text [CHAR LIMIT=NONE] -->
 	<string name="select_account">Select the account you wish to authorize:</string>
 
+	<!-- Do you want to disconnect textt [CHAR LIMIT=NONE] -->
+	<string name="do_you_want_to_disconnect">Do you want to disconnect?</string>
+
 	<!-- Dialog button text [CHAR LIMIT=NONE] -->
 	<string name="skip">Skip</string>
 
+	<!-- Button text [CHAR LIMIT=NONE] -->
+	<string name="exit_text">Close</string>
+	<string name="exit">Close</string>
+
 	<!-- Notification message [CHAR LIMIT=NONE] -->
 	<string name="unregistration_succeeded">Unegistered %1$s for C2DM messaging.</string>
+
 </resources>

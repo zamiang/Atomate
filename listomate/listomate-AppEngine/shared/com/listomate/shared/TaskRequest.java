@@ -6,7 +6,7 @@ import com.google.web.bindery.requestfactory.shared.Request;
 import com.google.web.bindery.requestfactory.shared.RequestContext;
 import com.google.web.bindery.requestfactory.shared.ServiceName;
 
-@ServiceName("com.cloudtasks.server.CloudTasksService")
+@ServiceName("com.listomate.server.CloudTasksService")
 public interface TaskRequest extends RequestContext {
 
 	Request<TaskProxy> createTask();

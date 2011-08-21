@@ -8,8 +8,7 @@
 			android:src="@drawable/app_icon" android:layout_gravity="center" />
 		<TextView android:textAppearance="?android:attr/textAppearanceMediumInverse"
 			android:layout_height="wrap_content" android:layout_width="wrap_content"
-			android:layout_gravity="center_vertical"
-			android:text="@string/app_name" />
+			android:layout_gravity="center_vertical" android:text="@string/app_name" />
 
 		<View style="@style/TitleBarSpring" />
 		<ImageView style="@style/TitleBarSeparator" />
@@ -22,11 +21,16 @@
 		<LinearLayout android:id="@+id/linearLayout1"
 			android:layout_width="match_parent" android:layout_height="match_parent"
 			android:orientation="vertical">
-			<TextView android:textAppearance="?android:attr/textAppearanceSmall" android:text="##/##/##" android:id="@+id/dateText" android:layout_gravity="right" android:layout_height="wrap_content" android:layout_width="wrap_content"></TextView>
+			<TextView android:textAppearance="?android:attr/textAppearanceSmall"
+				android:text="##/##/##" android:id="@+id/dateText"
+				android:layout_gravity="right" android:layout_height="wrap_content"
+				android:layout_width="wrap_content"></TextView>
 			<TextView android:text="Task Title" android:textAppearance="?android:attr/textAppearanceLarge"
-				android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/titleText"></TextView>
+				android:layout_height="wrap_content" android:layout_width="match_parent"
+				android:id="@+id/titleText"></TextView>
 			<TextView android:text="Task Detail" android:textAppearance="?android:attr/textAppearanceMedium"
-				android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textMultiLine" android:id="@+id/detailsText"></TextView>
+				android:layout_width="match_parent" android:layout_height="wrap_content"
+				android:inputType="textMultiLine" android:id="@+id/detailsText"></TextView>
 		</LinearLayout>
 	</ScrollView>
 </LinearLayout>
