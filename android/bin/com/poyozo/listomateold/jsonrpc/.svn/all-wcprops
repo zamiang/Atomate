@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/1/trunk/JumpNoteAndroid/src/com/example/jumpnote/android/jsonrpc
+END
+JsonRpcJavaClient.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/!svn/ver/1/trunk/JumpNoteAndroid/src/com/example/jumpnote/android/jsonrpc/JsonRpcJavaClient.java
+END
+AuthenticatedJsonRpcJavaClient.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/!svn/ver/1/trunk/JumpNoteAndroid/src/com/example/jumpnote/android/jsonrpc/AuthenticatedJsonRpcJavaClient.java
+END

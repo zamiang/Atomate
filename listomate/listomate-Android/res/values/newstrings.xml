@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="description_logo">Tasks</string>
+    <string name="description_add">Add Tasks</string>
+
+    <string name="task_title">Task Title</string>
+    <string name="task_title_hint">Enter the task title</string>
+    <string name="task_date">Task Date</string>
+    <string name="dateButton">...</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="app_name_setup">Cloud Task Setup</string>
+</resources>

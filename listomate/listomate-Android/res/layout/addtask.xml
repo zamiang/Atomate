@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<LinearLayout style="@style/TitleBar">
+		<ImageView android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:id="@+id/imageView1"
+			android:src="@drawable/app_icon" android:layout_gravity="center" />
+		<TextView android:textAppearance="?android:attr/textAppearanceMediumInverse"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"
+			android:layout_gravity="center_vertical"
+			android:text="@string/app_name" />
+
+		<View style="@style/TitleBarSpring" />
+	</LinearLayout>
+	<LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/linearLayout2">
+		<TextView android:id="@+id/textView1" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="@string/task_title" android:layout_height="wrap_content"></TextView>
+		<EditText android:layout_width="wrap_content" android:layout_weight="1" android:hint="@string/task_title_hint" android:id="@+id/titleText" android:layout_height="wrap_content"></EditText>
+	</LinearLayout>
+	<DatePicker android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_gravity="center_horizontal" android:id="@+id/datePicker"></DatePicker>
+	<EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textMultiLine"
+		android:layout_weight="1" android:hint="Task details" android:gravity="top"
+		android:layout_marginLeft="@dimen/padding"
+		android:layout_marginRight="@dimen/padding" android:id="@+id/detailsText"/>
+	<LinearLayout android:layout_width="match_parent"
+		android:id="@+id/linearLayout1" android:layout_height="wrap_content">
+		<Button android:layout_width="wrap_content"
+			android:layout_weight="1" android:id="@+id/cancelButton"
+			android:layout_height="wrap_content" android:text="@string/cancel"
+			android:onClick="onCancel"/>
+		<Button android:layout_width="wrap_content"
+			android:layout_weight="1" android:id="@+id/saveButton"
+			android:layout_height="wrap_content" android:text="@string/save"
+			android:onClick="onSave"/>
+	</LinearLayout>
+
+
+
+</LinearLayout>
