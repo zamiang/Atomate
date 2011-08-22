@@ -15,6 +15,7 @@
 	<inherits name='com.google.web.bindery.requestfactory.RequestFactory' />
 
 	<!-- Specify the app entry point class. -->
+	<entry-point class='com.listomate.client.Listomate' />
 
 	<!-- Specify the paths for translatable code -->
 	<source path='client' />

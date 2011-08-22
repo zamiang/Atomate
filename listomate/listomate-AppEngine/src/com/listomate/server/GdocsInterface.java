@@ -1,7 +1,6 @@
 package com.listomate.server;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.servlet.http.HttpServletResponse;

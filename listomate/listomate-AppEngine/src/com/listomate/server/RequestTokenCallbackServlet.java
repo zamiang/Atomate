@@ -11,7 +11,6 @@ import com.google.gdata.client.authn.oauth.GoogleOAuthHelper;
 import com.google.gdata.client.authn.oauth.GoogleOAuthParameters;
 import com.google.gdata.client.authn.oauth.OAuthException;
 import com.google.gdata.client.authn.oauth.OAuthHmacSha1Signer;
-import com.google.gdata.util.ServiceException;
 
 public class RequestTokenCallbackServlet extends HttpServlet {
 	private static final long serialVersionUID = -8714671533268130001L;
@@ -54,7 +53,8 @@ public class RequestTokenCallbackServlet extends HttpServlet {
 			// we'll just reuse this servlet for making API calls.
 			oauthParameters = new GoogleOAuthParameters();
 			oauthParameters.setOAuthConsumerKey(GdataInterface.CONSUMER_KEY);
-			oauthParameters.setOAuthConsumerSecret(GdataInterface.CONSUMER_SECRET);
+			oauthParameters
+					.setOAuthConsumerSecret(GdataInterface.CONSUMER_SECRET);
 
 			// This is interesting: we set the OAuth token and the token secret
 			// to the values extracted by oauthHelper earlier. These values are
@@ -68,16 +68,14 @@ public class RequestTokenCallbackServlet extends HttpServlet {
 			 * This is where the calls to update google
 			 * contacts/calendar/documents come in
 			 */
-			GdocsInterface.update(oauthParameters, resp);
-			GcalInterface.update(oauthParameters, resp);
-			GcontactsInterface.update(oauthParameters, resp);
+			//GdocsInterface.update(oauthParameters, resp);
+			//GcalInterface.update(oauthParameters, resp);
+			//GcontactsInterface.update(oauthParameters, resp);
 
 		} catch (OAuthException e) {
 			// Something went wrong. Usually, you'll end up here if we have
 			// invalid
 			// oauth tokens
-		} catch (ServiceException e) {
-			// Handle this exception
 		}
 	}
 }

@@ -8,4 +8,14 @@
 		<property name="com.google.gdata.DisableCookieHandler" value="true" />
 	</system-properties>
 	<sessions-enabled>true</sessions-enabled>
+	<static-files>
+		<include path="/favicon.ico" />
+		<include path="/robots.txt" />
+		<include path="/**.png" />
+		<include path="/**.jpg" />
+		<include path="/**.html" />
+		<include path="/**.css" />
+		<include path="/**.js" />
+		<include path="/**.gif" />
+	</static-files>
 </appengine-web-app>
