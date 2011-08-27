@@ -6,46 +6,51 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 public class AddTaskActivity extends Activity {
 
-    private TextView titleTextView;
-    private DatePicker datePicker;
-    private TextView detailsTextView;
+	private DatePicker datePicker;
+	private TimePicker timePicker;
+	private TextView detailsTextView;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.addtask);
+		setContentView(R.layout.addnote);
 
-        titleTextView = (TextView) findViewById(R.id.titleText);
-        datePicker = (DatePicker) findViewById(R.id.datePicker);
-        detailsTextView = (TextView) findViewById(R.id.detailsText);
-    }
+		datePicker = (DatePicker) findViewById(R.id.datePicker);
+		timePicker = (TimePicker) findViewById(R.id.timePicker);
 
-    public void onSave(View view) {
-        String taskName = titleTextView.getText().toString();
-        if (taskName.length() > 0) {
-            Intent t = new Intent();
-            t.putExtra("task", taskName);
-            t.putExtra("details", detailsTextView.getText().toString());
+		detailsTextView = (TextView) findViewById(R.id.detailsText);
+	}
 
-            t.putExtra("day", datePicker.getDayOfMonth());
-            t.putExtra("month", datePicker.getMonth());
-            t.putExtra("year", datePicker.getYear());
+	public void onSave(View view) {
+		String taskName = detailsTextView.getText().toString();
+		if (taskName.length() > 0) {
+			Intent t = new Intent();
+			t.putExtra("task", taskName);
+			t.putExtra("text", detailsTextView.getText().toString());
 
-            setResult(Activity.RESULT_OK, t);
-        } else {
-            setResult(Activity.RESULT_CANCELED);
-        }
+			t.putExtra("day", datePicker.getDayOfMonth());
+			t.putExtra("month", datePicker.getMonth());
+			t.putExtra("year", datePicker.getYear());
 
-        finish();
-    }
+			t.putExtra("hour", timePicker.getCurrentHour());
+			t.putExtra("minute", timePicker.getCurrentMinute());
 
-    public void onCancel(View view) {
-        setResult(Activity.RESULT_CANCELED);
+			setResult(Activity.RESULT_OK, t);
+		} else {
+			setResult(Activity.RESULT_CANCELED);
+		}
 
-        finish();
-    }
+		finish();
+	}
+
+	public void onCancel(View view) {
+		setResult(Activity.RESULT_CANCELED);
+
+		finish();
+	}
 }

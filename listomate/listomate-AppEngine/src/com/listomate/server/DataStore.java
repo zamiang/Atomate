@@ -31,7 +31,8 @@ public class DataStore {
 	/**
 	 * Find a {@link Task} by id.
 	 * 
-	 * @param id the {@link Task} id
+	 * @param id
+	 *            the {@link Task} id
 	 * @return the associated {@link Task}, or null if not found
 	 */
 	@SuppressWarnings("unchecked")

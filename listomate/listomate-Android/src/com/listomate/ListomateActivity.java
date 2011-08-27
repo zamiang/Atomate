@@ -15,11 +15,9 @@
  */
 package com.listomate;
 
-import com.google.web.bindery.requestfactory.shared.Receiver;
-import com.google.web.bindery.requestfactory.shared.ServerFailure;
-
-import com.listomate.client.MyRequestFactory;
-import com.listomate.client.MyRequestFactory.HelloWorldRequest;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -33,152 +31,220 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+
+import com.listomate.TaskApplication.TaskListener;
+import com.listomate.shared.CloudTasksRequestFactory;
+import com.listomate.shared.TaskChange;
+import com.listomate.shared.TaskProxy;
+import com.listomate.shared.TaskRequest;
 
 /**
  * Main activity - requests "Hello, World" messages from the server and provides
  * a menu item to invoke the accounts activity.
  */
-public class ListomateActivity extends Activity {
-    /**
-     * Tag for logging.
-     */
-    private static final String TAG = "ListomateActivity";
+public class ListomateActivity extends Activity implements OnItemClickListener {
+	/**
+	 * Tag for logging.
+	 */
+	private static final String TAG = "ListomateActivity";
 
-    /**
-     * The current context.
-     */
-    private Context mContext = this;
+	/**
+	 * The current context.
+	 */
+	private Context mContext = this;
 
-    /**
-     * A {@link BroadcastReceiver} to receive the response from a register or
-     * unregister request, and to update the UI.
-     */
-    private final BroadcastReceiver mUpdateUIReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String accountName = intent.getStringExtra(DeviceRegistrar.ACCOUNT_NAME_EXTRA);
-            int status = intent.getIntExtra(DeviceRegistrar.STATUS_EXTRA,
-                    DeviceRegistrar.ERROR_STATUS);
-            String message = null;
-            String connectionStatus = Util.DISCONNECTED;
-            if (status == DeviceRegistrar.REGISTERED_STATUS) {
-                message = getResources().getString(R.string.registration_succeeded);
-                connectionStatus = Util.CONNECTED;
-            } else if (status == DeviceRegistrar.UNREGISTERED_STATUS) {
-                message = getResources().getString(R.string.unregistration_succeeded);
-            } else {
-                message = getResources().getString(R.string.registration_error);
-            }
+	/**
+	 * A {@link BroadcastReceiver} to receive the response from a register or
+	 * unregister request, and to update the UI.
+	 */
+	private final BroadcastReceiver mUpdateUIReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			int status = intent.getIntExtra(DeviceRegistrar.STATUS_EXTRA,
+					DeviceRegistrar.ERROR_STATUS);
+			String message = null;
+			if (status == DeviceRegistrar.REGISTERED_STATUS) {
+				message = getResources().getString(
+						R.string.registration_succeeded);
+			} else if (status == DeviceRegistrar.UNREGISTERED_STATUS) {
+				message = getResources().getString(
+						R.string.unregistration_succeeded);
+			} else {
+				message = getResources().getString(R.string.registration_error);
+			}
 
-            // Set connection status
-            SharedPreferences prefs = Util.getSharedPreferences(mContext);
-            prefs.edit().putString(Util.CONNECTION_STATUS, connectionStatus).commit();
+			// Display a notification
+			SharedPreferences prefs = Util.getSharedPreferences(mContext);
+			String accountName = prefs.getString(Util.ACCOUNT_NAME, "Unknown");
+			Util.generateNotification(mContext,
+					String.format(message, accountName));
+		}
+	};
 
-            // Display a notification
-            Util.generateNotification(mContext, String.format(message, accountName));
-        }
-    };
+	private final static int NEW_TASK_REQUEST = 1;
+	private ListView listView;
+	private View progressBar;
+	private TaskAdapter adapter;
+	private AsyncFetchTask task;
 
-    /**
-     * Begins the activity.
-     */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "onCreate");
-        super.onCreate(savedInstanceState);
+	/**
+	 * Begins the activity.
+	 */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		Log.i(TAG, "onCreate");
+		super.onCreate(savedInstanceState);
 
-        // Register a receiver to provide register/unregister notifications
-        registerReceiver(mUpdateUIReceiver, new IntentFilter(Util.UPDATE_UI_INTENT));
-    }
+		setContentView(R.layout.tasklist);
 
-    @Override
-    public void onResume() {
-        super.onResume();
+		listView = (ListView) findViewById(R.id.list);
+		progressBar = findViewById(R.id.title_refresh_progress);
 
-        SharedPreferences prefs = Util.getSharedPreferences(mContext);
-        String connectionStatus = prefs.getString(Util.CONNECTION_STATUS, Util.DISCONNECTED);
-        if (Util.DISCONNECTED.equals(connectionStatus)) {
-            startActivity(new Intent(this, AccountsActivity.class));
-        }
-        setScreenContent(R.layout.hello_world);
-    }
+		// get the task application to store the adapter which will act as the
+		// task storage
+		// for this demo.
+		TaskApplication taskApplication = (TaskApplication) getApplication();
+		adapter = taskApplication.getAdapter(this);
+		listView.setAdapter(adapter);
 
-    /**
-     * Shuts down the activity.
-     */
-    @Override
-    public void onDestroy() {
-        unregisterReceiver(mUpdateUIReceiver);
-        super.onDestroy();
-    }
+		listView.setOnItemClickListener(this);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        // Invoke the Register activity
-        menu.getItem(0).setIntent(new Intent(this, AccountsActivity.class));
-        return true;
-    }
+		// Register a receiver to provide register/unregister notifications
+		registerReceiver(mUpdateUIReceiver, new IntentFilter(
+				Util.UPDATE_UI_INTENT));
+	}
 
-    // Manage UI Screens
+	/**
+	 * Shuts down the activity.
+	 */
+	@Override
+	public void onDestroy() {
+		unregisterReceiver(mUpdateUIReceiver);
+		super.onDestroy();
+	}
 
-    private void setHelloWorldScreenContent() {
-        setContentView(R.layout.hello_world);
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_menu, menu);
+		// Invoke the Register activity
+		// THIS IS SO TERRIBLE -- why do these need to be accessed via an array
+		menu.getItem(0).setIntent(new Intent(this, AccountsActivity.class));
+		menu.getItem(1).setIntent(new Intent(this, AddTaskActivity.class));
+		menu.getItem(2).setIntent(new Intent(this, Preferences.class));
+		return true;
+	}
 
-        final TextView helloWorld = (TextView) findViewById(R.id.hello_world);
-        final Button sayHelloButton = (Button) findViewById(R.id.say_hello);
-        sayHelloButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                sayHelloButton.setEnabled(false);
-                helloWorld.setText(R.string.contacting_server);
+	@Override
+	protected void onStart() {
+		super.onStart();
 
-                // Use an AsyncTask to avoid blocking the UI thread
-                new AsyncTask<Void, Void, String>() {
-                    private String message;
+		// only fetch task on start if the registration has happened.
+		SharedPreferences prefs = Util.getSharedPreferences(mContext);
+		String deviceRegistrationID = prefs.getString(
+				Util.DEVICE_REGISTRATION_ID, null);
+		if (deviceRegistrationID != null) {
+			fetchTasks(-1);
+		}
+	}
 
-                    @Override
-                    protected String doInBackground(Void... arg0) {
-                        MyRequestFactory requestFactory = Util.getRequestFactory(mContext,
-                                MyRequestFactory.class);
-                        final HelloWorldRequest request = requestFactory.helloWorldRequest();
-                        Log.i(TAG, "Sending request to server");
-                        request.getMessage().fire(new Receiver<String>() {
-                            @Override
-                            public void onFailure(ServerFailure error) {
-                                message = "Failure: " + error.getMessage();
-                            }
+	@Override
+	protected void onResume() {
+		super.onResume();
+		TaskApplication taskApplication = (TaskApplication) getApplication();
+		taskApplication.setTaskListener(new TaskListener() {
+			public void onTaskUpdated(final String message, final long id) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if (TaskChange.UPDATE.equals(message)) {
+							fetchTasks(id);
+						}
+					}
+				});
+			}
+		});
+	}
 
-                            @Override
-                            public void onSuccess(String result) {
-                                message = result;
-                            }
-                        });
-                        return message;
-                    }
+	@Override
+	protected void onPause() {
+		super.onPause();
+		TaskApplication taskApplication = (TaskApplication) getApplication();
+		taskApplication.setTaskListener(null);
+	}
 
-                    @Override
-                    protected void onPostExecute(String result) {
-                        helloWorld.setText(result);
-                        sayHelloButton.setEnabled(true);
-                    }
-                }.execute();
-            }
-        });
-    }
+	public void fetchTasks(long id) {
+		progressBar.setVisibility(View.VISIBLE);
+		if (task != null) {
+			task.cancel(true);
+		}
+		task = new AsyncFetchTask(this);
+		task.execute(id);
+	}
 
-    /**
-     * Sets the screen content based on the screen id.
-     */
-    private void setScreenContent(int screenId) {
-        setContentView(screenId);
-        switch (screenId) {
-            case R.layout.hello_world:
-                setHelloWorldScreenContent();
-                break;
-        }
-    }
+	public void setTasks(List<TaskProxy> tasks) {
+		progressBar.setVisibility(View.GONE);
+		adapter.setTasks(tasks);
+		adapter.notifyDataSetChanged();
+	}
+
+	public void addTasks(List<TaskProxy> tasks) {
+		progressBar.setVisibility(View.GONE);
+		adapter.addTasks(tasks);
+		adapter.notifyDataSetChanged();
+	}
+
+	public void onAddClick(View view) {
+		Intent intent = new Intent(this, AddTaskActivity.class);
+		startActivityForResult(intent, NEW_TASK_REQUEST);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		case NEW_TASK_REQUEST:
+			if (resultCode == Activity.RESULT_OK) {
+				final String taskName = data.getStringExtra("task");
+				final String taskDetails = data.getStringExtra("details");
+
+				Calendar c = Calendar.getInstance();
+				c.set(data.getIntExtra("year", 2011),
+						data.getIntExtra("month", 12),
+						data.getIntExtra("day", 31));
+				final Date dueDate = c.getTime();
+
+				new AsyncTask<Void, Void, Void>() {
+
+					@Override
+					protected Void doInBackground(Void... arg0) {
+						CloudTasksRequestFactory factory = (CloudTasksRequestFactory) Util
+								.getRequestFactory(ListomateActivity.this,
+										CloudTasksRequestFactory.class);
+						TaskRequest request = factory.taskRequest();
+
+						TaskProxy task = request.create(TaskProxy.class);
+						task.setName(taskName);
+						task.setNote(taskDetails);
+						task.setDueDate(dueDate);
+
+						request.updateTask(task).fire();
+
+						return null;
+					}
+
+				}.execute();
+			}
+			break;
+		}
+	}
+
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		Intent intent = new Intent(this, ViewTaskActivity.class);
+		intent.putExtra("position", position);
+		startActivity(intent);
+	}
+
 }

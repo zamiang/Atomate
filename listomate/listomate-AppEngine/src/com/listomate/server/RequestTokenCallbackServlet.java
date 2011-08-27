@@ -11,6 +11,7 @@ import com.google.gdata.client.authn.oauth.GoogleOAuthHelper;
 import com.google.gdata.client.authn.oauth.GoogleOAuthParameters;
 import com.google.gdata.client.authn.oauth.OAuthException;
 import com.google.gdata.client.authn.oauth.OAuthHmacSha1Signer;
+import com.listomate.server.gdata.GdataInterface;
 
 public class RequestTokenCallbackServlet extends HttpServlet {
 	private static final long serialVersionUID = -8714671533268130001L;

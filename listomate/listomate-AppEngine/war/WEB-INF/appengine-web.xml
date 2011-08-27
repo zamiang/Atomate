@@ -9,6 +9,7 @@
 	</system-properties>
 	<sessions-enabled>true</sessions-enabled>
 	<static-files>
+		<!-- <exclude path="*.jsp" /> -->
 		<include path="/favicon.ico" />
 		<include path="/robots.txt" />
 		<include path="/**.png" />

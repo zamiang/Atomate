@@ -1,4 +1,4 @@
-package com.listomate.server;
+package com.listomate.server.gdata;
 
 import java.io.IOException;
 import java.net.URL;

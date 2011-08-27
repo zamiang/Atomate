@@ -5,6 +5,12 @@
                         http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 
+	<!-- Default page to serve -->
+	<welcome-file-list>
+		<welcome-file>home.html</welcome-file>
+	</welcome-file-list>
+
+
 	<!-- Setup Appstats http://code.google.com/appengine/docs/java/tools/appstats.html -->
 
 	<filter>
@@ -17,6 +23,7 @@
 			</param-value>
 		</init-param>
 	</filter>
+
 	<filter-mapping>
 		<filter-name>appstats</filter-name>
 		<url-pattern>/*</url-pattern>
@@ -27,6 +34,7 @@
 		<servlet-class>com.google.appengine.tools.appstats.AppstatsServlet
 		</servlet-class>
 	</servlet>
+
 	<servlet-mapping>
 		<servlet-name>appstats</servlet-name>
 		<url-pattern>/appstats/*</url-pattern>
@@ -41,11 +49,6 @@
 		</auth-constraint>
 	</security-constraint>
 
-
-	<!-- Default page to serve -->
-	<welcome-file-list>
-		<welcome-file>Listomate.html</welcome-file>
-	</welcome-file-list>
 
 	<!-- Google Data Auth Servelet -->
 	<servlet>
@@ -88,6 +91,7 @@
 		<url-pattern>/gwtRequest</url-pattern>
 	</servlet-mapping>
 
+
 	<!-- Other servlets -->
 	<servlet>
 		<servlet-name>dataMessagingServlet</servlet-name>
@@ -103,7 +107,9 @@
 
 	<security-constraint>
 		<web-resource-collection>
-			<url-pattern>/*</url-pattern>
+			<!-- <url-pattern>/notes/*</url-pattern> <url-pattern>/tasks/*</url-pattern> 
+				<url-pattern>/gwtRequest</url-pattern> -->
+			<url-pattern>.*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>*</role-name>

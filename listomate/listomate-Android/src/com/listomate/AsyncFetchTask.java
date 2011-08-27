@@ -11,10 +11,10 @@ import com.google.web.bindery.requestfactory.shared.Receiver;
 
 public class AsyncFetchTask extends AsyncTask<Long, Void, List<TaskProxy>> {
 
-    private final CloudTasksActivity activity;
+    private final ListomateActivity activity;
     private boolean newTask = false;
 
-    public AsyncFetchTask(CloudTasksActivity activity) {
+    public AsyncFetchTask(ListomateActivity activity) {
         super();
         this.activity = activity;
     }

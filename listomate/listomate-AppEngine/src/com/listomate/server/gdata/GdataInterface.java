@@ -1,4 +1,4 @@
-package com.listomate.server;
+package com.listomate.server.gdata;
 
 import com.google.gdata.client.GoogleService;
 
@@ -19,5 +19,6 @@ public class GdataInterface {
 			+ "https://www.google.com/m8/feeds/ "
 			+ "https://www.google.com/m8/feeds/contacts/default/full";
 	
+	// not sure if this is necessary
 	public static GoogleService myService = new GoogleService("cl", APPNAME);
 }

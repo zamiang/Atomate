@@ -1,4 +1,4 @@
-package com.listomate.server;
+package com.listomate.server.gdata;
 
 import com.google.gdata.client.*;
 import com.google.gdata.client.authn.oauth.GoogleOAuthParameters;

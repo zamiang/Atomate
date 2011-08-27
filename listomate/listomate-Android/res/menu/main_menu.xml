@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item android:title="@string/accounts" android:icon="@drawable/ic_mailboxes_accounts" />
-	<item android:title="@string/notes" android:icon="@drawable/ic_mailboxes_accounts" />
-	<item android:title="@string/events" android:icon="@drawable/ic_mailboxes_accounts" />
-	<item android:title="@string/contacts" android:icon="@drawable/ic_mailboxes_accounts" />
+	<item android:title="@string/description_add" android:icon="@drawable/ic_mailboxes_accounts" />
+	<item android:title="@string/settings" android:icon="@drawable/ic_mailboxes_accounts" />
 </menu>

@@ -3,16 +3,25 @@
 	<string name="description_logo">Notes</string>
 	<string name="description_add">Add Notes</string>
 
-	<string name="task_title">Note Title</string>
-	<string name="task_title_hint">Enter the note title</string>
 	<string name="task_date">Task Date</string>
 	<string name="dateButton">...</string>
 	<string name="cancel">Cancel</string>
 	<string name="save">Save</string>
 
+	<string name="today">Today</string>
 	<string name="notes">Notes</string>
 	<string name="events">Events</string>
 	<string name="contacts">Contacts</string>
+	<string name="settings">Settings</string>
 
 	<string name="app_name_setup">Cloud Task Setup</string>
+
+	<string name="location_checkbox">Add location reminder</string>
+
+	<string name="location_prompt">Choose a location</string>
+	<string-array name="planets_array">
+		<item>no location</item>
+		<item>current location</item>
+	</string-array>
+
 </resources>
