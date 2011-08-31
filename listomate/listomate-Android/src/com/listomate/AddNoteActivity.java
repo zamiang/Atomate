@@ -1,17 +1,17 @@
 package com.listomate;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.DatePicker;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
-public class AddTaskActivity extends Activity {
+public class AddNoteActivity extends Activity {
 
-	private DatePicker datePicker;
-	private TimePicker timePicker;
+	// private DatePicker datePicker;
+	// private TimePicker timePicker;
 	private TextView detailsTextView;
 
 	@Override
@@ -20,8 +20,12 @@ public class AddTaskActivity extends Activity {
 
 		setContentView(R.layout.addnote);
 
-		datePicker = (DatePicker) findViewById(R.id.datePicker);
-		timePicker = (TimePicker) findViewById(R.id.timePicker);
+		// datePicker = (DatePicker) findViewById(R.id.datePicker);
+		// timePicker = (TimePicker) findViewById(R.id.timePicker);
+
+		// forces the keyboard open
+		InputMethodManager imm = (InputMethodManager) this.getBaseContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
 		detailsTextView = (TextView) findViewById(R.id.detailsText);
 	}
@@ -33,13 +37,14 @@ public class AddTaskActivity extends Activity {
 			t.putExtra("task", taskName);
 			t.putExtra("text", detailsTextView.getText().toString());
 
-			t.putExtra("day", datePicker.getDayOfMonth());
-			t.putExtra("month", datePicker.getMonth());
-			t.putExtra("year", datePicker.getYear());
-
-			t.putExtra("hour", timePicker.getCurrentHour());
-			t.putExtra("minute", timePicker.getCurrentMinute());
-
+			/*
+			 * t.putExtra("day", datePicker.getDayOfMonth());
+			 * t.putExtra("month", datePicker.getMonth()); t.putExtra("year",
+			 * datePicker.getYear());
+			 * 
+			 * t.putExtra("hour", timePicker.getCurrentHour());
+			 * t.putExtra("minute", timePicker.getCurrentMinute());
+			 */
 			setResult(Activity.RESULT_OK, t);
 		} else {
 			setResult(Activity.RESULT_CANCELED);

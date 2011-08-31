@@ -28,11 +28,16 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TabHost.TabContentFactory;
+import android.widget.TabHost.TabSpec;
 import android.widget.ListView;
 
 import com.listomate.TaskApplication.TaskListener;
@@ -50,11 +55,36 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 	 * Tag for logging.
 	 */
 	private static final String TAG = "ListomateActivity";
-
-	/**
-	 * The current context.
-	 */
 	private Context mContext = this;
+
+	// inits the tabs
+	private TabHost mTabHost;
+
+	private void setupTabHost() {
+		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
+		mTabHost.setup();
+	}
+
+	private void setupTab(final View view, final String tag) {
+		View tabview = createTabView(mTabHost.getContext(), tag);
+
+		TabSpec setContent = mTabHost.newTabSpec(tag).setIndicator(tabview)
+				.setContent(new TabContentFactory() {
+					public View createTabContent(String tag) {
+						return view;
+					}
+				});
+		mTabHost.addTab(setContent);
+
+	}
+
+	private static View createTabView(final Context context, final String text) {
+		View view = LayoutInflater.from(context)
+				.inflate(R.layout.tabs_bg, null);
+		TextView tv = (TextView) view.findViewById(R.id.tabsText);
+		tv.setText(text);
+		return view;
+	}
 
 	/**
 	 * A {@link BroadcastReceiver} to receive the response from a register or
@@ -98,14 +128,22 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 		Log.i(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.tasklist);
+		setContentView(R.layout.notelist);
 
 		listView = (ListView) findViewById(R.id.list);
 		progressBar = findViewById(R.id.title_refresh_progress);
 
+		// setup tabs
+		setupTabHost();
+		mTabHost.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
+
+		setupTab(new TextView(this), "Today");
+		setupTab(new TextView(this), "Notes");
+		setupTab(new TextView(this), "People");
+		setupTab(new TextView(this), "Events");
+
 		// get the task application to store the adapter which will act as the
-		// task storage
-		// for this demo.
+		// task storage for this demo.
 		TaskApplication taskApplication = (TaskApplication) getApplication();
 		adapter = taskApplication.getAdapter(this);
 		listView.setAdapter(adapter);
@@ -133,7 +171,7 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 		// Invoke the Register activity
 		// THIS IS SO TERRIBLE -- why do these need to be accessed via an array
 		menu.getItem(0).setIntent(new Intent(this, AccountsActivity.class));
-		menu.getItem(1).setIntent(new Intent(this, AddTaskActivity.class));
+		menu.getItem(1).setIntent(new Intent(this, AddNoteActivity.class));
 		menu.getItem(2).setIntent(new Intent(this, Preferences.class));
 		return true;
 	}
@@ -197,7 +235,7 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 	}
 
 	public void onAddClick(View view) {
-		Intent intent = new Intent(this, AddTaskActivity.class);
+		Intent intent = new Intent(this, AddNoteActivity.class);
 		startActivityForResult(intent, NEW_TASK_REQUEST);
 	}
 

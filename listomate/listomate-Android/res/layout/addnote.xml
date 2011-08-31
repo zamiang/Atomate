@@ -1,36 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="match_parent"
-	android:layout_height="match_parent">
-	<EditText android:layout_width="match_parent"
-		android:layout_height="wrap_content" android:inputType="textMultiLine"
-		android:layout_weight="1" android:hint="Task details" android:gravity="top"
-		android:layout_marginLeft="@dimen/padding" android:layout_marginRight="@dimen/padding"
-		android:id="@+id/detailsText" />
-	<CheckBox android:layout_height="wrap_content" android:text="@string/location_checkbox"
-		android:layout_weight="1" android:layout_width="wrap_content"
-		android:id="@+id/checkBox1"></CheckBox>
-	<Spinner android:layout_height="wrap_content"
-		android:layout_width="match_parent" android:id="@+id/spinner1"
-		android:layout_weight="1" android:prompt="@string/location_prompt"></Spinner>
-	<DatePicker android:layout_height="wrap_content"
-		android:layout_width="wrap_content" android:layout_gravity="center_horizontal"
-		android:id="@+id/datePicker"></DatePicker>
-	<TimePicker android:layout_height="wrap_content"
-		android:layout_width="wrap_content" android:layout_gravity="center_horizontal"
-		android:id="@+id/timePicker"></TimePicker>
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:weightSum="1">
+	<LinearLayout style="@style/TitleBar" android:weightSum="1">
+		<TextView android:layout_gravity="center_vertical"
+			android:textAppearance="?android:attr/textAppearanceMediumInverse"
+			android:layout_marginLeft="@dimen/padding" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="@string/add_note_title"></TextView>
 
-	<LinearLayout android:layout_width="match_parent"
-		android:id="@+id/linearLayout1" android:layout_height="wrap_content">
-		<Button android:layout_width="wrap_content"
-			android:layout_weight="1" android:id="@+id/cancelButton"
-			android:layout_height="wrap_content" android:text="@string/cancel"
-			android:onClick="onCancel" />
+		<View style="@style/TitleBarSpring" />
 
-		<Button android:layout_width="wrap_content"
-			android:layout_weight="1" android:id="@+id/saveButton"
-			android:layout_height="wrap_content" android:text="@string/save"
-			android:onClick="onSave" />
+		<ProgressBar style="@style/TitleBarProgressIndicator"
+			android:id="@+id/title_refresh_progress" android:visibility="gone" />
+
+		<ImageView style="@style/TitleBarSeparator" />
+		<Button android:onClick="onSave" android:text="@string/add_note_save"
+			android:layout_marginTop="@dimen/padding" android:id="@+id/saveButton"
+			android:layout_height="wrap_content" android:paddingLeft="18dp"
+			android:paddingRight="18dp" android:layout_width="wrap_content"
+			android:layout_weight="0.55"></Button>
 	</LinearLayout>
+	<EditText android:layout_marginLeft="@dimen/padding"
+		android:layout_marginTop="@dimen/padding" android:id="@+id/detailsText"
+		android:maxLength="2000" android:layout_marginRight="@dimen/padding"
+		android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine"
+		android:hint="@string/add_note_hint" android:focusable="true"
+		android:layout_width="match_parent" android:gravity="top"
+		android:layout_height="match_parent">
+		<requestFocus></requestFocus>
+	</EditText>
+	<!-- android:layout_weight="0.27""res/drawable-mdpi" -->
+	<!-- android:focusable="true" android:focusableInTouchMode="true" -->
+	<!-- <CheckBox android:layout_height="wrap_content" android:text="@string/location_checkbox" 
+		android:layout_weight="1" android:layout_width="wrap_content" android:id="@+id/checkBox1"></CheckBox> 
+		<Spinner android:layout_height="wrap_content" android:layout_width="match_parent" 
+		android:id="@+id/spinner1" android:layout_weight="1" android:prompt="@string/location_prompt"></Spinner> -->
+	<!-- <DatePicker android:layout_height="wrap_content" android:layout_width="wrap_content" 
+		android:layout_gravity="center_horizontal" android:id="@+id/datePicker"></DatePicker> 
+		<TimePicker android:layout_height="wrap_content" android:layout_width="wrap_content" 
+		android:layout_gravity="center_horizontal" android:id="@+id/timePicker"></TimePicker> 
+		</LinearLayout> -->
+	<!-- <LinearLayout android:layout_width="match_parent" android:id="@+id/linearLayout1" 
+		android:layout_height="wrap_content"> <Button android:layout_width="wrap_content" 
+		android:layout_weight="1" android:id="@+id/cancelButton" android:layout_height="wrap_content" 
+		android:text="@string/cancel" android:onClick="onCancel" /> <Button android:layout_width="wrap_content" 
+		android:layout_weight="1" android:id="@+id/saveButton" android:layout_height="wrap_content" 
+		android:text="@string/save" android:onClick="onSave" /> </LinearLayout> -->
 
-</LinearLayout>
+</LinearLayout>	

@@ -42,15 +42,6 @@
 	<!-- Footer text for "Connect" screen [CHAR LIMIT=NONE] -->
 	<string name="do_you_want_to_connect">Do you want to connect?</string>
 
-
-	<!-- Initial "hello, world" informational message [CHAR LIMIT=NONE] -->
-	<string name="hello_world_info_text">Press the \"Say Hello\" button to receive a message
-		from the App Engine server.
-	</string>
-
-	<!-- Initial "hello, world" response message [CHAR LIMIT=NONE] -->
-	<string name="hello_world_text">Hello World</string>
-
 	<!-- Dialog message text [CHAR LIMIT=NONE] -->
 	<string name="needs_account">To receive notifications from this app, you must
 		first create an account.
