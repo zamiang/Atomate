@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:weightSum="1">
+	android:background="@color/background2" android:layout_height="fill_parent"
+	android:weightSum="1">
 	<LinearLayout style="@style/TitleBar" android:weightSum="1">
 		<TextView android:layout_gravity="center_vertical"
 			android:textAppearance="?android:attr/textAppearanceMediumInverse"
@@ -26,7 +27,7 @@
 		android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine"
 		android:hint="@string/add_note_hint" android:focusable="true"
 		android:layout_width="match_parent" android:gravity="top"
-		android:layout_height="match_parent">
+		android:layout_height="174dp" android:layout_weight="1.01">
 		<requestFocus></requestFocus>
 	</EditText>
 	<!-- android:layout_weight="0.27""res/drawable-mdpi" -->
@@ -46,5 +47,13 @@
 		android:text="@string/cancel" android:onClick="onCancel" /> <Button android:layout_width="wrap_content" 
 		android:layout_weight="1" android:id="@+id/saveButton" android:layout_height="wrap_content" 
 		android:text="@string/save" android:onClick="onSave" /> </LinearLayout> -->
-
+	<LinearLayout android:layout_width="match_parent"
+		android:layout_height="wrap_content" android:id="@+id/keyboardButtons" android:weightSum="1" android:background="@color/background3" android:padding="6dp">
+		<Button android:text="@string/add_note_add_reminder" android:id="@+id/button1"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"></Button>
+		<Button android:text="@string/add_note_add_person" android:id="@+id/button2"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"></Button>
+		<Button android:text="@string/add_note_add_location" android:id="@+id/button3"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"></Button>
+	</LinearLayout>
 </LinearLayout>	

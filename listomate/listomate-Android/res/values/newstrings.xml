@@ -6,6 +6,10 @@
 	<string name="add_note_save">Save</string>
 	<string name="add_note_hint">What do you need to do today?</string>
 
+	<string name="add_note_add_location">Add Location</string>
+	<string name="add_note_add_reminder">Add Reminder</string>
+	<string name="add_note_add_person">Add Person</string>
+
 	<string name="task_date">Task Date</string>
 	<string name="dateButton">...</string>
 	<string name="cancel">Cancel</string>

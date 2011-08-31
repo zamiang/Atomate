@@ -135,8 +135,8 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 
 		// setup tabs
 		setupTabHost();
-		mTabHost.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
-
+		//mTabHost.getTabWidget().setDividerDrawable(R.drawable.tab_divider); // R.style.TitleBarSeparator);  
+		
 		setupTab(new TextView(this), "Today");
 		setupTab(new TextView(this), "Notes");
 		setupTab(new TextView(this), "People");

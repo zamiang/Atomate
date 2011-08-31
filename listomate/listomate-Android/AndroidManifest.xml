@@ -35,8 +35,6 @@
 		android:label="@string/app_name" android:name="TaskApplication"
 		android:theme="@style/Theme.Tasks" android:debuggable="true">
 
-		<!-- <activity android:name=".TabWidget" android:label="@string/app_name" 
-			android:theme="@android:style/Theme.NoTitleBar"> </activity> -->
 		<!-- Main activity -->
 		<activity android:name=".ListomateActivity" android:label="@string/app_name"
 			android:launchMode="singleTop" android:screenOrientation="portrait"
