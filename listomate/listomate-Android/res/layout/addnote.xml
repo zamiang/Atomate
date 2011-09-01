@@ -49,11 +49,11 @@
 		android:text="@string/save" android:onClick="onSave" /> </LinearLayout> -->
 	<LinearLayout android:layout_width="match_parent"
 		android:layout_height="wrap_content" android:id="@+id/keyboardButtons" android:weightSum="1" android:background="@color/background3" android:padding="6dp">
-		<Button android:text="@string/add_note_add_reminder" android:id="@+id/button1"
+		<Button android:text="@string/add_note_add_reminder" android:id="@+id/add_reminder_button"
 			android:layout_height="wrap_content" android:layout_width="wrap_content"></Button>
-		<Button android:text="@string/add_note_add_person" android:id="@+id/button2"
+		<Button android:text="@string/add_note_add_person" android:id="@+id/add_person_button"
 			android:layout_height="wrap_content" android:layout_width="wrap_content"></Button>
-		<Button android:text="@string/add_note_add_location" android:id="@+id/button3"
+		<Button android:text="@string/add_note_add_location" android:id="@+id/add_location_button"
 			android:layout_height="wrap_content" android:layout_width="wrap_content"></Button>
 	</LinearLayout>
 </LinearLayout>	
