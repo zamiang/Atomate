@@ -17,7 +17,7 @@
 
 
 		<ImageView style="@style/TitleBarSeparator" />
-		<ImageButton android:onClick="onAddClick"
+		<ImageButton android:onClick="onSearchClick"
 			android:src="@android:drawable/ic_search_category_default" style="@style/TitleBarAction"
 			android:contentDescription="@string/description_add"></ImageButton>
 

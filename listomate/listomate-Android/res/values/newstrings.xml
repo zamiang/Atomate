@@ -2,6 +2,9 @@
 <resources>
 	<string name="description_logo">Notes</string>
 	<string name="description_add">Add Notes</string>
+	<string name="description_search">Search Notes</string>
+	<string name="search_title">Search Notes</string>
+
 	<string name="add_note_title">Add Note</string>
 	<string name="add_note_save">Save</string>
 	<string name="add_note_hint">What do you need to do today?</string>
@@ -24,7 +27,14 @@
 
 	<string name="app_name_setup">Cloud Task Setup</string>
 
+
+	<string name="label_search_appdata">Search Note data</string>
+	<string name="label_search_query">Search Query</string>
+	<string name="msg_search_results">Search Results</string>
+
 	<string name="location_checkbox">Add location reminder</string>
+
+	<string name="search_hint">Find an old note</string>
 
 	<string name="location_prompt">Choose a location</string>
 	<string-array name="planets_array">

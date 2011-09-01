@@ -115,6 +115,8 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 	};
 
 	private final static int NEW_NOTE_REQUEST = 1;
+	private final static int NEW_SEARCH_REQUEST = 2;
+
 	private ListView listView;
 	private View progressBar;
 	private NoteAdapter adapter;
@@ -239,10 +241,17 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 		Intent intent = new Intent(this, AddNoteActivity.class);
 		startActivityForResult(intent, NEW_NOTE_REQUEST);
 	}
+	
+	public void onSearchClick(View view) {
+		Intent intent = new Intent(this, SearchableActivity.class);
+		startActivityForResult(intent, NEW_SEARCH_REQUEST);
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
+		//case NEW_SEARCH_REQUEST:
+			
 		case NEW_NOTE_REQUEST:
 			if (resultCode == Activity.RESULT_OK) {
 				final String noteName = data.getStringExtra("task");
