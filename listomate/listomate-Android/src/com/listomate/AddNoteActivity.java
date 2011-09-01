@@ -34,53 +34,6 @@ public class AddNoteActivity extends Activity {
 	private int mHour;
 	private int mMinute;
 
-	// the callback received when the user "sets" the date in the dialog
-	private OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-		public void onDateSet(DatePicker view, int year, int monthOfYear,
-				int dayOfMonth) {
-
-			mYear = year;
-			mMonth = monthOfYear;
-			mDay = dayOfMonth;
-			setDate(mYear, mMonth, mDay);
-
-			// dismiss DatePickerDialog, then show TimePickerDialog
-			showDialog(ADD_TIME_DIALOG_ID);
-		}
-	};
-
-	// the callback received when the user "sets" the time in the dialog
-	private OnTimeSetListener mMinSetListener = new TimePickerDialog.OnTimeSetListener() {
-		public void onTimeSet(TimePicker view, int hour, int min) {
-
-			mHour = hour;
-			mMinute = min;
-			setTime(mHour, mMinute);
-		}
-	};
-
-	private void setTime(int hour, int minute) {
-		String text = detailsTextView.getText().toString();
-		StringBuilder min = new StringBuilder().append(minute);
-
-		if (minute < 10) {
-			min = new StringBuilder().append("0").append(minute);
-		}
-
-		detailsTextView.setText(new StringBuilder().append(text)
-				.append(getString(R.string.tag_start)).append(hour).append(":")
-				.append(min).append(" "));
-	}
-
-	private void setDate(int year, int month, int day) {
-		String text = detailsTextView.getText().toString();
-		detailsTextView.setText(new StringBuilder()
-				// Month is 0 based so add 1
-				.append(text).append(getString(R.string.tag_start))
-				.append(month + 1).append("/").append(day).append("/")
-				.append(year).append(" "));
-	}
-
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
@@ -169,4 +122,57 @@ public class AddNoteActivity extends Activity {
 
 		finish();
 	}
+	
+
+	/**
+	 * 	 for the date and time popups
+	 */
+	
+	// the callback received when the user "sets" the date in the dialog
+	private OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+		public void onDateSet(DatePicker view, int year, int monthOfYear,
+				int dayOfMonth) {
+
+			mYear = year;
+			mMonth = monthOfYear;
+			mDay = dayOfMonth;
+			setDate(mYear, mMonth, mDay);
+
+			// dismiss DatePickerDialog, then show TimePickerDialog
+			showDialog(ADD_TIME_DIALOG_ID);
+		}
+	};
+
+	// the callback received when the user "sets" the time in the dialog
+	private OnTimeSetListener mMinSetListener = new TimePickerDialog.OnTimeSetListener() {
+		public void onTimeSet(TimePicker view, int hour, int min) {
+
+			mHour = hour;
+			mMinute = min;
+			setTime(mHour, mMinute);
+		}
+	};
+
+	private void setTime(int hour, int minute) {
+		String text = detailsTextView.getText().toString();
+		StringBuilder min = new StringBuilder().append(minute);
+
+		if (minute < 10) {
+			min = new StringBuilder().append("0").append(minute);
+		}
+
+		detailsTextView.setText(new StringBuilder().append(text)
+				.append(getString(R.string.tag_start)).append(hour).append(":")
+				.append(min).append(" "));
+	}
+
+	private void setDate(int year, int month, int day) {
+		String text = detailsTextView.getText().toString();
+		detailsTextView.setText(new StringBuilder()
+				// Month is 0 based so add 1
+				.append(text).append(getString(R.string.tag_start))
+				.append(month + 1).append("/").append(day).append("/")
+				.append(year).append(" "));
+	}
+
 }

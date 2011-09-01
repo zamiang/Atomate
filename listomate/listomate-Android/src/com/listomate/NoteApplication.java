@@ -2,29 +2,29 @@ package com.listomate;
 
 import java.util.regex.Pattern;
 
-import com.listomate.shared.TaskChange;
+import com.listomate.shared.NoteChange;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class TaskApplication extends Application {
+public class NoteApplication extends Application {
 
     interface TaskListener {
         void onTaskUpdated(String message, long id);
     }
 
     private TaskListener listener;
-    private TaskAdapter adapter;
+    private NoteAdapter adapter;
 
     public void setTaskListener(TaskListener listener) {
         this.listener = listener;
     }
 
-    public TaskAdapter getAdapter(Context context) {
+    public NoteAdapter getAdapter(Context context) {
         if (adapter == null) {
-            adapter = new TaskAdapter(context);
+            adapter = new NoteAdapter(context);
         }
 
         return adapter;
@@ -36,7 +36,7 @@ public class TaskApplication extends Application {
             if (extras != null) {
                 String message = (String) extras.get("message");
                 String[] messages = message.split(Pattern
-                        .quote(TaskChange.SEPARATOR));
+                        .quote(NoteChange.SEPARATOR));
                 listener.onTaskUpdated(messages[0], Long.parseLong(messages[1]));
             }
         }

@@ -51,8 +51,8 @@ import com.google.gwt.view.client.Range;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 
 import com.listomate.shared.CloudTasksRequestFactory;
-import com.listomate.shared.TaskProxy;
-import com.listomate.shared.TaskRequest;
+import com.listomate.shared.NoteProxy;
+import com.listomate.shared.NoteRequest;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,8 +65,8 @@ public class ListomateWidget extends Composite {
 	interface Binder extends UiBinder<Widget, ListomateWidget> {
 	}
 
-	public static final Comparator<? super TaskProxy> TASK_COMPARATOR = new Comparator<TaskProxy>() {
-		public int compare(TaskProxy t0, TaskProxy t1) {
+	public static final Comparator<? super NoteProxy> TASK_COMPARATOR = new Comparator<NoteProxy>() {
+		public int compare(NoteProxy t0, NoteProxy t1) {
 			// Sort uncompleted tasks above completed tasks
 			if (isDone(t0) && !isDone(t1)) {
 				return 1;
@@ -78,12 +78,12 @@ public class ListomateWidget extends Composite {
 			}
 		}
 
-		boolean isDone(TaskProxy t) {
+		boolean isDone(NoteProxy t) {
 			Boolean done = t.isDone();
 			return done != null && done;
 		}
 
-		int compareDueDate(TaskProxy t0, TaskProxy t1) {
+		int compareDueDate(NoteProxy t0, NoteProxy t1) {
 			Date d0 = t0.getDueDate();
 			Date d1 = t1.getDueDate();
 
@@ -107,12 +107,12 @@ public class ListomateWidget extends Composite {
 		}
 	};
 
-	public static class TasksTable extends CellTable<TaskProxy> {
+	public static class TasksTable extends CellTable<NoteProxy> {
 
-		public Column<TaskProxy, Date> dateColumn;
-		public Column<TaskProxy, String> deleteColumn;
-		public Column<TaskProxy, Boolean> doneColumn;
-		public Column<TaskProxy, String> nameColumn;
+		public Column<NoteProxy, Date> dateColumn;
+		public Column<NoteProxy, String> deleteColumn;
+		public Column<NoteProxy, Boolean> doneColumn;
+		public Column<NoteProxy, String> nameColumn;
 
 		interface TasksTableResources extends CellTable.Resources {
 			@Source("TasksTable.css")
@@ -135,18 +135,18 @@ public class ListomateWidget extends Composite {
 		public TasksTable() {
 			super(20, resources);
 
-			doneColumn = new Column<TaskProxy, Boolean>(new CheckboxCell()) {
+			doneColumn = new Column<NoteProxy, Boolean>(new CheckboxCell()) {
 				@Override
-				public Boolean getValue(TaskProxy object) {
+				public Boolean getValue(NoteProxy object) {
 					return object.isDone() == Boolean.TRUE;
 				}
 			};
 			addColumn(doneColumn, "\u2713"); // Checkmark
 			addColumnStyleName(0, resources.cellTableStyle().columnCheckbox());
 
-			nameColumn = new Column<TaskProxy, String>(new TextCell()) {
+			nameColumn = new Column<NoteProxy, String>(new TextCell()) {
 				@Override
-				public String getValue(TaskProxy object) {
+				public String getValue(NoteProxy object) {
 					return object.getName();
 				}
 			};
@@ -154,10 +154,10 @@ public class ListomateWidget extends Composite {
 			addColumnStyleName(1, "columnFill");
 			addColumnStyleName(1, resources.cellTableStyle().columnName());
 
-			dateColumn = new Column<TaskProxy, Date>(new DatePickerCell(
+			dateColumn = new Column<NoteProxy, Date>(new DatePickerCell(
 					DateTimeFormat.getFormat(PredefinedFormat.MONTH_ABBR_DAY))) {
 				@Override
-				public Date getValue(TaskProxy task) {
+				public Date getValue(NoteProxy task) {
 					Date dueDate = task.getDueDate();
 					return dueDate == null ? new Date() : dueDate;
 				}
@@ -178,9 +178,9 @@ public class ListomateWidget extends Composite {
 						}
 					});
 
-			deleteColumn = new Column<TaskProxy, String>(buttonCell) {
+			deleteColumn = new Column<NoteProxy, String>(buttonCell) {
 				@Override
-				public String getValue(TaskProxy object) {
+				public String getValue(NoteProxy object) {
 					return "\u2717"; // Ballot "X" mark
 				}
 			};
@@ -231,14 +231,14 @@ public class ListomateWidget extends Composite {
 	private final EventBus eventBus = new SimpleEventBus();
 	private final CloudTasksRequestFactory requestFactory = GWT
 			.create(CloudTasksRequestFactory.class);
-	private List<TaskProxy> tasksList;
+	private List<NoteProxy> tasksList;
 
 	public ListomateWidget() {
 		initWidget(uiBinder.createAndBindUi(this));
 
 		requestFactory.initialize(eventBus);
 
-		ListDataProvider<TaskProxy> listDataProvider = new ListDataProvider<TaskProxy>();
+		ListDataProvider<NoteProxy> listDataProvider = new ListDataProvider<NoteProxy>();
 		listDataProvider.addDataDisplay(tasksTable);
 		tasksList = listDataProvider.getList();
 
@@ -246,8 +246,8 @@ public class ListomateWidget extends Composite {
 				.getFirstChildElement();
 		final Animation androidAnimation = new AndroidAnimation(androidElement);
 
-		tasksTable.setRowStyles(new RowStyles<TaskProxy>() {
-			public String getStyleNames(TaskProxy row, int rowIndex) {
+		tasksTable.setRowStyles(new RowStyles<NoteProxy>() {
+			public String getStyleNames(NoteProxy row, int rowIndex) {
 				Range visibleRange = tasksTable.getVisibleRange();
 				int lastRow = visibleRange.getStart()
 						+ visibleRange.getLength() - 1;
@@ -261,30 +261,30 @@ public class ListomateWidget extends Composite {
 		});
 
 		tasksTable.dateColumn
-				.setFieldUpdater(new FieldUpdater<TaskProxy, Date>() {
-					public void update(int index, TaskProxy task, Date value) {
-						TaskRequest request = requestFactory.taskRequest();
-						TaskProxy updatedTask = request.edit(task);
+				.setFieldUpdater(new FieldUpdater<NoteProxy, Date>() {
+					public void update(int index, NoteProxy task, Date value) {
+						NoteRequest request = requestFactory.taskRequest();
+						NoteProxy updatedTask = request.edit(task);
 						updatedTask.setDueDate(value);
-						request.updateTask(updatedTask).fire();
+						request.updateNote(updatedTask).fire();
 					}
 				});
 
 		tasksTable.doneColumn
-				.setFieldUpdater(new FieldUpdater<TaskProxy, Boolean>() {
-					public void update(int index, TaskProxy task, Boolean value) {
-						TaskRequest request = requestFactory.taskRequest();
-						TaskProxy updatedTask = request.edit(task);
+				.setFieldUpdater(new FieldUpdater<NoteProxy, Boolean>() {
+					public void update(int index, NoteProxy task, Boolean value) {
+						NoteRequest request = requestFactory.taskRequest();
+						NoteProxy updatedTask = request.edit(task);
 						updatedTask.setDone(value);
-						request.updateTask(updatedTask).fire();
+						request.updateNote(updatedTask).fire();
 					}
 				});
 
 		tasksTable.deleteColumn
-				.setFieldUpdater(new FieldUpdater<TaskProxy, String>() {
-					public void update(int index, TaskProxy task, String value) {
-						TaskRequest request = requestFactory.taskRequest();
-						request.deleteTask(task).fire();
+				.setFieldUpdater(new FieldUpdater<NoteProxy, String>() {
+					public void update(int index, NoteProxy task, String value) {
+						NoteRequest request = requestFactory.taskRequest();
+						request.deleteNote(task).fire();
 						tasksList.remove(task);
 					}
 				});
@@ -312,28 +312,28 @@ public class ListomateWidget extends Composite {
 		}, DELAY_MS);
 	}
 
-	boolean isDone(TaskProxy t) {
+	boolean isDone(NoteProxy t) {
 		Boolean done = t.isDone();
 		return done != null && done;
 	}
 
 	private void retrieveTasks() {
-		requestFactory.taskRequest().queryTasks()
-				.fire(new Receiver<List<TaskProxy>>() {
+		requestFactory.taskRequest().queryNotes()
+				.fire(new Receiver<List<NoteProxy>>() {
 					@Override
-					public void onSuccess(List<TaskProxy> tasks) {
+					public void onSuccess(List<NoteProxy> tasks) {
 						if (tasks.size() > 0) {
 							signin.setText("Logged in as "
 									+ tasks.get(0).getEmailAddress());
 						}
 
 						// sort first
-						ArrayList<TaskProxy> sortedTasks = new ArrayList<TaskProxy>(
+						ArrayList<NoteProxy> sortedTasks = new ArrayList<NoteProxy>(
 								tasks);
 						Collections.sort(sortedTasks, TASK_COMPARATOR);
 
 						tasksList.clear();
-						for (TaskProxy task : sortedTasks) {
+						for (NoteProxy task : sortedTasks) {
 							tasksList.add(task);
 						}
 					}
@@ -344,8 +344,8 @@ public class ListomateWidget extends Composite {
 	 * Send a task to the server.
 	 */
 	private void sendNewTaskToServer(String message) {
-		TaskRequest request = requestFactory.taskRequest();
-		TaskProxy task = request.create(TaskProxy.class);
+		NoteRequest request = requestFactory.taskRequest();
+		NoteProxy task = request.create(NoteProxy.class);
 		int len = Math.min(message.length(), 50);
 		if (len != message.length()) {
 			message = message.substring(0, len);
@@ -354,7 +354,7 @@ public class ListomateWidget extends Composite {
 		task.setName(message);
 		task.setNote(taskInput.getText());
 		task.setDueDate(new Date());
-		request.updateTask(task).fire();
+		request.updateNote(task).fire();
 		tasksList.add(task);
 	}
 }

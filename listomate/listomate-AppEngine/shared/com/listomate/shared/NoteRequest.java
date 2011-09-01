@@ -7,16 +7,15 @@ import com.google.web.bindery.requestfactory.shared.RequestContext;
 import com.google.web.bindery.requestfactory.shared.ServiceName;
 
 @ServiceName("com.listomate.server.CloudTasksService")
-public interface TaskRequest extends RequestContext {
+public interface NoteRequest extends RequestContext {
 
-	Request<TaskProxy> createTask();
+	Request<NoteProxy> createNote();
 
-	Request<TaskProxy> readTask(Long id);
+	Request<NoteProxy> readNote(Long id);
 
-	Request<TaskProxy> updateTask(TaskProxy task);
+	Request<NoteProxy> updateNote(NoteProxy task);
 
-	Request<Void> deleteTask(TaskProxy task);
+	Request<Void> deleteNote(NoteProxy task);
 
-	Request<List<TaskProxy>> queryTasks();
-
+	Request<List<NoteProxy>> queryNotes();
 }

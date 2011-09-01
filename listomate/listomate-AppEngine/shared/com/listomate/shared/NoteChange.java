@@ -1,6 +1,6 @@
 package com.listomate.shared;
 
-public class TaskChange {
+public class NoteChange {
 
 	public static String UPDATE = "Update";
 	public static String DELETE = "Delete";

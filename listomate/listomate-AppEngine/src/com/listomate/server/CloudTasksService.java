@@ -2,7 +2,7 @@ package com.listomate.server;
 
 import java.util.List;
 
-import com.listomate.shared.TaskChange;
+import com.listomate.shared.NoteChange;
 
 public class CloudTasksService {
 
@@ -19,7 +19,7 @@ public class CloudTasksService {
 	public static Task updateTask(Task task) {
 		task.setEmailAddress(DataStore.getUserEmail());
 		task = db.update(task);
-		DataStore.sendC2DMUpdate(TaskChange.UPDATE + TaskChange.SEPARATOR
+		DataStore.sendC2DMUpdate(NoteChange.UPDATE + NoteChange.SEPARATOR
 				+ task.getId());
 		return task;
 

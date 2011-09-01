@@ -2,7 +2,7 @@ package com.listomate;
 
 import java.util.Date;
 
-import com.listomate.shared.TaskProxy;
+import com.listomate.shared.NoteProxy;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.widget.TextView;
 
-public class ViewTaskActivity extends Activity {
+public class ViewNoteActivity extends Activity {
 	private java.text.DateFormat dateFormat;
 
 	@Override
@@ -26,10 +26,10 @@ public class ViewTaskActivity extends Activity {
 		int position = intent.getIntExtra("position", -1);
 
 		if (position != -1) {
-			TaskApplication taskApplication = (TaskApplication) getApplication();
-			TaskAdapter adapter = taskApplication.getAdapter(this);
+			NoteApplication taskApplication = (NoteApplication) getApplication();
+			NoteAdapter adapter = taskApplication.getAdapter(this);
 
-			TaskProxy task = adapter.get(position);
+			NoteProxy task = adapter.get(position);
 
 			if (task != null) {
 				String name = task.getName();

@@ -30,30 +30,17 @@
 		android:layout_height="174dp" android:layout_weight="1.01">
 		<requestFocus></requestFocus>
 	</EditText>
-	<!-- android:layout_weight="0.27""res/drawable-mdpi" -->
-	<!-- android:focusable="true" android:focusableInTouchMode="true" -->
-	<!-- <CheckBox android:layout_height="wrap_content" android:text="@string/location_checkbox" 
-		android:layout_weight="1" android:layout_width="wrap_content" android:id="@+id/checkBox1"></CheckBox> 
-		<Spinner android:layout_height="wrap_content" android:layout_width="match_parent" 
-		android:id="@+id/spinner1" android:layout_weight="1" android:prompt="@string/location_prompt"></Spinner> -->
-	<!-- <DatePicker android:layout_height="wrap_content" android:layout_width="wrap_content" 
-		android:layout_gravity="center_horizontal" android:id="@+id/datePicker"></DatePicker> 
-		<TimePicker android:layout_height="wrap_content" android:layout_width="wrap_content" 
-		android:layout_gravity="center_horizontal" android:id="@+id/timePicker"></TimePicker> 
-		</LinearLayout> -->
-	<!-- <LinearLayout android:layout_width="match_parent" android:id="@+id/linearLayout1" 
-		android:layout_height="wrap_content"> <Button android:layout_width="wrap_content" 
-		android:layout_weight="1" android:id="@+id/cancelButton" android:layout_height="wrap_content" 
-		android:text="@string/cancel" android:onClick="onCancel" /> <Button android:layout_width="wrap_content" 
-		android:layout_weight="1" android:id="@+id/saveButton" android:layout_height="wrap_content" 
-		android:text="@string/save" android:onClick="onSave" /> </LinearLayout> -->
 	<LinearLayout android:layout_width="match_parent"
-		android:layout_height="wrap_content" android:id="@+id/keyboardButtons" android:weightSum="1" android:background="@color/background3" android:padding="6dp">
-		<Button android:text="@string/add_note_add_reminder" android:id="@+id/add_reminder_button"
-			android:layout_height="wrap_content" android:layout_width="wrap_content"></Button>
+		android:layout_height="wrap_content" android:id="@+id/keyboardButtons"
+		android:weightSum="1" android:background="@color/background3"
+		android:padding="6dp">
+		<Button android:text="@string/add_note_add_reminder"
+			android:id="@+id/add_reminder_button" android:layout_height="wrap_content"
+			android:layout_width="wrap_content"></Button>
 		<Button android:text="@string/add_note_add_person" android:id="@+id/add_person_button"
 			android:layout_height="wrap_content" android:layout_width="wrap_content"></Button>
-		<Button android:text="@string/add_note_add_location" android:id="@+id/add_location_button"
-			android:layout_height="wrap_content" android:layout_width="wrap_content"></Button>
+		<Button android:text="@string/add_note_add_location"
+			android:id="@+id/add_location_button" android:layout_height="wrap_content"
+			android:layout_width="wrap_content"></Button>
 	</LinearLayout>
 </LinearLayout>	

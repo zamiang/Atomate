@@ -6,7 +6,7 @@ import com.google.web.bindery.requestfactory.shared.ProxyForName;
 import com.google.web.bindery.requestfactory.shared.ValueProxy;
 
 @ProxyForName(value = "com.listomate.server.Task", locator = "com.listomate.server.TaskLocator")
-public interface TaskProxy extends ValueProxy {
+public interface NoteProxy extends ValueProxy {
 
 	Date getDueDate();
 

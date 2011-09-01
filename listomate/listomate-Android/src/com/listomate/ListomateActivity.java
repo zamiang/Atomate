@@ -40,11 +40,11 @@ import android.widget.TabHost.TabContentFactory;
 import android.widget.TabHost.TabSpec;
 import android.widget.ListView;
 
-import com.listomate.TaskApplication.TaskListener;
+import com.listomate.NoteApplication.TaskListener;
 import com.listomate.shared.CloudTasksRequestFactory;
-import com.listomate.shared.TaskChange;
-import com.listomate.shared.TaskProxy;
-import com.listomate.shared.TaskRequest;
+import com.listomate.shared.NoteChange;
+import com.listomate.shared.NoteProxy;
+import com.listomate.shared.NoteRequest;
 
 /**
  * Main activity - requests "Hello, World" messages from the server and provides
@@ -114,11 +114,11 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 		}
 	};
 
-	private final static int NEW_TASK_REQUEST = 1;
+	private final static int NEW_NOTE_REQUEST = 1;
 	private ListView listView;
 	private View progressBar;
-	private TaskAdapter adapter;
-	private AsyncFetchTask task;
+	private NoteAdapter adapter;
+	private AsyncFetchNote note;
 
 	/**
 	 * Begins the activity.
@@ -135,17 +135,18 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 
 		// setup tabs
 		setupTabHost();
-		//mTabHost.getTabWidget().setDividerDrawable(R.drawable.tab_divider); // R.style.TitleBarSeparator);  
-		
+		// mTabHost.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
+		// // R.style.TitleBarSeparator);
+
 		setupTab(new TextView(this), "Today");
 		setupTab(new TextView(this), "Notes");
 		setupTab(new TextView(this), "People");
 		setupTab(new TextView(this), "Events");
 
-		// get the task application to store the adapter which will act as the
+		// get the Note application to store the adapter which will act as the
 		// task storage for this demo.
-		TaskApplication taskApplication = (TaskApplication) getApplication();
-		adapter = taskApplication.getAdapter(this);
+		NoteApplication noteApplication = (NoteApplication) getApplication();
+		adapter = noteApplication.getAdapter(this);
 		listView.setAdapter(adapter);
 
 		listView.setOnItemClickListener(this);
@@ -192,12 +193,12 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		TaskApplication taskApplication = (TaskApplication) getApplication();
+		NoteApplication taskApplication = (NoteApplication) getApplication();
 		taskApplication.setTaskListener(new TaskListener() {
 			public void onTaskUpdated(final String message, final long id) {
 				runOnUiThread(new Runnable() {
 					public void run() {
-						if (TaskChange.UPDATE.equals(message)) {
+						if (NoteChange.UPDATE.equals(message)) {
 							fetchTasks(id);
 						}
 					}
@@ -209,43 +210,43 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		TaskApplication taskApplication = (TaskApplication) getApplication();
+		NoteApplication taskApplication = (NoteApplication) getApplication();
 		taskApplication.setTaskListener(null);
 	}
 
 	public void fetchTasks(long id) {
 		progressBar.setVisibility(View.VISIBLE);
-		if (task != null) {
-			task.cancel(true);
+		if (note != null) {
+			note.cancel(true);
 		}
-		task = new AsyncFetchTask(this);
-		task.execute(id);
+		note = new AsyncFetchNote(this);
+		note.execute(id);
 	}
 
-	public void setTasks(List<TaskProxy> tasks) {
+	public void setNotes(List<NoteProxy> notes) {
 		progressBar.setVisibility(View.GONE);
-		adapter.setTasks(tasks);
+		adapter.setNotes(notes);
 		adapter.notifyDataSetChanged();
 	}
 
-	public void addTasks(List<TaskProxy> tasks) {
+	public void addNotes(List<NoteProxy> notes) {
 		progressBar.setVisibility(View.GONE);
-		adapter.addTasks(tasks);
+		adapter.addNotes(notes);
 		adapter.notifyDataSetChanged();
 	}
 
 	public void onAddClick(View view) {
 		Intent intent = new Intent(this, AddNoteActivity.class);
-		startActivityForResult(intent, NEW_TASK_REQUEST);
+		startActivityForResult(intent, NEW_NOTE_REQUEST);
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
-		case NEW_TASK_REQUEST:
+		case NEW_NOTE_REQUEST:
 			if (resultCode == Activity.RESULT_OK) {
-				final String taskName = data.getStringExtra("task");
-				final String taskDetails = data.getStringExtra("details");
+				final String noteName = data.getStringExtra("task");
+				final String noteDetails = data.getStringExtra("details");
 
 				Calendar c = Calendar.getInstance();
 				c.set(data.getIntExtra("year", 2011),
@@ -260,14 +261,14 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 						CloudTasksRequestFactory factory = (CloudTasksRequestFactory) Util
 								.getRequestFactory(ListomateActivity.this,
 										CloudTasksRequestFactory.class);
-						TaskRequest request = factory.taskRequest();
+						NoteRequest request = factory.taskRequest();
 
-						TaskProxy task = request.create(TaskProxy.class);
-						task.setName(taskName);
-						task.setNote(taskDetails);
-						task.setDueDate(dueDate);
+						NoteProxy note = request.create(NoteProxy.class);
+						note.setName(noteName);
+						note.setNote(noteDetails);
+						note.setDueDate(dueDate);
 
-						request.updateTask(task).fire();
+						request.updateNote(note).fire();
 
 						return null;
 					}
@@ -280,7 +281,7 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		Intent intent = new Intent(this, ViewTaskActivity.class);
+		Intent intent = new Intent(this, ViewNoteActivity.class);
 		intent.putExtra("position", position);
 		startActivity(intent);
 	}

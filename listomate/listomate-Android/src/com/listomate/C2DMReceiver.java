@@ -76,7 +76,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
      */
     @Override
     public void onMessage(Context context, Intent intent) {
-    	TaskApplication app = (TaskApplication) getApplication();
+    	NoteApplication app = (NoteApplication) getApplication();
     	app.notifyListener(intent);
     }
 }
