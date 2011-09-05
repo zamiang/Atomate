@@ -5,6 +5,10 @@
 	<string name="description_search">Search Notes</string>
 	<string name="search_title">Search Notes</string>
 
+	<string name="edit_note_title">Edit Note</string>
+
+	<string name="search_invoke">App/Search/Invoke Search</string>
+
 	<string name="add_note_title">Add Note</string>
 	<string name="add_note_save">Save</string>
 	<string name="add_note_hint">What do you need to do today?</string>

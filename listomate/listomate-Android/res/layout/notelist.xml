@@ -15,10 +15,9 @@
 		<ProgressBar style="@style/TitleBarProgressIndicator"
 			android:id="@+id/title_refresh_progress" android:visibility="gone" />
 
-
 		<ImageView style="@style/TitleBarSeparator" />
 		<ImageButton android:onClick="onSearchClick"
-			android:src="@android:drawable/ic_search_category_default" style="@style/TitleBarAction"
+			android:src="@android:drawable/ic_menu_search" style="@style/TitleBarAction"
 			android:contentDescription="@string/description_add"></ImageButton>
 
 		<ImageView style="@style/TitleBarSeparator" />

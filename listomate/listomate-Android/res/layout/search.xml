@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:background="@color/background3" android:layout_height="fill_parent">
+	
 	<LinearLayout style="@style/TitleBar">
 		<TextView android:layout_gravity="center_vertical"
 			android:textAppearance="?android:attr/textAppearanceMediumInverse"
@@ -19,10 +20,6 @@
 			android:onClick="onAddClick" />
 	</LinearLayout>
 
-	<!-- Section: Information -->
-	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:paddingBottom="4dip"
-		android:text="@string/msg_search_results" />
 
 	<!-- Section: Search Query String -->
 	<LinearLayout android:layout_width="fill_parent"
@@ -31,16 +28,6 @@
 		<TextView android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:text="@string/label_search_query" />
 		<TextView android:id="@+id/txt_query" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" />
-	</LinearLayout>
-
-	<!-- Section: Search Query application context data -->
-	<LinearLayout android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:orientation="horizontal">
-
-		<TextView android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="@string/label_search_appdata" />
-		<TextView android:id="@+id/txt_appdata" android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />
 	</LinearLayout>
 

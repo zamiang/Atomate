@@ -1,7 +1,5 @@
 package com.listomate;
 
-import java.util.Date;
-
 import com.listomate.shared.NoteProxy;
 
 import android.app.Activity;
@@ -10,16 +8,13 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.widget.TextView;
 
-public class ViewNoteActivity extends Activity {
-	private java.text.DateFormat dateFormat;
+public class EditNoteActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		dateFormat = DateFormat.getDateFormat(this);
-
-		setContentView(R.layout.viewtask);
+		setContentView(R.layout.editnote);
 
 		// get the task to display.
 		Intent intent = getIntent();
@@ -42,12 +37,6 @@ public class ViewNoteActivity extends Activity {
 				if (notes != null) {
 					TextView detailsText = (TextView) findViewById(R.id.detailsText);
 					detailsText.setText(notes);
-				}
-
-				Date dueDate = task.getDueDate();
-				if (dueDate != null) {
-					TextView dueDateText = (TextView) findViewById(R.id.dateText);
-					dueDateText.setText(dateFormat.format(dueDate));
 				}
 			}
 		}

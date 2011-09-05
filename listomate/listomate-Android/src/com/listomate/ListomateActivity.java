@@ -290,7 +290,7 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		Intent intent = new Intent(this, ViewNoteActivity.class);
+		Intent intent = new Intent(this, EditNoteActivity.class);
 		intent.putExtra("position", position);
 		startActivity(intent);
 	}
