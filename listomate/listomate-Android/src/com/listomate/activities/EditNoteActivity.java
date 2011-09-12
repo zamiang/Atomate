@@ -1,5 +1,10 @@
-package com.listomate;
+package com.listomate.activities;
 
+import com.listomate.NoteAdapter;
+import com.listomate.NoteApplication;
+import com.listomate.R;
+import com.listomate.R.id;
+import com.listomate.R.layout;
 import com.listomate.shared.NoteProxy;
 
 import android.app.Activity;

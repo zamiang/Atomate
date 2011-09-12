@@ -11,7 +11,7 @@ import android.os.Bundle;
 
 public class NoteApplication extends Application {
 
-    interface TaskListener {
+    public interface TaskListener {
         void onTaskUpdated(String message, long id);
     }
 

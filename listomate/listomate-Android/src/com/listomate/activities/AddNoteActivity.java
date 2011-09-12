@@ -1,6 +1,11 @@
-package com.listomate;
+package com.listomate.activities;
 
 import java.util.Calendar;
+
+import com.listomate.R;
+import com.listomate.R.id;
+import com.listomate.R.layout;
+import com.listomate.R.string;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;

@@ -16,13 +16,13 @@ public class SearchSuggestionSampleProvider extends
 	 * your Manifest file, and any time you instantiate a
 	 * {@link android.provider.SearchRecentSuggestions} helper class.
 	 */
-	final static String AUTHORITY = "com.example.android.apis.SuggestionProvider";
+	public final static String AUTHORITY = "com.example.android.apis.SuggestionProvider";
 	/**
 	 * These flags determine the operating mode of the suggestions provider.
 	 * This value should not change from run to run, because when it does
 	 * change, your suggestions database may be wiped.
 	 */
-	final static int MODE = DATABASE_MODE_QUERIES;
+	public final static int MODE = DATABASE_MODE_QUERIES;
 
 	/**
 	 * The main job of the constructor is to call

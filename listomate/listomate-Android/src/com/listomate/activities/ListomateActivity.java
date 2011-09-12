@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.listomate;
+package com.listomate.activities;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -40,7 +40,18 @@ import android.widget.TabHost.TabContentFactory;
 import android.widget.TabHost.TabSpec;
 import android.widget.ListView;
 
+import com.listomate.AsyncFetchNote;
+import com.listomate.DeviceRegistrar;
+import com.listomate.NoteAdapter;
+import com.listomate.NoteApplication;
+import com.listomate.Preferences;
+import com.listomate.R;
+import com.listomate.Util;
 import com.listomate.NoteApplication.TaskListener;
+import com.listomate.R.id;
+import com.listomate.R.layout;
+import com.listomate.R.menu;
+import com.listomate.R.string;
 import com.listomate.shared.CloudTasksRequestFactory;
 import com.listomate.shared.NoteChange;
 import com.listomate.shared.NoteProxy;
