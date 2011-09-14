@@ -179,9 +179,8 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_menu, menu);
 		// Invoke the Register activity
-		// THIS IS SO TERRIBLE -- why do these need to be accessed via an array
-		menu.getItem(0).setIntent(new Intent(this, AccountsActivity.class));
-		menu.getItem(1).setIntent(new Intent(this, AddNoteActivity.class));
+		menu.getItem(0).setIntent(new Intent(this, AddNoteActivity.class));
+		menu.getItem(1).setIntent(new Intent(this, AccountsActivity.class));
 		menu.getItem(2).setIntent(new Intent(this, Preferences.class));
 		return true;
 	}

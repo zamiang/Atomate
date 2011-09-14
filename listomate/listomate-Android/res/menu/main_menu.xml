@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:title="@string/accounts" android:icon="@drawable/ic_mailboxes_accounts" />
-	<item android:title="@string/settings" android:icon="@drawable/ic_menu_preferences" />
+	<item android:id="@+id/add_note_menu_btn" android:title="@string/add_note_title" android:icon="@drawable/ic_menu_compose" />
+	<item android:id="@+id/accounts_btn" android:title="@string/accounts" android:icon="@drawable/ic_mailboxes_accounts" />
+	<item android:id="@+id/preferences_btn" android:title="@string/settings" android:icon="@drawable/ic_menu_preferences" />
 </menu>

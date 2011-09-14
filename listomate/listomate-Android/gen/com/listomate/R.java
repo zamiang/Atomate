@@ -77,7 +77,9 @@ public final class R {
         public static final int title_button=0x7f020022;
     }
     public static final class id {
+        public static final int accounts_btn=0x7f0b001b;
         public static final int add_location_button=0x7f0b0006;
+        public static final int add_note_menu_btn=0x7f0b001a;
         public static final int add_person_button=0x7f0b0005;
         public static final int add_reminder_button=0x7f0b0004;
         public static final int connect=0x7f0b000d;
@@ -93,6 +95,7 @@ public final class R {
         public static final int keyboardButtons=0x7f0b0003;
         public static final int linearLayout1=0x7f0b0012;
         public static final int list=0x7f0b0016;
+        public static final int preferences_btn=0x7f0b001c;
         public static final int saveButton=0x7f0b0001;
         public static final int select_account=0x7f0b000b;
         public static final int select_text=0x7f0b0009;
