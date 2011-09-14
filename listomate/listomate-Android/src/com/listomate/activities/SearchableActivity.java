@@ -2,8 +2,6 @@ package com.listomate.activities;
 
 import com.listomate.R;
 import com.listomate.SearchSuggestionSampleProvider;
-import com.listomate.R.layout;
-
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;

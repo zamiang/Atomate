@@ -6,6 +6,7 @@ import java.util.List;
 import android.os.AsyncTask;
 
 import com.listomate.activities.ListomateActivity;
+import com.listomate.etc.Util;
 import com.listomate.shared.CloudTasksRequestFactory;
 import com.listomate.shared.NoteProxy;
 import com.google.web.bindery.requestfactory.shared.Receiver;

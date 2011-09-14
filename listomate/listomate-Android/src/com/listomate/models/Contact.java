@@ -1,6 +1,6 @@
-package com.listomate;
+package com.listomate.models;
 
-public class Contact implements Comparable {
+public class Contact implements Comparable<Object> {
 	 
     private String name;
     private String nickname;

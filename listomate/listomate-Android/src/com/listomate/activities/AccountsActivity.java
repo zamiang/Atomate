@@ -18,11 +18,8 @@ package com.listomate.activities;
 import com.google.android.c2dm.C2DMessaging;
 import com.listomate.DeviceRegistrar;
 import com.listomate.R;
-import com.listomate.Setup;
-import com.listomate.Util;
-import com.listomate.R.id;
-import com.listomate.R.layout;
-import com.listomate.R.string;
+import com.listomate.etc.Setup;
+import com.listomate.etc.Util;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;

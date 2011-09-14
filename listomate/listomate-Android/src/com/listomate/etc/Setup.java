@@ -1,4 +1,4 @@
-package com.listomate;
+package com.listomate.etc;
 
 public class Setup {
 

@@ -26,4 +26,8 @@
 		<Preference android:title="Custom Preference"
 			android:summary="This works almost like a button" android:key="customPref" />
 	</PreferenceCategory>
+	<PreferenceCategory android:title="About">
+		<Preference android:title="Listomate" android:summary="v0.1"
+			android:key="listomateVersion" />
+	</PreferenceCategory>
 </PreferenceScreen>

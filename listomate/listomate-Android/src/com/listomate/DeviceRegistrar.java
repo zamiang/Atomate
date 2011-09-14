@@ -21,6 +21,7 @@ import com.google.web.bindery.requestfactory.shared.ServerFailure;
 
 import com.listomate.client.MyRequestFactory;
 import com.listomate.client.MyRequestFactory.RegistrationInfoRequest;
+import com.listomate.etc.Util;
 import com.listomate.shared.RegistrationInfoProxy;
 
 import android.content.Context;

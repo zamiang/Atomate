@@ -46,12 +46,8 @@ import com.listomate.NoteAdapter;
 import com.listomate.NoteApplication;
 import com.listomate.Preferences;
 import com.listomate.R;
-import com.listomate.Util;
 import com.listomate.NoteApplication.TaskListener;
-import com.listomate.R.id;
-import com.listomate.R.layout;
-import com.listomate.R.menu;
-import com.listomate.R.string;
+import com.listomate.etc.Util;
 import com.listomate.shared.CloudTasksRequestFactory;
 import com.listomate.shared.NoteChange;
 import com.listomate.shared.NoteProxy;
@@ -252,7 +248,7 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 		Intent intent = new Intent(this, AddNoteActivity.class);
 		startActivityForResult(intent, NEW_NOTE_REQUEST);
 	}
-	
+
 	public void onSearchClick(View view) {
 		Intent intent = new Intent(this, SearchableActivity.class);
 		startActivityForResult(intent, NEW_SEARCH_REQUEST);
@@ -261,8 +257,8 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
-		//case NEW_SEARCH_REQUEST:
-			
+		// case NEW_SEARCH_REQUEST:
+
 		case NEW_NOTE_REQUEST:
 			if (resultCode == Activity.RESULT_OK) {
 				final String noteName = data.getStringExtra("task");

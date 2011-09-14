@@ -1,5 +1,6 @@
-package com.listomate;
+package com.listomate.etc;
 
+import com.listomate.R;
 import com.listomate.activities.ListomateActivity;
 
 import android.app.TabActivity;

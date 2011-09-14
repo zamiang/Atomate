@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.listomate.models.Contact;
+
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -45,7 +47,6 @@ public class ContactList extends ListActivity implements Runnable {
 		// handler.sendEmptyMessage(0);
 	}
 
-	@SuppressWarnings("unchecked")
 	private List<Contact> fillContactsList() {
 		List<Contact> tmpList = new ArrayList<Contact>();
 		Cursor c = getContentResolver().query(

@@ -17,6 +17,7 @@ public class Preferences extends PreferenceActivity {
 	String secondEditTextPreference;
 	String customPref;
 
+	@SuppressWarnings("unused")
 	private void getPrefs() {
 		// Get the xml/preferences.xml preferences
 		SharedPreferences prefs = PreferenceManager

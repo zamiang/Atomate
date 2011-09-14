@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.listomate.models.Contact;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +24,7 @@ public class ContactArrayAdapter extends ArrayAdapter<Contact> implements Sectio
     HashMap<String, Integer> alphaIndexer;
     String[] sections;
  
-    @SuppressWarnings({ "unchecked" })
-    public ContactArrayAdapter(Context context, int textViewResourceId, List objects) {
+    public ContactArrayAdapter(Context context, int textViewResourceId, List<Contact> objects) {
         super(context, textViewResourceId, objects);
         resourceId = textViewResourceId;
         myElements = (ArrayList<Contact>) objects;

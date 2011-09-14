@@ -13,9 +13,11 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.listomate;
+package com.listomate.etc;
 
 import com.google.android.c2dm.C2DMBaseReceiver;
+import com.listomate.DeviceRegistrar;
+import com.listomate.NoteApplication;
 
 import java.io.IOException;
 

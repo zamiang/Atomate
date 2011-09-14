@@ -3,10 +3,6 @@ package com.listomate.activities;
 import java.util.Calendar;
 
 import com.listomate.R;
-import com.listomate.R.id;
-import com.listomate.R.layout;
-import com.listomate.R.string;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -69,7 +65,7 @@ public class AddNoteActivity extends Activity {
 		mMonth = c.get(Calendar.MONTH);
 		mDay = c.get(Calendar.DAY_OF_MONTH);
 		mMinute = c.get(Calendar.MINUTE);
-		mHour = c.get(Calendar.HOUR_OF_DAY);		
+		mHour = c.get(Calendar.HOUR_OF_DAY);
 
 		// initialize buttons near the keyboard
 		Button datePicker = (Button) findViewById(R.id.add_reminder_button);
@@ -127,12 +123,11 @@ public class AddNoteActivity extends Activity {
 
 		finish();
 	}
-	
 
 	/**
-	 * 	 for the date and time popups
+	 * for the date and time popups
 	 */
-	
+
 	// the callback received when the user "sets" the date in the dialog
 	private OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
 		public void onDateSet(DatePicker view, int year, int monthOfYear,

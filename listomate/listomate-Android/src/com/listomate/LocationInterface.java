@@ -14,10 +14,8 @@ import android.widget.TextView;
 public class LocationInterface extends Activity implements LocationListener {
 	// Define human readable names
 	private static final String[] A = { "invalid", "n/a", "fine", "coarse" };
-	private static final String[] P = { "invalid", "n/a", "low", "medium",
-			"high" };
-	private static final String[] S = { "out of service",
-			"temporarily unavailable", "available" };
+	private static final String[] P = { "invalid", "n/a", "low", "medium","high" };
+	private static final String[] S = { "out of service","temporarily unavailable", "available" };
 
 	private LocationManager mgr;
 	private TextView output;
@@ -42,7 +40,7 @@ public class LocationInterface extends Activity implements LocationListener {
 		Location location = mgr.getLastKnownLocation(best);
 		dumpLocation(location);
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();

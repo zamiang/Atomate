@@ -3,14 +3,11 @@ package com.listomate.activities;
 import com.listomate.NoteAdapter;
 import com.listomate.NoteApplication;
 import com.listomate.R;
-import com.listomate.R.id;
-import com.listomate.R.layout;
 import com.listomate.shared.NoteProxy;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.widget.TextView;
 
 public class EditNoteActivity extends Activity {
