@@ -20,5 +20,4 @@
         android:includeFontPadding="false"
         android:textSize="15sp"
         android:textStyle="normal" />
- 
 </TwoLineListItem>
