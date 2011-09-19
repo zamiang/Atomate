@@ -1,11 +1,11 @@
-package com.listomate;
+package com.listomate.models;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.listomate.models.Contact;
-
+import com.listomate.ContactArrayAdapter;
+import com.listomate.R;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -47,36 +47,21 @@ public class ContactList extends ListActivity implements Runnable {
 		// handler.sendEmptyMessage(0);
 	}
 
-	private List<Contact> fillContactsList() {
+	public List<Contact> fillContactsList() {
 		List<Contact> tmpList = new ArrayList<Contact>();
-		Cursor c = getContentResolver().query(
-				ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+		Cursor c = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+		
 		while (c.moveToNext()) {
-			String ContactID = c.getString(c
-					.getColumnIndex(ContactsContract.Contacts._ID));
-			String name = c.getString(c
-					.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-			String hasPhone = c
-					.getString(c
-							.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+			String ContactID = c.getString(c.getColumnIndex(ContactsContract.Contacts._ID));
+			String name = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+			String hasPhone = c.getString(c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
 			if (Integer.parseInt(hasPhone) == 1) {
-				Cursor phoneCursor = getContentResolver().query(
-						ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-						null,
-						ContactsContract.CommonDataKinds.Phone.CONTACT_ID
-								+ "='" + ContactID + "'", null, null);
-				while (phoneCursor.moveToNext()) {
-					String number = phoneCursor
-							.getString(phoneCursor
-									.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-					con = new Contact();
-					con.setName(name);
-					con.setNumber(number);
-					tmpList.add(con);
-				}
-				phoneCursor.close();
+				con = new Contact();
+				con.setId(ContactID);
+				con.setName(name);
+				con.setTag(name);
+				tmpList.add(con);
 			}
-
 		}
 		c.close();
 		Collections.sort(tmpList);

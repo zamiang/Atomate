@@ -1,22 +1,23 @@
 package com.listomate.models;
 
+/**
+ * This is a full on contact that gets saved and synced to google
+ * 
+ */
 public class Contact implements Comparable<Object> {
 	 
+	private String id;
     private String name;
-    private String nickname;
     private String number;
-    private Integer version;	
-    private Integer created;
-    private Integer edited;
-    private Integer deleted;
+    private String nickname;
+
+    private String tag;
+    
     private String email;
     private String photourl;
     private String phone;
     private Integer fbid;
-    private String website;
-    private String tag;
-    private Integer locationid;
-    
+    private String website;    
  
     public String getNumber() {
         return number;
@@ -30,14 +31,6 @@ public class Contact implements Comparable<Object> {
         Contact newCont = (Contact)arg0;
         return this.name.compareTo(newCont.getName());
     }
-
-	public Integer getVersion() {
-		return version;
-	}
-
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
 
 	public String getName() {
 		return name;
@@ -55,36 +48,12 @@ public class Contact implements Comparable<Object> {
 		this.nickname = nickname;
 	}
 
-	public Integer getCreated() {
-		return created;
-	}
-
-	public void setCreated(Integer created) {
-		this.created = created;
-	}
-
-	public Integer getEdited() {
-		return edited;
-	}
-
-	public void setEdited(Integer edited) {
-		this.edited = edited;
-	}
-
 	public String getEmail() {
 		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public Integer getDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(Integer deleted) {
-		this.deleted = deleted;
 	}
 
 	public String getPhotourl() {
@@ -124,15 +93,14 @@ public class Contact implements Comparable<Object> {
 	}
 
 	public void setTag(String tag) {
-		this.tag = tag;
+		this.tag = 	"@" + tag.replaceAll(" ", "").toLowerCase();
 	}
 
-	public Integer getLocationid() {
-		return locationid;
+	public String getId() {
+		return id;
 	}
 
-	public void setLocationid(Integer locationid) {
-		this.locationid = locationid;
+	public void setId(String id) {
+		this.id = id;
 	}
- 
 }

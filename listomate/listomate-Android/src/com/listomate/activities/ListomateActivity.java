@@ -15,16 +15,19 @@
  */
 package com.listomate.activities;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +44,7 @@ import android.widget.TabHost.TabSpec;
 import android.widget.ListView;
 
 import com.listomate.AsyncFetchNote;
+import com.listomate.ContactArrayAdapter;
 import com.listomate.DeviceRegistrar;
 import com.listomate.NoteAdapter;
 import com.listomate.NoteApplication;
@@ -48,10 +52,16 @@ import com.listomate.Preferences;
 import com.listomate.R;
 import com.listomate.NoteApplication.TaskListener;
 import com.listomate.etc.Util;
+import com.listomate.models.Contact;
+import com.listomate.models.ContactList;
 import com.listomate.shared.CloudTasksRequestFactory;
 import com.listomate.shared.NoteChange;
 import com.listomate.shared.NoteProxy;
 import com.listomate.shared.NoteRequest;
+
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.ContactsContract.PhoneLookup;
 
 /**
  * Main activity - requests "Hello, World" messages from the server and provides
@@ -63,6 +73,17 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 	 */
 	private static final String TAG = "ListomateActivity";
 	private Context mContext = this;
+	private List<Contact> contactList;
+	
+	private final static int NEW_NOTE_REQUEST = 1;
+	private final static int NEW_SEARCH_REQUEST = 2;
+
+	private ListView listView;
+	private View progressBar;
+	private NoteAdapter adapter;
+
+	private AsyncFetchNote note;
+
 
 	// inits the tabs
 	private TabHost mTabHost;
@@ -81,10 +102,38 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 						return view;
 					}
 				});
+		
 		mTabHost.addTab(setContent);
-
 	}
 
+	/**
+	 * gets contacts from android and makes a contact list
+	 * 
+	 * @return
+*/
+	private List<Contact> saveContactList(List<Contact> contactList) {
+		
+		Cursor people = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+
+		while (people.moveToNext()) {
+			int nameFieldColumnIndex = people.getColumnIndex(PhoneLookup.DISPLAY_NAME);
+			int idFieldColumnIndex = people.getColumnIndex(PhoneLookup._ID);
+
+			String contact = people.getString(nameFieldColumnIndex);
+			String id = people.getString(idFieldColumnIndex);
+
+			Contact CI = new Contact();
+			CI.setId(id);
+			CI.setName(contact);
+			CI.setTag(contact);
+			contactList.add(CI);
+		}
+
+		people.close();
+		return contactList;
+	}
+
+	
 	private static View createTabView(final Context context, final String text) {
 		View view = LayoutInflater.from(context)
 				.inflate(R.layout.tabs_bg, null);
@@ -121,13 +170,6 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 		}
 	};
 
-	private final static int NEW_NOTE_REQUEST = 1;
-	private final static int NEW_SEARCH_REQUEST = 2;
-
-	private ListView listView;
-	private View progressBar;
-	private NoteAdapter adapter;
-	private AsyncFetchNote note;
 
 	/**
 	 * Begins the activity.
@@ -144,16 +186,15 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 
 		// setup tabs
 		setupTabHost();
-		// mTabHost.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
-		// // R.style.TitleBarSeparator);
 
 		setupTab(new TextView(this), "Today");
 		setupTab(new TextView(this), "Notes");
-		setupTab(new TextView(this), "People");
+		setupTab(new TextView(this), "Tags");
 		setupTab(new TextView(this), "Events");
+		
+		// todo figure out how to save this in sqlite
+		contactList = saveContactList(contactList);
 
-		// get the Note application to store the adapter which will act as the
-		// task storage for this demo.
 		NoteApplication noteApplication = (NoteApplication) getApplication();
 		adapter = noteApplication.getAdapter(this);
 		listView.setAdapter(adapter);
@@ -242,7 +283,7 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 		adapter.addNotes(notes);
 		adapter.notifyDataSetChanged();
 	}
-
+	
 	public void onAddClick(View view) {
 		Intent intent = new Intent(this, AddNoteActivity.class);
 		startActivityForResult(intent, NEW_NOTE_REQUEST);
@@ -261,27 +302,18 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 		case NEW_NOTE_REQUEST:
 			if (resultCode == Activity.RESULT_OK) {
 				final String noteName = data.getStringExtra("task");
-				final String noteDetails = data.getStringExtra("details");
-
-				Calendar c = Calendar.getInstance();
-				c.set(data.getIntExtra("year", 2011),
-						data.getIntExtra("month", 12),
-						data.getIntExtra("day", 31));
-				final Date dueDate = c.getTime();
 
 				new AsyncTask<Void, Void, Void>() {
 
 					@Override
 					protected Void doInBackground(Void... arg0) {
-						CloudTasksRequestFactory factory = (CloudTasksRequestFactory) Util
+						CloudTasksRequestFactory factory = Util
 								.getRequestFactory(ListomateActivity.this,
 										CloudTasksRequestFactory.class);
 						NoteRequest request = factory.taskRequest();
 
 						NoteProxy note = request.create(NoteProxy.class);
 						note.setName(noteName);
-						note.setNote(noteDetails);
-						note.setDueDate(dueDate);
 
 						request.updateNote(note).fire();
 
