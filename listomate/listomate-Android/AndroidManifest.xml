@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.listomate" android:versionCode="2" android:versionName="0.1.1">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.listomate" android:versionCode="2" android:versionName="0.1.1">
 	<uses-sdk android:minSdkVersion="8" />
 
 	<!-- Only this application can receive the messages and registration result -->
@@ -71,6 +72,9 @@
 
 		<activity android:name=".activities.EditNoteActivity"
 			android:theme="@android:style/Theme.NoTitleBar"></activity>
+
+		<activity android:name=".activities.PickContactActivity"
+			android:theme="@android:style/Theme.NoTitleBar" android:screenOrientation="portrait"></activity>
 
 		<activity android:name=".activities.AddNoteActivity"
 			android:launchMode="singleTop" android:windowSoftInputMode="stateVisible|adjustResize"

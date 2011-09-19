@@ -15,14 +15,10 @@
  */
 package com.listomate.activities;
 
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -44,7 +40,6 @@ import android.widget.TabHost.TabSpec;
 import android.widget.ListView;
 
 import com.listomate.AsyncFetchNote;
-import com.listomate.ContactArrayAdapter;
 import com.listomate.DeviceRegistrar;
 import com.listomate.NoteAdapter;
 import com.listomate.NoteApplication;
@@ -53,14 +48,12 @@ import com.listomate.R;
 import com.listomate.NoteApplication.TaskListener;
 import com.listomate.etc.Util;
 import com.listomate.models.Contact;
-import com.listomate.models.ContactList;
 import com.listomate.shared.CloudTasksRequestFactory;
 import com.listomate.shared.NoteChange;
 import com.listomate.shared.NoteProxy;
 import com.listomate.shared.NoteRequest;
 
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.PhoneLookup;
 
 /**
@@ -189,11 +182,16 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 
 		setupTab(new TextView(this), "Today");
 		setupTab(new TextView(this), "Notes");
-		setupTab(new TextView(this), "Tags");
 		setupTab(new TextView(this), "Events");
+		setupTab(new TextView(this), "Tags");
 		
 		// todo figure out how to save this in sqlite
-		contactList = saveContactList(contactList);
+		try {
+			contactList = saveContactList(contactList);	
+		} catch (Exception e) {
+			Log.w(TAG, e);		
+		}
+		
 
 		NoteApplication noteApplication = (NoteApplication) getApplication();
 		adapter = noteApplication.getAdapter(this);
@@ -326,8 +324,7 @@ public class ListomateActivity extends Activity implements OnItemClickListener {
 		}
 	}
 
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Intent intent = new Intent(this, EditNoteActivity.class);
 		intent.putExtra("position", position);
 		startActivity(intent);
