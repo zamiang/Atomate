@@ -8,8 +8,7 @@ import android.content.SearchRecentSuggestionsProvider;
  * configure with a unique authority and the mode you with to use. For more
  * information, see {@link android.content.SearchRecentSuggestionsProvider}.
  */
-public class SearchSuggestionSampleProvider extends
-		SearchRecentSuggestionsProvider {
+public class SearchSuggestionSampleProvider extends SearchRecentSuggestionsProvider {
 
 	/**
 	 * This is the provider authority identifier. The same string must appear in

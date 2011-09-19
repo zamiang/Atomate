@@ -22,7 +22,7 @@ import android.widget.TwoLineListItem;
 
 public class ContactList extends ListActivity implements Runnable {
 
-	private List<Contact> contacts = null;
+	public static List<Contact> contacts = null;
 	private Contact con;
 	private ContactArrayAdapter cAdapter;
 	private ProgressDialog prog = null;
@@ -65,6 +65,7 @@ public class ContactList extends ListActivity implements Runnable {
 		}
 		c.close();
 		Collections.sort(tmpList);
+		ContactList.contacts = tmpList;
 		return tmpList;
 	}
 

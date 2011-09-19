@@ -1,8 +1,12 @@
 package com.listomate.activities;
 
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
 
 import com.listomate.R;
+import com.listomate.models.Contact;
+import com.listomate.models.ContactList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,6 +19,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.UserDictionary;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -55,6 +60,12 @@ public class AddNoteActivity extends Activity {
 		initializeValues(savedInstanceState, getIntent().getExtras());
 		initializeButtons();
 		
+		if (ContactList.contacts == null) {
+			//ContactList.fillContactsList();
+		} else {
+			addNamesToDictionary(ContactList.contacts);
+		}
+		
 		if (text != null) {
 			Log.d(TAG, text);
 		}
@@ -65,6 +76,17 @@ public class AddNoteActivity extends Activity {
 		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
 		detailsTextView = (TextView) findViewById(R.id.detailsText);
+	}
+	
+	private void addNamesToDictionary(List<Contact> contacts) {
+		int frequency = 1;
+		int locale = 1;
+
+		
+		Iterator<Contact> itr = contacts.iterator(); 
+		while (itr.hasNext()) {
+			UserDictionary.Words.addWord(getBaseContext(), itr.next().getTag().toString(), frequency, locale);
+		}
 	}
 	
 	public void initializeValues(Bundle savedInstanceState, Bundle extras) {
@@ -130,11 +152,9 @@ public class AddNoteActivity extends Activity {
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case ADD_REMINDER_DIALOG_ID:
-			return new DatePickerDialog(this, mDateSetListener, mYear, mMonth,
-					mDay);
+			return new DatePickerDialog(this, mDateSetListener, mYear, mMonth, mDay);
 		case ADD_TIME_DIALOG_ID:
-			return new TimePickerDialog(this, mMinSetListener, mHour, mMinute,
-					false);
+			return new TimePickerDialog(this, mMinSetListener, mHour, mMinute, false);
 
 		case ADD_LOCATION_DIALOG_ID:
 			final CharSequence[] items = { "Current Location", "Bar", "Baz" };
@@ -187,8 +207,7 @@ public class AddNoteActivity extends Activity {
 
 	// the callback received when the user "sets" the date in the dialog
 	private OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-		public void onDateSet(DatePicker view, int year, int monthOfYear,
-				int dayOfMonth) {
+		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
 			mYear = year;
 			mMonth = monthOfYear;
@@ -234,6 +253,10 @@ public class AddNoteActivity extends Activity {
 	private void populateFields() {
 		if (text != null) {
 			detailsTextView.setText(new StringBuilder().append(text));
+		}
+		if (reminder == true) {
+			setDate(mYear, mMonth, mDay);
+			setTime(mHour, mMinute);
 		}
 	}
 
