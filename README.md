@@ -25,7 +25,7 @@ you're supposed to do, and to get on with your day.
 ## More info
 
 This application is free and open source. It has been supported by
-many years (?decades?) of acedemic research. Progress is actively
+many years (?decades?) of academic research. Progress is actively
 documented in the ACM SIGCHI and WWW communities.
 
 ### Selected Publications:
